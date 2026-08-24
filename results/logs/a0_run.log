@@ -1,0 +1,35 @@
+2026-08-25 00:05:15,500 | INFO | Experiment plan
+2026-08-25 00:05:15,501 | INFO |   configured dataset cases: 240
+2026-08-25 00:05:15,501 | INFO |   selected dataset cases: 240
+2026-08-25 00:05:15,501 | INFO |   model fits per case: 10
+2026-08-25 00:05:15,501 | INFO |   selected model fits: 2400
+2026-08-25 00:05:15,501 | INFO |   worst mask search space: 255
+2026-08-25 00:05:15,501 | INFO |   worst candidate-count upper bound: 255
+2026-08-25 00:05:15,501 | INFO |   worst FixedTreeAHSL logits estimate: 0.05 MiB
+2026-08-25 00:05:19,582 | INFO | Completed 1/240 dataset cases
+2026-08-25 00:05:23,619 | INFO | Completed 10/240 dataset cases
+2026-08-25 00:05:28,078 | INFO | Completed 20/240 dataset cases
+2026-08-25 00:05:32,795 | INFO | Completed 30/240 dataset cases
+2026-08-25 00:05:37,270 | INFO | Completed 40/240 dataset cases
+2026-08-25 00:05:41,953 | INFO | Completed 50/240 dataset cases
+2026-08-25 00:05:44,911 | INFO | Completed 60/240 dataset cases
+2026-08-25 00:05:47,846 | INFO | Completed 70/240 dataset cases
+2026-08-25 00:05:50,249 | INFO | Completed 80/240 dataset cases
+2026-08-25 00:05:53,236 | INFO | Completed 90/240 dataset cases
+2026-08-25 00:05:56,374 | INFO | Completed 100/240 dataset cases
+2026-08-25 00:05:59,838 | INFO | Completed 110/240 dataset cases
+2026-08-25 00:06:03,115 | INFO | Completed 120/240 dataset cases
+2026-08-25 00:06:06,612 | INFO | Completed 130/240 dataset cases
+2026-08-25 00:06:09,746 | INFO | Completed 140/240 dataset cases
+2026-08-25 00:06:12,986 | INFO | Completed 150/240 dataset cases
+2026-08-25 00:06:16,197 | INFO | Completed 160/240 dataset cases
+2026-08-25 00:06:19,377 | INFO | Completed 170/240 dataset cases
+2026-08-25 00:06:22,447 | INFO | Completed 180/240 dataset cases
+2026-08-25 00:06:25,657 | INFO | Completed 190/240 dataset cases
+2026-08-25 00:06:28,708 | INFO | Completed 200/240 dataset cases
+2026-08-25 00:06:32,058 | INFO | Completed 210/240 dataset cases
+2026-08-25 00:06:36,578 | INFO | Completed 220/240 dataset cases
+2026-08-25 00:06:41,201 | INFO | Completed 230/240 dataset cases
+2026-08-25 00:06:45,626 | INFO | Completed 240/240 dataset cases
+2026-08-25 00:06:54,023 | INFO | Finished in 98.52 seconds
+2026-08-25 00:06:54,023 | INFO | Raw rows: 2400

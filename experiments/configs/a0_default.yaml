@@ -1,0 +1,56 @@
+experiment_id: a0_pilot
+
+# Controlled A0 pilot. The much larger preferred grid belongs in later staged
+# configs after candidate counts and this pilot's evidence have been inspected.
+n_values: [50]
+m_values: [8]
+tree_topologies: [random, path, star, balanced]
+branch_probabilities: [0.4]
+noise_settings:
+  - name: symmetric_0.00
+    p_false_positive: 0.0
+    p_false_negative: 0.0
+  - name: symmetric_0.10
+    p_false_positive: 0.1
+    p_false_negative: 0.1
+  - name: symmetric_0.20
+    p_false_positive: 0.2
+    p_false_negative: 0.2
+  - name: symmetric_0.30
+    p_false_positive: 0.3
+    p_false_negative: 0.3
+  - name: false_positive_only_0.20
+    p_false_positive: 0.2
+    p_false_negative: 0.0
+  - name: false_negative_only_0.20
+    p_false_positive: 0.0
+    p_false_negative: 0.2
+observation_repetitions: [1, 3]
+seeds: [0, 1, 2, 3, 4]
+
+models:
+  epochs: 60
+  fixed_tree_epochs: 100
+  learning_rate: 0.1
+  fixed_tree_learning_rate: 0.1
+  threshold: 0.5
+  sparse_lambdas: [0.0, 0.0001, 0.001, 0.01, 0.1]
+  entropy_weight: 0.0
+  size_weight: 0.0
+
+statistics:
+  bootstrap_samples: 2000
+  seed: 271828
+
+resources:
+  max_enumeration_search_space: 1000000
+  max_connected_subtrees: 200000
+  torch_threads: 1
+
+plots:
+  n: 50
+  m: 8
+  branch_probability: 0.4
+  num_observations: 1
+  sparse_lambda: 0.01
+
