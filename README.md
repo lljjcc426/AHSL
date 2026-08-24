@@ -156,6 +156,26 @@ The mathematical reductions and complexity proofs are in
 `docs/A0_5_THEORY.md`; compatibility findings about the frozen A0 baseline are
 in `docs/A0_5_AUDIT_NOTES.md`.
 
+## Phase A0.75: classical A1 kill-test
+
+Phase A0.75 tests whether join-tree learning remains justified after
+noise-corrected intersection weights, bootstrap stability, alternating
+incidence/tree estimation, and a data-agnostic random-tree control. It contains
+no neural model. The profile-likelihood search is conditional and must be run
+only when the saved primary gate reports excess above `0.01`.
+
+```powershell
+python experiments/exp_a0_75.py --config experiments/configs/a0_75_primary.yaml
+# Run the next command only when the primary gate triggers it.
+python experiments/exp_a0_75.py --config experiments/configs/a0_75_profile_search.yaml
+python experiments/exp_a0_75.py --config experiments/configs/a0_75_r3.yaml
+python experiments/exp_a0_75_finalize.py
+```
+
+Outputs are isolated under `results/a0_75/`. The derivation is in
+`docs/A0_75_THEORY.md`, and implementation/interpretation decisions are recorded
+in `docs/A0_75_AUDIT_NOTES.md`.
+
 ## Scope and limitations
 
 Phase A0 assumes the true join tree is known. It tests structural projection and

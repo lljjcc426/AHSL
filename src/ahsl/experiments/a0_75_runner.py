@@ -217,12 +217,35 @@ def _record(
     }
 
 
+def _tie_diagnostics(
+    prediction: np.ndarray,
+    row_ties: np.ndarray,
+    clean: np.ndarray,
+    oracle_prediction: np.ndarray,
+    oracle_row_ties: np.ndarray,
+) -> dict[str, float]:
+    unique = ~(np.asarray(row_ties) | np.asarray(oracle_row_ties))
+    estimator_row_error = np.not_equal(clean, prediction).mean(axis=1)
+    oracle_row_error = np.not_equal(clean, oracle_prediction).mean(axis=1)
+    return {
+        "downstream_optimal_tie_fraction": float(np.mean(row_ties)),
+        "unique_both_row_fraction": float(unique.mean()),
+        "unique_both_estimator_hamming": float(estimator_row_error[unique].mean()),
+        "unique_both_oracle_hamming": float(oracle_row_error[unique].mean()),
+        "unique_both_hamming_excess": float(
+            (estimator_row_error[unique] - oracle_row_error[unique]).mean()
+        ),
+    }
+
+
 def _estimate_then_decode(
     estimator: Any,
     clean: np.ndarray,
     observed: np.ndarray,
     true_tree: nx.Graph,
     job: Job,
+    oracle_prediction: np.ndarray,
+    oracle_row_ties: np.ndarray,
     **diagnostics: Any,
 ) -> dict[str, Any]:
     total_start = time.perf_counter()
@@ -230,10 +253,20 @@ def _estimate_then_decode(
     tree = estimator.fit(observed).predict_tree()
     tree_runtime = time.perf_counter() - tree_start
     dp_start = time.perf_counter()
-    prediction = DPNoiseAwareConnectedMLE(
+    downstream_model = DPNoiseAwareConnectedMLE(
         tree, job.p_false_negative, job.p_false_positive
-    ).fit(observed).predict()
+    ).fit(observed)
+    prediction = downstream_model.predict()
     downstream_runtime = time.perf_counter() - dp_start
+    diagnostics.update(
+        _tie_diagnostics(
+            prediction,
+            downstream_model.row_ties_,
+            clean,
+            oracle_prediction,
+            oracle_row_ties,
+        )
+    )
     return _record(
         estimator.name,
         tree,
@@ -251,9 +284,21 @@ def _estimate_then_decode(
 
 def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
     true_tree, clean, observed = _tree_and_data(job)
+    oracle_model = DPNoiseAwareConnectedMLE(
+        true_tree, job.p_false_negative, job.p_false_positive
+    ).fit(observed)
+    tie_reference = {
+        "oracle_prediction": oracle_model.predict(),
+        "oracle_row_ties": oracle_model.row_ties_,
+    }
     rows = [
         _estimate_then_decode(
-            TrueTreeOracle(true_tree), clean, observed, true_tree, job
+            TrueTreeOracle(true_tree),
+            clean,
+            observed,
+            true_tree,
+            job,
+            **tie_reference,
         )
     ]
     for replicate in range(int(config["random_tree_replicates"])):
@@ -267,6 +312,7 @@ def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
                 observed,
                 true_tree,
                 job,
+                **tie_reference,
                 random_tree_replicate=replicate,
                 random_control_role="primary" if replicate == 0 else "diagnostic",
             )
@@ -292,6 +338,7 @@ def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
             observed,
             true_tree,
             job,
+            **tie_reference,
             binary_source="observed",
             binary_incidence_identical=binary_incidence_identical,
             binary_tree_identical=binary_tree_identical,
@@ -304,6 +351,7 @@ def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
             observed,
             true_tree,
             job,
+            **tie_reference,
         )
     )
     rows.append(
@@ -318,6 +366,7 @@ def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
             observed,
             true_tree,
             job,
+            **tie_reference,
             bootstrap_replicates=int(config["bootstrap_replicates"]),
         )
     )
@@ -329,6 +378,13 @@ def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
     )
     total_start = time.perf_counter()
     alternating.fit(observed)
+    tie_diagnostics = _tie_diagnostics(
+        alternating.predict(),
+        alternating.row_ties_,
+        clean,
+        tie_reference["oracle_prediction"],
+        tie_reference["oracle_row_ties"],
+    )
     rows.append(
         _record(
             alternating.name,
@@ -345,6 +401,7 @@ def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
             converged=alternating.converged_,
             tree_changed=alternating.tree_changed_,
             max_iteration_reached=alternating.max_iteration_reached_,
+            **tie_diagnostics,
         )
     )
     return rows
@@ -352,6 +409,9 @@ def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
 
 def _run_profile_job(job: Job, config: dict[str, Any]) -> dict[str, Any]:
     true_tree, clean, observed = _tree_and_data(job)
+    oracle_model = DPNoiseAwareConnectedMLE(
+        true_tree, job.p_false_negative, job.p_false_positive
+    ).fit(observed)
     estimator = ProfileLikelihoodTreeSearch(
         job.p_false_negative,
         job.p_false_positive,
@@ -360,6 +420,13 @@ def _run_profile_job(job: Job, config: dict[str, Any]) -> dict[str, Any]:
     )
     total_start = time.perf_counter()
     estimator.fit(observed)
+    tie_diagnostics = _tie_diagnostics(
+        estimator.predict(),
+        estimator.row_ties_,
+        clean,
+        oracle_model.predict(),
+        oracle_model.row_ties_,
+    )
     return _record(
         estimator.name,
         estimator.predict_tree(),
@@ -381,6 +448,7 @@ def _run_profile_job(job: Job, config: dict[str, Any]) -> dict[str, Any]:
         profile_candidates_per_iteration=int(
             config["profile_max_candidates_per_iteration"]
         ),
+        **tie_diagnostics,
     )
 
 
@@ -433,7 +501,12 @@ def run(config: dict[str, Any], max_runs: int | None = None) -> pd.DataFrame:
     )
     LOGGER.info("Raw rows: %d", len(raw))
     LOGGER.info("Best classical excess: %.6f", gate.iloc[0]["best_classical_excess"])
-    if bool(gate.iloc[0]["profile_search_triggered"]):
+    if is_profile:
+        LOGGER.info(
+            "Profile-likelihood kill-test completed; final decision is %s.",
+            gate.iloc[0]["final_decision_code"],
+        )
+    elif bool(gate.iloc[0]["profile_search_was_triggered"]):
         LOGGER.info("Profile-likelihood kill-test is justified.")
     else:
         LOGGER.info("Profile search is not triggered.")

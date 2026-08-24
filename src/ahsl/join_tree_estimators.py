@@ -204,12 +204,14 @@ class AlternatingTreeIncidenceEstimator:
 
     def _decode(self, tree: nx.Graph, observed: np.ndarray) -> np.ndarray:
         start = time.perf_counter()
-        prediction = DPNoiseAwareConnectedMLE(
+        model = DPNoiseAwareConnectedMLE(
             tree, self.p_false_negative, self.p_false_positive
-        ).fit(observed).predict()
+        ).fit(observed)
+        prediction = model.predict()
         self.downstream_dp_runtime_ += time.perf_counter() - start
         self.decoded_trees_.append(tree.copy())
         self.decoded_incidences_.append(prediction.copy())
+        self.decoded_row_ties_.append(model.row_ties_.copy())
         return prediction
 
     def fit(self, observed: np.ndarray) -> "AlternatingTreeIncidenceEstimator":
@@ -217,6 +219,7 @@ class AlternatingTreeIncidenceEstimator:
         self.downstream_dp_runtime_ = 0.0
         self.decoded_trees_: list[nx.Graph] = []
         self.decoded_incidences_: list[np.ndarray] = []
+        self.decoded_row_ties_: list[np.ndarray] = []
 
         start = time.perf_counter()
         current_tree = NoiseCorrectedMWST(
@@ -243,6 +246,8 @@ class AlternatingTreeIncidenceEstimator:
 
         self.tree_ = current_tree
         self.prediction_ = prediction
+        self.row_ties_ = self.decoded_row_ties_[-1].copy()
+        self.optimal_tie_fraction_ = float(self.row_ties_.mean())
         self.num_iterations_ = changes
         self.converged_ = converged
         self.max_iteration_reached_ = not converged
@@ -368,6 +373,8 @@ class ProfileLikelihoodTreeSearch:
         self.downstream_dp_runtime_ = time.perf_counter() - downstream_start
         self.tree_ = current_tree
         self.prediction_ = final_model.predict()
+        self.row_ties_ = final_model.row_ties_.copy()
+        self.optimal_tie_fraction_ = final_model.optimal_tie_fraction_
         self.profile_objective_ = current_score
         self.num_iterations_ = improvements
         self.converged_ = converged

@@ -186,7 +186,23 @@ def edge_utility_correlations(raw: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame.from_records(records)
 
 
-def gate_summary(table: pd.DataFrame) -> pd.DataFrame:
+def tie_diagnostics(raw: pd.DataFrame) -> pd.DataFrame:
+    available = raw.dropna(subset=["unique_both_hamming_excess"])
+    return (
+        available.groupby(["estimator", "tree_topology"])
+        .agg(
+            downstream_optimal_tie_fraction=(
+                "downstream_optimal_tie_fraction",
+                "mean",
+            ),
+            unique_both_row_fraction=("unique_both_row_fraction", "mean"),
+            unique_both_hamming_excess=("unique_both_hamming_excess", "mean"),
+        )
+        .reset_index()
+    )
+
+
+def gate_summary(table: pd.DataFrame, raw: pd.DataFrame) -> pd.DataFrame:
     overall = table[table["scope"] == "overall"].set_index("estimator")
     classical_names = CLASSICAL_ESTIMATORS.copy()
     if "ProfileLikelihoodTreeSearch" in overall.index:
@@ -205,6 +221,54 @@ def gate_summary(table: pd.DataFrame) -> pd.DataFrame:
     stop_a = best_excess <= 0.005 and float(best["excess_ci_upper"]) <= 0.010
     stop_b = true_tree_value <= 0.005
     stop_c = gap_closure >= 0.80 and best_excess < 0.01
+    profile_completed = "ProfileLikelihoodTreeSearch" in overall.index
+    pre_profile_best = float(
+        overall.loc[CLASSICAL_ESTIMATORS, "mean_excess"].min()
+    )
+    profile_was_triggered = pre_profile_best > 0.01
+    best_rows = raw[raw["estimator"] == best_name]
+    unique_row_fraction = float(best_rows["unique_both_row_fraction"].mean())
+    unique_row_excess = float(best_rows["unique_both_hamming_excess"].mean())
+    topology_rows = table[
+        (table["scope"] != "overall") & (table["estimator"] == best_name)
+    ]
+    topologies_with_residual = int((topology_rows["mean_excess"] >= 0.01).sum())
+    data_driven_advantage = float(
+        overall.loc["DataAgnosticRandomTree", "mean_hamming"]
+        - overall.loc[best_name, "mean_hamming"]
+    )
+    profile_failed_to_close = (
+        not profile_was_triggered
+        or (
+            profile_completed
+            and float(overall.loc["ProfileLikelihoodTreeSearch", "mean_excess"])
+            >= 0.01
+        )
+    )
+    continuation = (
+        true_tree_value >= 0.01
+        and best_excess >= 0.01
+        and float(best["excess_ci_lower"]) > 0.005
+        and unique_row_excess > 0.005
+        and topologies_with_residual >= 3
+        and data_driven_advantage > 0.005
+        and profile_failed_to_close
+    )
+    if stop_b:
+        decision_code = "B"
+        decision = "Kill join-tree recovery as a primary direction; generic tree priors are sufficient."
+    elif stop_a or stop_c:
+        decision_code = "A"
+        decision = "Kill neural A1; classical tree estimation is sufficient."
+    elif profile_was_triggered and not profile_completed:
+        decision_code = "C"
+        decision = "Run one profile-likelihood classical tree-search kill-test before deciding."
+    elif continuation:
+        decision_code = "D"
+        decision = "A meaningful residual join-tree estimation problem remains; learned A1 is justified."
+    else:
+        decision_code = "A"
+        decision = "Kill neural A1; classical tree estimation is sufficient."
     return pd.DataFrame(
         [
             {
@@ -218,7 +282,16 @@ def gate_summary(table: pd.DataFrame) -> pd.DataFrame:
                 "hard_stop_a": stop_a,
                 "hard_stop_b": stop_b,
                 "hard_stop_c": stop_c,
-                "profile_search_triggered": best_excess > 0.01,
+                "profile_search_was_triggered": profile_was_triggered,
+                "profile_search_completed": profile_completed,
+                "best_unique_row_fraction": unique_row_fraction,
+                "best_unique_row_excess": unique_row_excess,
+                "topologies_with_residual": topologies_with_residual,
+                "best_data_driven_advantage_over_random": data_driven_advantage,
+                "profile_failed_to_close_gap": profile_failed_to_close,
+                "continuation_conditions_all_met": continuation,
+                "final_decision_code": decision_code,
+                "final_decision": decision,
             }
         ]
     )
@@ -244,6 +317,9 @@ def write_analysis_outputs(
     edge_utility_correlations(raw).to_csv(
         output_directory / f"{prefix}_edge_utility_correlations.csv", index=False
     )
-    gate = gate_summary(table)
+    tie_diagnostics(raw).to_csv(
+        output_directory / f"{prefix}_tie_diagnostics.csv", index=False
+    )
+    gate = gate_summary(table, raw)
     gate.to_csv(output_directory / f"{prefix}_gate_summary.csv", index=False)
     return gate
