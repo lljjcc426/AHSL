@@ -30,6 +30,31 @@ class _UnionFind:
         return True
 
 
+def deterministic_maximum_spanning_tree(weights: np.ndarray) -> nx.Graph:
+    """Return a labeled MWST with lexicographic tie resolution."""
+    matrix = np.asarray(weights, dtype=float)
+    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
+        raise ValueError("weights must be a square matrix")
+    m = matrix.shape[0]
+    weighted_edges = [
+        (float(matrix[left, right]), left, right)
+        for left in range(m)
+        for right in range(left + 1, m)
+    ]
+    weighted_edges.sort(key=lambda item: (-item[0], item[1], item[2]))
+    union_find = _UnionFind(m)
+    tree = nx.Graph()
+    tree.add_nodes_from(range(m))
+    for weight, left, right in weighted_edges:
+        if union_find.union(left, right):
+            tree.add_edge(left, right, weight=weight)
+            if tree.number_of_edges() == m - 1:
+                break
+    if not nx.is_tree(tree):
+        raise RuntimeError("maximum-spanning-tree construction failed")
+    return tree
+
+
 class IntersectionMWSTJoinTree:
     """Recover a deterministic maximum spanning tree of hyperedge intersections."""
 
@@ -41,26 +66,9 @@ class IntersectionMWSTJoinTree:
             raise ValueError("incidence must be a non-empty matrix")
         m = binary.shape[1]
         intersections = binary.T @ binary
-        weighted_edges = [
-            (int(intersections[left, right]), left, right)
-            for left in range(m)
-            for right in range(left + 1, m)
-        ]
-        weighted_edges.sort(key=lambda item: (-item[0], item[1], item[2]))
-        union_find = _UnionFind(m)
-        tree = nx.Graph()
-        tree.add_nodes_from(range(m))
-        for weight, left, right in weighted_edges:
-            if union_find.union(left, right):
-                tree.add_edge(left, right, weight=weight)
-                if tree.number_of_edges() == m - 1:
-                    break
-        if not nx.is_tree(tree):
-            raise RuntimeError("maximum-spanning-tree construction failed")
-        self.tree_ = tree
+        self.tree_ = deterministic_maximum_spanning_tree(intersections)
         self.intersection_weights_ = intersections
         return self
 
     def predict_tree(self) -> nx.Graph:
         return self.tree_.copy()
-
