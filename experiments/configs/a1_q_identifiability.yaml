@@ -1,0 +1,11 @@
+experiment_type: a1_q_identifiability
+n_values: [100, 300, 1000]
+m_values: [16]
+tree_topologies: [random, path, balanced, star]
+branch_probabilities: [0.4]
+noise_settings:
+  - name: symmetric_0.20
+    p_false_positive: 0.20
+    p_false_negative: 0.20
+seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+q_bounds: [0.02, 0.98]

@@ -1,0 +1,18 @@
+experiment_type: a1_validation
+m: 7
+rows_per_case: 5
+tree_topologies: [random, path, balanced, star]
+branch_probabilities: [0.2, 0.4, 0.6, 0.8]
+noise_settings:
+  - name: zero
+    p_false_positive: 0.0
+    p_false_negative: 0.0
+  - name: symmetric_0.20
+    p_false_positive: 0.20
+    p_false_negative: 0.20
+  - name: asymmetric
+    p_false_positive: 0.10
+    p_false_negative: 0.30
+observation_repetitions: [1, 3]
+seeds: [0, 1, 2]
+comparison_tolerance: 1.0e-10

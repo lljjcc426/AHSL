@@ -176,6 +176,24 @@ Outputs are isolated under `results/a0_75/`. The derivation is in
 `docs/A0_75_THEORY.md`, and implementation/interpretation decisions are recorded
 in `docs/A0_75_AUDIT_NOTES.md`.
 
+## Phase A1: marginal-likelihood latent-tree kill-test
+
+Phase A1 treats clean connected incidence rows as latent variables and scores a
+candidate labeled tree by exact anchor-growth marginal likelihood. It uses
+train/validation/test row splits and contains no neural estimator.
+
+```powershell
+python experiments/exp_a1.py --config experiments/configs/a1_validation.yaml
+python experiments/exp_a1.py --config experiments/configs/a1_q_identifiability.yaml
+python experiments/exp_a1.py --config experiments/configs/a1_small_global_search.yaml
+python experiments/exp_a1.py --config experiments/configs/a1_primary.yaml
+python experiments/exp_a1_finalize.py
+```
+
+Outputs are isolated under `results/a1/`. The literature gate and mathematical
+derivation are in `docs/A1_PREIMPLEMENTATION_REVIEW.md` and
+`docs/A1_THEORY.md`.
+
 ## Scope and limitations
 
 Phase A0 assumes the true join tree is known. It tests structural projection and

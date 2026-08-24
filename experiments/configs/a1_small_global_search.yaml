@@ -1,0 +1,12 @@
+experiment_type: a1_small_global_search
+n_values: [120]
+m_values: [6]
+tree_topologies: [random, path, balanced, star]
+branch_probabilities: [0.4]
+noise_settings:
+  - name: symmetric_0.20
+    p_false_positive: 0.20
+    p_false_negative: 0.20
+seeds: [0, 1, 2]
+split_fractions: [0.60, 0.20, 0.20]
+tree_search_max_iterations: 10

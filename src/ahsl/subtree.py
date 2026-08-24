@@ -97,6 +97,31 @@ def enumerate_connected_subtrees(tree: nx.Graph) -> list[frozenset[int]]:
     return connected
 
 
+def subtree_boundary_size(tree: nx.Graph, subtree: Iterable[int]) -> int:
+    """Count tree edges with exactly one endpoint in a node subset."""
+    selected = set(subtree)
+    return sum((left in selected) != (right in selected) for left, right in tree.edges)
+
+
+def generator_subtree_probability(
+    tree: nx.Graph,
+    subtree: Iterable[int],
+    branch_probability: float,
+) -> float:
+    """Probability of a connected support under uniform-anchor branch growth."""
+    m = validate_labeled_tree(tree)
+    selected = frozenset(subtree)
+    if not selected or not nx.is_connected(tree.subgraph(selected)):
+        return 0.0
+    q = float(branch_probability)
+    return (
+        len(selected)
+        / m
+        * q ** (len(selected) - 1)
+        * (1.0 - q) ** subtree_boundary_size(tree, selected)
+    )
+
+
 def subtree_incidence_matrix(
     subtrees: Iterable[Iterable[int]], m: int
 ) -> np.ndarray:
@@ -122,4 +147,3 @@ def enumeration_diagnostic(m: int, topology: str | None = None) -> dict[str, int
     elif topology == "star":
         diagnostic["num_connected_subtrees"] = (1 << (m - 1)) + m - 1
     return diagnostic
-
