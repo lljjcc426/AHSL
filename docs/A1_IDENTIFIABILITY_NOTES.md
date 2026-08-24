@@ -57,5 +57,16 @@ for that model.
 3. Report likelihood gaps and edge disagreement by topology.
 4. Treat near-ties as weak information rather than forced recovery failures.
 
-Empirical results will be appended after the preregistered runs.
+## Empirical results
 
+With the generating tree fixed and true `q=0.4`, mean absolute q error over 40
+topology/seed cases per sample size decreased from `0.03783` at `n=100` to
+`0.01597` at `n=300` and `0.01017` at `n=1000`. This is consistent with the
+interior population argument and does not indicate q nonidentifiability.
+
+At `m=6`, full enumeration of all `6^4=1296` labeled trees found that local
+best-improvement search reached the global training-likelihood optimum in all
+12 datasets. At primary `m=16`, however, the oracle-q marginal tree did not
+beat BinaryMWST in held-out Hamming. The observed failure is therefore better
+described as objective/downstream misalignment or finite-sample inefficiency
+than as demonstrated population nonidentifiability.

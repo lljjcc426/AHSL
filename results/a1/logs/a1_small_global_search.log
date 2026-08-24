@@ -1,0 +1,14 @@
+2026-08-25 03:52:46,835 | INFO | Experiment a1_small_global_search; dataset jobs=12
+2026-08-25 03:52:46,835 | INFO | Global-search dataset 1/12
+2026-08-25 03:52:49,166 | INFO | Global-search dataset 2/12
+2026-08-25 03:52:51,796 | INFO | Global-search dataset 3/12
+2026-08-25 03:52:54,526 | INFO | Global-search dataset 4/12
+2026-08-25 03:52:56,873 | INFO | Global-search dataset 5/12
+2026-08-25 03:52:59,563 | INFO | Global-search dataset 6/12
+2026-08-25 03:53:02,072 | INFO | Global-search dataset 7/12
+2026-08-25 03:53:04,455 | INFO | Global-search dataset 8/12
+2026-08-25 03:53:07,178 | INFO | Global-search dataset 9/12
+2026-08-25 03:53:09,499 | INFO | Global-search dataset 10/12
+2026-08-25 03:53:12,229 | INFO | Global-search dataset 11/12
+2026-08-25 03:53:14,782 | INFO | Global-search dataset 12/12
+2026-08-25 03:53:17,167 | INFO | Wrote 12 rows to results\a1\raw\a1_small_global_search_results.csv
