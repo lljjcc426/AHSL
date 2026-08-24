@@ -1,0 +1,16 @@
+experiment_type: validation
+n_values: [1]
+m_values: [4, 6, 8, 10]
+tree_topologies: [random, path, star, balanced]
+branch_probabilities: [0.4]
+noise_settings:
+  - name: symmetric_0.20
+    p_false_positive: 0.2
+    p_false_negative: 0.2
+observation_repetitions: [3]
+seeds: [0]
+comparisons_per_topology: 50
+resources:
+  brute_force_enabled: true
+  runtime_class: exponential oracle validation at m <= 10
+
