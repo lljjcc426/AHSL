@@ -1,0 +1,22 @@
+2026-08-25 02:00:08,462 | INFO | A0.75 plan: a0_75_r3
+2026-08-25 02:00:08,462 | INFO |   dataset cases: 120
+2026-08-25 02:00:08,462 | INFO |   estimator evaluations: 1200
+2026-08-25 02:00:08,462 | INFO |   bootstrap replicates per dataset: 100
+2026-08-25 02:00:08,462 | INFO |   neural models: 0
+2026-08-25 02:00:08,900 | INFO | Completed 1/120 datasets
+2026-08-25 02:00:12,994 | INFO | Completed 10/120 datasets
+2026-08-25 02:00:17,383 | INFO | Completed 20/120 datasets
+2026-08-25 02:00:21,894 | INFO | Completed 30/120 datasets
+2026-08-25 02:00:26,240 | INFO | Completed 40/120 datasets
+2026-08-25 02:00:30,552 | INFO | Completed 50/120 datasets
+2026-08-25 02:00:35,183 | INFO | Completed 60/120 datasets
+2026-08-25 02:00:40,264 | INFO | Completed 70/120 datasets
+2026-08-25 02:00:44,921 | INFO | Completed 80/120 datasets
+2026-08-25 02:00:49,418 | INFO | Completed 90/120 datasets
+2026-08-25 02:00:54,230 | INFO | Completed 100/120 datasets
+2026-08-25 02:00:58,810 | INFO | Completed 110/120 datasets
+2026-08-25 02:01:04,190 | INFO | Completed 120/120 datasets
+2026-08-25 02:01:05,565 | INFO | Raw rows: 1200
+2026-08-25 02:01:05,566 | INFO | Best classical excess: 0.002003
+2026-08-25 02:01:05,566 | INFO | Profile search is not triggered.
+2026-08-25 02:01:05,566 | INFO | Finished in 57.10 seconds

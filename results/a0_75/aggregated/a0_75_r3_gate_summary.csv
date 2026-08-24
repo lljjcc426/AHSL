@@ -1,0 +1,2 @@
+best_classical_estimator,best_classical_excess,best_classical_ci_lower,best_classical_ci_upper,binary_excess,gap_closure_fraction,value_of_true_tree,hard_stop_a,hard_stop_b,hard_stop_c,profile_search_triggered
+BootstrapStabilityMWST,0.0020034722222222225,0.001607595486111111,0.0024322916666666677,0.003788194444444445,0.4711274060494959,0.05735590277777778,True,False,False,False

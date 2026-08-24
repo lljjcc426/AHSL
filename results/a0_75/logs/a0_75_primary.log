@@ -1,0 +1,22 @@
+2026-08-25 02:03:23,236 | INFO | A0.75 plan: a0_75_primary
+2026-08-25 02:03:23,236 | INFO |   dataset cases: 120
+2026-08-25 02:03:23,236 | INFO |   estimator evaluations: 1200
+2026-08-25 02:03:23,236 | INFO |   bootstrap replicates per dataset: 100
+2026-08-25 02:03:23,236 | INFO |   neural models: 0
+2026-08-25 02:03:23,817 | INFO | Completed 1/120 datasets
+2026-08-25 02:03:29,678 | INFO | Completed 10/120 datasets
+2026-08-25 02:03:36,770 | INFO | Completed 20/120 datasets
+2026-08-25 02:03:43,525 | INFO | Completed 30/120 datasets
+2026-08-25 02:03:50,326 | INFO | Completed 40/120 datasets
+2026-08-25 02:03:57,031 | INFO | Completed 50/120 datasets
+2026-08-25 02:04:03,783 | INFO | Completed 60/120 datasets
+2026-08-25 02:04:10,329 | INFO | Completed 70/120 datasets
+2026-08-25 02:04:16,889 | INFO | Completed 80/120 datasets
+2026-08-25 02:04:23,638 | INFO | Completed 90/120 datasets
+2026-08-25 02:04:30,298 | INFO | Completed 100/120 datasets
+2026-08-25 02:04:37,801 | INFO | Completed 110/120 datasets
+2026-08-25 02:04:44,674 | INFO | Completed 120/120 datasets
+2026-08-25 02:04:46,371 | INFO | Raw rows: 1200
+2026-08-25 02:04:46,372 | INFO | Best classical excess: 0.017141
+2026-08-25 02:04:46,372 | INFO | Profile-likelihood kill-test is justified.
+2026-08-25 02:04:46,372 | INFO | Finished in 83.14 seconds

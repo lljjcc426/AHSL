@@ -1,0 +1,6 @@
+scope,converged_0_fraction,converged_1_fraction,converged_2plus_fraction,max_iteration_reached_fraction,final_tree_differs_fraction
+overall,1.0,0.0,0.0,0.0,0.0
+balanced,1.0,0.0,0.0,0.0,0.0
+path,1.0,0.0,0.0,0.0,0.0
+random,1.0,0.0,0.0,0.0,0.0
+star,1.0,0.0,0.0,0.0,0.0
