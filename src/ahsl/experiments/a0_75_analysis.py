@@ -85,13 +85,16 @@ def _seed_level(frame: pd.DataFrame, topology: str | None) -> pd.DataFrame:
 
 def primary_result_table(raw: pd.DataFrame) -> pd.DataFrame:
     effects = paired_effects(raw)
+    estimators = PRIMARY_ESTIMATORS.copy()
+    if "ProfileLikelihoodTreeSearch" in set(effects["estimator"]):
+        estimators.append("ProfileLikelihoodTreeSearch")
     records: list[dict[str, object]] = []
     scopes: list[tuple[str, str | None]] = [("overall", None)] + [
         (topology, topology) for topology in sorted(effects["tree_topology"].unique())
     ]
     for scope, topology in scopes:
         seed_level = _seed_level(effects, topology)
-        for estimator_index, estimator in enumerate(PRIMARY_ESTIMATORS):
+        for estimator_index, estimator in enumerate(estimators):
             rows = seed_level[seed_level["estimator"] == estimator]
             mean, sd, lower, upper = _bootstrap_interval(
                 rows["downstream_excess"], 7500 + estimator_index
@@ -185,7 +188,10 @@ def edge_utility_correlations(raw: pd.DataFrame) -> pd.DataFrame:
 
 def gate_summary(table: pd.DataFrame) -> pd.DataFrame:
     overall = table[table["scope"] == "overall"].set_index("estimator")
-    classical = overall.loc[CLASSICAL_ESTIMATORS]
+    classical_names = CLASSICAL_ESTIMATORS.copy()
+    if "ProfileLikelihoodTreeSearch" in overall.index:
+        classical_names.append("ProfileLikelihoodTreeSearch")
+    classical = overall.loc[classical_names]
     best_name = str(classical["mean_excess"].idxmin())
     best = classical.loc[best_name]
     binary_excess = float(overall.loc["BinaryMWST", "mean_excess"])

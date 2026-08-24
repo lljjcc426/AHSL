@@ -24,6 +24,7 @@ from ahsl.join_tree_estimators import (
     BootstrapStabilityMWST,
     DataAgnosticRandomTree,
     NoiseCorrectedMWST,
+    ProfileLikelihoodTreeSearch,
     TrueTreeOracle,
 )
 from ahsl.metrics import recovery_metrics
@@ -349,6 +350,40 @@ def _run_job(job: Job, config: dict[str, Any]) -> list[dict[str, Any]]:
     return rows
 
 
+def _run_profile_job(job: Job, config: dict[str, Any]) -> dict[str, Any]:
+    true_tree, clean, observed = _tree_and_data(job)
+    estimator = ProfileLikelihoodTreeSearch(
+        job.p_false_negative,
+        job.p_false_positive,
+        int(config["profile_max_iterations"]),
+        int(config["profile_max_candidates_per_iteration"]),
+    )
+    total_start = time.perf_counter()
+    estimator.fit(observed)
+    return _record(
+        estimator.name,
+        estimator.predict_tree(),
+        estimator.predict(),
+        clean,
+        observed,
+        true_tree,
+        job,
+        estimator.tree_estimation_runtime_,
+        estimator.downstream_dp_runtime_,
+        time.perf_counter() - total_start,
+        num_iterations=estimator.num_iterations_,
+        converged=estimator.converged_,
+        tree_changed=estimator.tree_changed_,
+        max_iteration_reached=estimator.max_iteration_reached_,
+        evaluated_profile_candidates=estimator.evaluated_candidates_,
+        initial_profile_objective=estimator.initial_profile_objective_,
+        final_profile_objective=estimator.profile_objective_,
+        profile_candidates_per_iteration=int(
+            config["profile_max_candidates_per_iteration"]
+        ),
+    )
+
+
 def run(config: dict[str, Any], max_runs: int | None = None) -> pd.DataFrame:
     repository_root = Path(__file__).resolve().parents[3]
     result_root = repository_root / "results/a0_75"
@@ -357,23 +392,45 @@ def run(config: dict[str, Any], max_runs: int | None = None) -> pd.DataFrame:
     jobs = _jobs(config)
     if max_runs is not None:
         jobs = jobs[:max_runs]
-    evaluations = 5 + int(config["random_tree_replicates"])
+    is_profile = experiment_type == "a0_75_profile_search"
+    evaluations = 1 if is_profile else 5 + int(config["random_tree_replicates"])
     LOGGER.info("A0.75 plan: %s", experiment_type)
     LOGGER.info("  dataset cases: %d", len(jobs))
     LOGGER.info("  estimator evaluations: %d", len(jobs) * evaluations)
-    LOGGER.info("  bootstrap replicates per dataset: %d", config["bootstrap_replicates"])
+    if is_profile:
+        LOGGER.info(
+            "  exact profile candidates per iteration: %d",
+            config["profile_max_candidates_per_iteration"],
+        )
+    else:
+        LOGGER.info("  bootstrap replicates per dataset: %d", config["bootstrap_replicates"])
     LOGGER.info("  neural models: 0")
     start = time.perf_counter()
     records: list[dict[str, Any]] = []
     for completed, job in enumerate(jobs, start=1):
-        records.extend(_run_job(job, config))
+        if is_profile:
+            records.append(_run_profile_job(job, config))
+        else:
+            records.extend(_run_job(job, config))
         if completed == 1 or completed % 10 == 0 or completed == len(jobs):
             LOGGER.info("Completed %d/%d datasets", completed, len(jobs))
     raw = pd.DataFrame.from_records(records)
     raw_directory = result_root / "raw"
     raw_directory.mkdir(parents=True, exist_ok=True)
     raw.to_csv(raw_directory / f"{experiment_type}_results.csv", index=False)
-    gate = write_analysis_outputs(raw, result_root / "aggregated", experiment_type)
+    analysis_raw = raw
+    analysis_prefix = experiment_type
+    if is_profile:
+        primary_path = raw_directory / "a0_75_primary_results.csv"
+        primary = pd.read_csv(primary_path)
+        analysis_raw = pd.concat([primary, raw], ignore_index=True)
+        analysis_prefix = "a0_75_primary_with_profile"
+        analysis_raw.to_csv(
+            raw_directory / "a0_75_primary_with_profile_results.csv", index=False
+        )
+    gate = write_analysis_outputs(
+        analysis_raw, result_root / "aggregated", analysis_prefix
+    )
     LOGGER.info("Raw rows: %d", len(raw))
     LOGGER.info("Best classical excess: %.6f", gate.iloc[0]["best_classical_excess"])
     if bool(gate.iloc[0]["profile_search_triggered"]):

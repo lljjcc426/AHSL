@@ -255,3 +255,128 @@ class AlternatingTreeIncidenceEstimator:
     def predict(self) -> np.ndarray:
         return self.prediction_.copy()
 
+
+class ProfileLikelihoodTreeSearch:
+    """Deterministic best-improvement tree search using exact profile likelihood."""
+
+    name = "ProfileLikelihoodTreeSearch"
+
+    def __init__(
+        self,
+        p_false_negative: float,
+        p_false_positive: float,
+        max_iterations: int = 10,
+        max_candidates_per_iteration: int = 24,
+    ) -> None:
+        self.p_false_negative = p_false_negative
+        self.p_false_positive = p_false_positive
+        self.max_iterations = max_iterations
+        self.max_candidates_per_iteration = max_candidates_per_iteration
+
+    def _candidate_trees(
+        self,
+        tree: nx.Graph,
+        proxy_weights: np.ndarray,
+    ) -> list[nx.Graph]:
+        candidates: list[tuple[float, tuple[tuple[int, int], ...], nx.Graph]] = []
+        for removed in sorted(_edge_set(tree)):
+            cut_tree = tree.copy()
+            cut_tree.remove_edge(*removed)
+            components = sorted(
+                (sorted(component) for component in nx.connected_components(cut_tree)),
+                key=lambda nodes: nodes[0],
+            )
+            for left in components[0]:
+                for right in components[1]:
+                    added = tuple(sorted((left, right)))
+                    if added == removed:
+                        continue
+                    candidate = cut_tree.copy()
+                    candidate.add_edge(*added)
+                    edges = tuple(sorted(_edge_set(candidate)))
+                    proxy_score = float(
+                        sum(proxy_weights[u, v] for u, v in edges)
+                    )
+                    candidates.append((proxy_score, edges, candidate))
+        candidates.sort(key=lambda item: (-item[0], item[1]))
+        return [
+            candidate
+            for _, _, candidate in candidates[: self.max_candidates_per_iteration]
+        ]
+
+    def _profile_score(
+        self,
+        tree: nx.Graph,
+        observed: np.ndarray,
+    ) -> tuple[float, np.ndarray]:
+        model = DPNoiseAwareConnectedMLE(
+            tree, self.p_false_negative, self.p_false_positive
+        ).fit(observed)
+        return float(model.row_objectives_.sum()), model.predict()
+
+    def fit(self, observed: np.ndarray) -> "ProfileLikelihoodTreeSearch":
+        observations = np.asarray(observed)
+        m = observations.shape[-1]
+        if m > 16:
+            raise ValueError("profile-likelihood tree search is limited to m <= 16")
+        start = time.perf_counter()
+        initializer = NoiseCorrectedMWST(
+            self.p_false_negative, self.p_false_positive
+        ).fit(observations)
+        current_tree = initializer.predict_tree()
+        proxy_weights = initializer.intersection_weights_
+        current_score, current_prediction = self._profile_score(
+            current_tree, observations
+        )
+        self.initial_profile_objective_ = current_score
+        self.initial_tree_ = current_tree.copy()
+        self.evaluated_candidates_ = 0
+        improvements = 0
+        converged = False
+
+        for _ in range(self.max_iterations):
+            best_score = current_score
+            best_tree = current_tree
+            best_prediction = current_prediction
+            best_edges = tuple(sorted(_edge_set(current_tree)))
+            for candidate in self._candidate_trees(current_tree, proxy_weights):
+                score, prediction = self._profile_score(candidate, observations)
+                self.evaluated_candidates_ += 1
+                edges = tuple(sorted(_edge_set(candidate)))
+                if score > best_score + 1e-12 or (
+                    np.isclose(score, best_score, rtol=1e-12, atol=1e-12)
+                    and best_score > current_score + 1e-12
+                    and edges < best_edges
+                ):
+                    best_score = score
+                    best_tree = candidate
+                    best_prediction = prediction
+                    best_edges = edges
+            if best_score <= current_score + 1e-12:
+                converged = True
+                break
+            current_tree = best_tree
+            current_score = best_score
+            current_prediction = best_prediction
+            improvements += 1
+
+        self.tree_estimation_runtime_ = time.perf_counter() - start
+        downstream_start = time.perf_counter()
+        final_model = DPNoiseAwareConnectedMLE(
+            current_tree, self.p_false_negative, self.p_false_positive
+        ).fit(observations)
+        self.downstream_dp_runtime_ = time.perf_counter() - downstream_start
+        self.tree_ = current_tree
+        self.prediction_ = final_model.predict()
+        self.profile_objective_ = current_score
+        self.num_iterations_ = improvements
+        self.converged_ = converged
+        self.max_iteration_reached_ = not converged
+        self.tree_changed_ = improvements > 0
+        return self
+
+    def predict_tree(self) -> nx.Graph:
+        return self.tree_.copy()
+
+    def predict(self) -> np.ndarray:
+        return self.prediction_.copy()
