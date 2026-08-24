@@ -1,0 +1,12 @@
+2026-08-25 00:57:33,342 | INFO | A0.5 experiment plan: scaling
+2026-08-25 00:57:33,346 | INFO |   number of dataset cases: 160
+2026-08-25 00:57:33,347 | INFO |   number of model evaluations: 640
+2026-08-25 00:57:33,347 | INFO |   largest n: 50
+2026-08-25 00:57:33,348 | INFO |   largest m: 1024
+2026-08-25 00:57:33,348 | INFO |   estimated runtime class: O(n R m) per DP estimator
+2026-08-25 00:57:33,348 | INFO |   brute-force enumeration enabled: False
+2026-08-25 00:57:33,387 | INFO | Completed 1/160 dataset cases
+2026-08-25 00:57:42,503 | INFO | Completed 100/160 dataset cases
+2026-08-25 00:58:31,479 | INFO | Completed 160/160 dataset cases
+2026-08-25 00:58:31,903 | INFO | Raw rows: 640
+2026-08-25 00:58:31,903 | INFO | Finished in 58.55 seconds

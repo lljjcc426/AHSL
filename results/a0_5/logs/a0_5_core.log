@@ -1,0 +1,28 @@
+2026-08-25 00:59:02,093 | INFO | A0.5 experiment plan: core
+2026-08-25 00:59:02,093 | INFO |   number of dataset cases: 1800
+2026-08-25 00:59:02,094 | INFO |   number of model evaluations: 9000
+2026-08-25 00:59:02,095 | INFO |   largest n: 100
+2026-08-25 00:59:02,096 | INFO |   largest m: 16
+2026-08-25 00:59:02,096 | INFO |   estimated runtime class: O(n R m), plus O(n m^2) oracle for interior noise
+2026-08-25 00:59:02,096 | INFO |   brute-force enumeration enabled: False
+2026-08-25 00:59:02,292 | INFO | Completed 1/1800 dataset cases
+2026-08-25 00:59:20,963 | INFO | Completed 100/1800 dataset cases
+2026-08-25 00:59:40,258 | INFO | Completed 200/1800 dataset cases
+2026-08-25 00:59:55,564 | INFO | Completed 300/1800 dataset cases
+2026-08-25 01:00:01,398 | INFO | Completed 400/1800 dataset cases
+2026-08-25 01:00:15,098 | INFO | Completed 500/1800 dataset cases
+2026-08-25 01:00:38,105 | INFO | Completed 600/1800 dataset cases
+2026-08-25 01:01:02,336 | INFO | Completed 700/1800 dataset cases
+2026-08-25 01:01:12,344 | INFO | Completed 800/1800 dataset cases
+2026-08-25 01:01:18,032 | INFO | Completed 900/1800 dataset cases
+2026-08-25 01:01:33,994 | INFO | Completed 1000/1800 dataset cases
+2026-08-25 01:01:51,290 | INFO | Completed 1100/1800 dataset cases
+2026-08-25 01:02:04,647 | INFO | Completed 1200/1800 dataset cases
+2026-08-25 01:02:11,118 | INFO | Completed 1300/1800 dataset cases
+2026-08-25 01:02:22,639 | INFO | Completed 1400/1800 dataset cases
+2026-08-25 01:02:40,987 | INFO | Completed 1500/1800 dataset cases
+2026-08-25 01:02:58,562 | INFO | Completed 1600/1800 dataset cases
+2026-08-25 01:03:07,995 | INFO | Completed 1700/1800 dataset cases
+2026-08-25 01:03:13,944 | INFO | Completed 1800/1800 dataset cases
+2026-08-25 01:03:17,873 | INFO | Raw rows: 8280
+2026-08-25 01:03:17,873 | INFO | Finished in 255.78 seconds

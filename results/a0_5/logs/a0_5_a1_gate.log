@@ -1,0 +1,22 @@
+2026-08-25 01:07:09,388 | INFO | A0.5 experiment plan: a1_gate
+2026-08-25 01:07:09,389 | INFO |   number of dataset cases: 240
+2026-08-25 01:07:09,389 | INFO |   number of model evaluations: 960
+2026-08-25 01:07:09,390 | INFO |   largest n: 300
+2026-08-25 01:07:09,390 | INFO |   largest m: 16
+2026-08-25 01:07:09,390 | INFO |   estimated runtime class: O(m^2 log m + n R m)
+2026-08-25 01:07:09,390 | INFO |   brute-force enumeration enabled: False
+2026-08-25 01:07:09,798 | INFO | Completed 1/240 A1-gate datasets
+2026-08-25 01:07:16,700 | INFO | Completed 20/240 A1-gate datasets
+2026-08-25 01:07:24,238 | INFO | Completed 40/240 A1-gate datasets
+2026-08-25 01:07:31,166 | INFO | Completed 60/240 A1-gate datasets
+2026-08-25 01:07:39,049 | INFO | Completed 80/240 A1-gate datasets
+2026-08-25 01:07:45,960 | INFO | Completed 100/240 A1-gate datasets
+2026-08-25 01:07:52,548 | INFO | Completed 120/240 A1-gate datasets
+2026-08-25 01:07:58,957 | INFO | Completed 140/240 A1-gate datasets
+2026-08-25 01:08:05,020 | INFO | Completed 160/240 A1-gate datasets
+2026-08-25 01:08:11,642 | INFO | Completed 180/240 A1-gate datasets
+2026-08-25 01:08:18,240 | INFO | Completed 200/240 A1-gate datasets
+2026-08-25 01:08:24,772 | INFO | Completed 220/240 A1-gate datasets
+2026-08-25 01:08:31,974 | INFO | Completed 240/240 A1-gate datasets
+2026-08-25 01:08:36,124 | INFO | Raw rows: 960
+2026-08-25 01:08:36,124 | INFO | Finished in 86.73 seconds

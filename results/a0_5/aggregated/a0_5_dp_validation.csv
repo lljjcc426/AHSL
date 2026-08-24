@@ -1,0 +1,13 @@
+tree_topology,category,comparisons,objective_mismatches,unique_prediction_mismatches
+random,generic_weights,50,0,0
+random,hamming,50,0,0
+random,noise_likelihood,50,0,0
+path,generic_weights,50,0,0
+path,hamming,50,0,0
+path,noise_likelihood,50,0,0
+star,generic_weights,50,0,0
+star,hamming,50,0,0
+star,noise_likelihood,50,0,0
+balanced,generic_weights,50,0,0
+balanced,hamming,50,0,0
+balanced,noise_likelihood,50,0,0

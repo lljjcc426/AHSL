@@ -1,0 +1,16 @@
+2026-08-25 01:03:47,177 | INFO | A0.5 experiment plan: wrong_tree
+2026-08-25 01:03:47,177 | INFO |   number of dataset cases: 120
+2026-08-25 01:03:47,177 | INFO |   number of model evaluations: 2160
+2026-08-25 01:03:47,178 | INFO |   largest n: 100
+2026-08-25 01:03:47,178 | INFO |   largest m: 64
+2026-08-25 01:03:47,178 | INFO |   estimated runtime class: O(variants n R m)
+2026-08-25 01:03:47,178 | INFO |   brute-force enumeration enabled: False
+2026-08-25 01:03:47,941 | INFO | Completed 1/120 base datasets
+2026-08-25 01:04:01,276 | INFO | Completed 20/120 base datasets
+2026-08-25 01:04:14,651 | INFO | Completed 40/120 base datasets
+2026-08-25 01:04:28,923 | INFO | Completed 60/120 base datasets
+2026-08-25 01:04:43,897 | INFO | Completed 80/120 base datasets
+2026-08-25 01:04:59,605 | INFO | Completed 100/120 base datasets
+2026-08-25 01:05:15,284 | INFO | Completed 120/120 base datasets
+2026-08-25 01:05:21,055 | INFO | Raw rows: 2160
+2026-08-25 01:05:21,055 | INFO | Finished in 93.88 seconds

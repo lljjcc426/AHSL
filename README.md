@@ -1,4 +1,4 @@
-# AHSL Phase A0
+# AHSL Phases A0 and A0.5
 
 This repository is a reproducible prototype for testing whether a known
 alpha-acyclic structural constraint can denoise corrupted hypergraph incidence
@@ -121,6 +121,41 @@ results/A0_RESEARCH_REPORT.md
 Raw per-seed results are always retained; aggregated means are not the only
 saved evidence.
 
+## Phase A0.5: exact DP and robustness
+
+Phase A0.5 replaces exponential connected-subtree enumeration with exact tree
+dynamic programs. It separates the non-empty constraint from connectedness,
+adds a generator-prior oracle, tests wrong-tree and off-class robustness, and
+evaluates classical intersection-weight MWST recovery as the gate for A1.
+
+Run each preregistered stage independently:
+
+```powershell
+python experiments/exp_a0_5.py --config experiments/configs/a0_5_validation.yaml
+python experiments/exp_a0_5.py --config experiments/configs/a0_5_scaling.yaml
+python experiments/exp_a0_5.py --config experiments/configs/a0_5_core.yaml
+python experiments/exp_a0_5.py --config experiments/configs/a0_5_wrong_tree.yaml
+python experiments/exp_a0_5.py --config experiments/configs/a0_5_offclass.yaml
+python experiments/exp_a0_5.py --config experiments/configs/a0_5_a1_gate.yaml
+python experiments/exp_a0_5_finalize.py
+```
+
+Each runner invocation prints the number of dataset cases and estimator
+evaluations before execution. Exhaustive enumeration is confined to the small
+validation configuration. A0.5 outputs are isolated under:
+
+```text
+results/a0_5/raw/
+results/a0_5/aggregated/
+results/a0_5/plots/
+results/a0_5/logs/
+results/a0_5/A0_5_RESEARCH_REPORT.md
+```
+
+The mathematical reductions and complexity proofs are in
+`docs/A0_5_THEORY.md`; compatibility findings about the frozen A0 baseline are
+in `docs/A0_5_AUDIT_NOTES.md`.
+
 ## Scope and limitations
 
 Phase A0 assumes the true join tree is known. It tests structural projection and
@@ -133,4 +168,3 @@ This phase does not implement GYO verification, learned join trees, generalized
 hypertree width, GNNs, directed hypergraphs, causal discovery, real datasets, or
 large-scale GPU optimization. Those are separate theoretical and empirical
 questions for later phases, and should not be conflated with alpha-acyclicity.
-

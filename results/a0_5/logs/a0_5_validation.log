@@ -1,0 +1,10 @@
+2026-08-25 00:56:48,788 | INFO | A0.5 experiment plan: validation
+2026-08-25 00:56:48,788 | INFO |   number of dataset cases: 16
+2026-08-25 00:56:48,788 | INFO |   number of model evaluations: 0
+2026-08-25 00:56:48,788 | INFO |   largest n: 1
+2026-08-25 00:56:48,789 | INFO |   largest m: 10
+2026-08-25 00:56:48,789 | INFO |   estimated runtime class: exponential oracle validation at m <= 10
+2026-08-25 00:56:48,789 | INFO |   brute-force enumeration enabled: True
+2026-08-25 00:56:49,918 | INFO | Validation comparisons: 600
+2026-08-25 00:56:49,918 | INFO | Objective mismatches: 0
+2026-08-25 00:56:49,918 | INFO | Unique-solution prediction mismatches: 0

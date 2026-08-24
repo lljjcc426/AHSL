@@ -1,0 +1,16 @@
+2026-08-25 01:05:54,631 | INFO | A0.5 experiment plan: offclass
+2026-08-25 01:05:54,632 | INFO |   number of dataset cases: 120
+2026-08-25 01:05:54,632 | INFO |   number of model evaluations: 1800
+2026-08-25 01:05:54,633 | INFO |   largest n: 100
+2026-08-25 01:05:54,633 | INFO |   largest m: 64
+2026-08-25 01:05:54,633 | INFO |   estimated runtime class: O(epsilon n R m)
+2026-08-25 01:05:54,633 | INFO |   brute-force enumeration enabled: False
+2026-08-25 01:05:55,003 | INFO | Completed 1/120 base datasets
+2026-08-25 01:06:02,582 | INFO | Completed 20/120 base datasets
+2026-08-25 01:06:10,474 | INFO | Completed 40/120 base datasets
+2026-08-25 01:06:18,314 | INFO | Completed 60/120 base datasets
+2026-08-25 01:06:28,209 | INFO | Completed 80/120 base datasets
+2026-08-25 01:06:36,919 | INFO | Completed 100/120 base datasets
+2026-08-25 01:06:45,268 | INFO | Completed 120/120 base datasets
+2026-08-25 01:06:49,086 | INFO | Raw rows: 1800
+2026-08-25 01:06:49,086 | INFO | Finished in 54.45 seconds
