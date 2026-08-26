@@ -11,7 +11,17 @@ def _markdown(frame: pd.DataFrame, digits: int = 5) -> str:
     display = frame.copy()
     for column in display.select_dtypes(include="number"):
         display[column] = display[column].map(
-            lambda value: "" if pd.isna(value) else f"{value:.{digits}f}"
+            lambda value: (
+                ""
+                if pd.isna(value)
+                else "0"
+                if value == 0
+                else str(int(value))
+                if abs(value) >= 100 and float(value).is_integer()
+                else f"{value:.2e}"
+                if value != 0 and abs(value) < 10 ** (-digits)
+                else f"{value:.{digits}f}"
+            )
         )
     columns = list(display.columns)
     lines = [
@@ -44,6 +54,7 @@ def generate_report(
     ][
         [
             "tree_source",
+            "q_mode",
             "decoder",
             "mean_test_hamming",
             "mean_hamming_minus_binary",
@@ -53,6 +64,7 @@ def generate_report(
             "mean_clean_f1",
             "mean_posterior_expected_hamming",
             "mean_risk_calibration_gap",
+            "mean_risk_row_correlation",
             "median_connected_fraction",
             "mean_total_inference_runtime_seconds",
         ]
@@ -61,6 +73,24 @@ def generate_report(
         primary["tree_source"].isin(
             ["GeneratingTreeOracle", "BinaryMWST", "EstimatedQMarginalTree"]
         )
+    ]
+    major_both_q = table[
+        (table["scope"] == "overall")
+        & (table["decoder"] == "ConnectedBayesHamming")
+        & table["tree_source"].isin(
+            ["GeneratingTreeOracle", "BinaryMWST", "EstimatedQMarginalTree"]
+        )
+    ][
+        [
+            "tree_source",
+            "q_mode",
+            "mean_test_hamming",
+            "mean_hamming_minus_binary",
+            "hamming_difference_ci_lower",
+            "hamming_difference_ci_upper",
+            "mean_posterior_expected_hamming",
+            "mean_risk_calibration_gap",
+        ]
     ]
     topology_gain = tree_gains[
         (tree_gains["scope"] != "overall")
@@ -111,6 +141,28 @@ def generate_report(
         )
     ][["tree_source", "decoder", "mean_test_hamming", "mean_risk_calibration_gap"]]
     median = major[major["decoder"] == "PosteriorMedianUnconstrained"]
+    alpha_median = table[
+        (table["scope"] != "overall")
+        & (table["tree_source"] == "GeneratingTreeOracle")
+        & (table["q_mode"] == "oracle_q")
+        & (table["decoder"] == "PosteriorMedianUnconstrained")
+    ][
+        [
+            "scope",
+            "mean_test_hamming",
+            "median_empty_fraction",
+            "median_disconnected_fraction",
+        ]
+    ]
+    alpha_cost = connectivity[
+        (connectivity["scope"] != "overall")
+        & (connectivity["tree_source"] == "GeneratingTreeOracle")
+        & (connectivity["q_mode"] == "oracle_q")
+        & (connectivity["effect_name"] == "ConnectivityCost_empirical")
+    ][["scope", "mean_effect"]].rename(
+        columns={"mean_effect": "empirical_connectivity_cost"}
+    )
+    alpha_diagnostics = alpha_median.merge(alpha_cost, on="scope")
     calibration = major[major["decoder"] == "ConnectedBayesHamming"][
         [
             "tree_source",
@@ -121,10 +173,12 @@ def generate_report(
         ]
     ]
     non_tied_primary = non_tied[non_tied["scope"] == "overall"]
+    best_topology = topology_gain.loc[topology_gain["mean_tree_gain"].idxmax()]
+    worst_topology = topology_gain.loc[topology_gain["mean_tree_gain"].idxmin()]
 
     recommendations = {
         "A": "Freeze BinaryMWST as the k=1 tree component. Retain exact posterior inference as infrastructure, but require a real application and loss model before expanding this line.",
-        "B": "Before learning a subtree prior, specify observable row covariates, shared parameters that can transfer to unseen vertices, and a real task. Then assess a feature-conditioned P_theta(S|X,T) whose fixed-tree posterior remains exactly decodable.",
+        "B": "Do not implement a neural subtree prior yet. First identify observable row covariates X_i in a real application and a shared parameterization of P_theta(S_i|X_i,T) that can transfer to unseen vertices instead of fitting per-instance free parameters. Exact posterior decoding remains available only if the conditioned prior preserves a tractable tree factorization. A proposal must name the real task and its loss before choosing features or a model class.",
         "C": "Reassess the observable variables, noise mechanism, and calibration of the subtree posterior before any learned structure method. Do not tune the decoder around a misspecified posterior.",
         "D": "Prepare one bounded proposal for feature-conditioned subtree-prior learning with exact fixed-tree posterior decoding; do not implement a neural tree learner in this phase.",
         "E": "Identify whether real outputs must be connected on one join tree and compare application-grounded losses before considering any wider GHW class.",
@@ -145,6 +199,9 @@ decision theory, posterior decoding, generalized centroid/MEA estimation,
 sum-product differentiation, connected-subtree optimization, and posterior
 misspecification were covered. The literature gate was **GO**, with an explicit
 restriction against claiming the decoder as a novel MBR construction.
+The three closest concepts are Carvalho and Lawrence's posterior centroid,
+Hamada et al.'s generalized centroid/MEA decoder with structural constraints,
+and Lember and Koloydenko's risk-based admissible HMM decoding.
 
 ## 3. Decision-theory correction
 
@@ -181,7 +238,7 @@ introduced. Oracle-q and deployable estimated-q tracks were kept separate.
 
 ## 8. MAP results
 
-Deployable-q major-tree results are contained in the factorial table below.
+Deployable estimated-q major-tree results are contained below.
 
 {_markdown(major[major['decoder'] == 'PosteriorMAPConnected'])}
 
@@ -194,7 +251,11 @@ the frozen connected-output class.
 
 ## 10. Connected Bayes-Hamming results
 
-{_markdown(major[major['decoder'] == 'ConnectedBayesHamming'])}
+Both q tracks are shown explicitly. OracleQMarginalTree remains an
+oracle-assisted tree source even when its fixed tree is rescored with an
+estimated q; it is secondary and does not enter the deployable stop rule.
+
+{_markdown(major_both_q)}
 
 ## 11. Decoder gain
 
@@ -249,15 +310,18 @@ behavior there; it is not used to override the four-family stop rule.
 
 ## 18. Evidence for tree learning
 
-The strongest favorable evidence is the largest positive topology-specific
-TreeGain in Section 12. It must still satisfy the preregistered magnitude,
-paired-CI, three-topology, non-tied, q-fairness, and calibration criteria.
+The strongest favorable evidence is {best_topology['scope']} TreeGain
+{best_topology['mean_tree_gain']:.5f}, with CI
+[{best_topology['ci_lower']:.5f}, {best_topology['ci_upper']:.5f}]. It must
+still satisfy the preregistered three-topology, non-tied, q-fairness, and
+calibration criteria.
 
 ## 19. Evidence against tree learning
 
 The primary stop rule fired: **{bool(decision['tree_stop_rule_fired'])}**. The
 overall aligned TreeGain and its lower confidence bound are the controlling
-evidence; no additional tree search was attempted.
+evidence. The strongest adverse topology was {worst_topology['scope']} at
+{worst_topology['mean_tree_gain']:.5f}; no additional tree search was attempted.
 
 ## 20. Evidence for subtree/posterior modeling
 
@@ -273,6 +337,8 @@ The wider-alpha warning fired: **{bool(decision['wider_alpha_warning_fired'])}**
 It appeared in {int(decision['alpha_warning_topologies'])} topology families
 under GeneratingTreeOracle with oracle q, using the preregistered >0.01 gap and
 a documented substantial-disconnection threshold of 0.10.
+
+{_markdown(alpha_diagnostics)}
 
 ## 22. Literature novelty assessment
 

@@ -8,6 +8,7 @@ import numpy as np
 from ahsl.models import GeneratorPriorConnectedMAP
 from ahsl.models.noise_likelihood import node_log_likelihoods
 from ahsl.subtree import enumerate_connected_subtrees, generator_subtree_probability
+from ahsl.subtree_marginal import _sum_except
 from ahsl.tree_dp import maximum_weight_connected_subtree
 from ahsl.trees import validate_labeled_tree
 
@@ -103,6 +104,34 @@ class PosteriorMAPConnected:
         log_zero, log_one, _ = node_log_likelihoods(
             observed, self.p_false_negative, self.p_false_positive
         )
+        n = log_zero.shape[0]
+        if q == 1.0:
+            self.prediction_ = np.ones((n, self.m), dtype=np.int8)
+            self.row_ties_ = np.zeros(n, dtype=bool)
+            self.row_objectives_ = log_one.sum(axis=1)
+            return self
+        if q == 0.0:
+            excluded_zero = _sum_except([log_zero[:, node] for node in range(self.m)])
+            scores = np.stack(
+                [
+                    -np.log(self.m) + log_one[:, node] + excluded_zero[node]
+                    for node in range(self.m)
+                ],
+                axis=1,
+            )
+            prediction = np.zeros((n, self.m), dtype=np.int8)
+            ties = np.zeros(n, dtype=bool)
+            for row in range(n):
+                best = np.max(scores[row])
+                candidates = np.flatnonzero(
+                    np.isclose(scores[row], best, atol=1e-12, rtol=1e-12)
+                )
+                prediction[row, int(candidates[0])] = 1
+                ties[row] = len(candidates) > 1
+            self.prediction_ = prediction
+            self.row_ties_ = ties
+            self.row_objectives_ = scores.max(axis=1)
+            return self
         if 0.0 < q < 1.0 and np.isfinite(log_zero).all() and np.isfinite(log_one).all():
             delegate = GeneratorPriorConnectedMAP(
                 self.tree,
@@ -123,7 +152,6 @@ class PosteriorMAPConnected:
             prior = generator_subtree_probability(self.tree, support, q)
             if prior > 0.0:
                 supports.append((tuple(sorted(support)), np.log(prior)))
-        n = log_zero.shape[0]
         prediction = np.zeros((n, self.m), dtype=np.int8)
         objectives = np.empty(n, dtype=float)
         ties = np.zeros(n, dtype=bool)

@@ -22,4 +22,36 @@
 - The scientific purpose is a final bounded falsification test, not algorithmic
   novelty.
 
-Implementation and empirical findings will be appended after validation.
+## Implementation and exact audit
+
+- Added analytic reverse-mode differentiation of the frozen A1 likelihood
+  circuit; finite differences and automatic differentiation were not used.
+- Added the three preregistered actions with deterministic canonical ties.
+- The exhaustive audit covered 1,760 posterior/decision rows and 12,320 node
+  marginals. Marginal, MAP, median, and connected-MBR mismatches were all zero.
+- Maximum marginal error was `2.5535e-15`; maximum posterior normalization
+  error was `1.8874e-15`; maximum root-invariance error was `2.1094e-15`.
+- All 191 repository tests passed.
+- No implementation defect was found in the frozen A1 MAP decoder for its A1
+  interior regime. A1.5 added exact q=0/q=1 behavior and a small-tree
+  deterministic-noise reference path without changing A1 artifacts.
+
+## A1 reproduction audit
+
+The 840 frozen A1 matched-prior records were paired with A1.5 records using the
+same dataset, tree source, and appropriate q treatment. Maximum differences in
+Hamming, exact-row recovery, and tree-edge disagreement were all exactly zero.
+No historical numerical result requires correction.
+
+## Interpretation after A1.5
+
+- A1's MAP reporting remains technically correct for exact-support loss but is
+  decision-misaligned with its primary Hamming evaluation.
+- Correcting the action improved Hamming, but did not rescue marginal tree
+  selection. Deployable ConnectedBayesHamming TreeGain was `0.0009288`, with
+  paired 95% CI `[-0.0009722, 0.0028388]`.
+- Only random and path exceeded the `0.005` topology threshold; balanced did
+  not, and star favored BinaryMWST.
+- Unique/non-tied TreeGain was `0.0001511`, with CI crossing zero.
+- The latent-tree stop rule fired; the wider alpha warning did not.
+- Final selection: **Decision A**.

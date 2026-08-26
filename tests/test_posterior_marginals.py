@@ -5,6 +5,7 @@ from scipy.special import logsumexp
 from ahsl.models.noise_likelihood import node_log_likelihoods
 from ahsl.posterior_marginals import posterior_node_marginals
 from ahsl.subtree import enumerate_connected_subtrees, generator_subtree_probability
+from ahsl.trees import generate_tree
 
 
 def _enumerated_posterior(tree, observed, false_negative, false_positive, q):
@@ -76,3 +77,12 @@ def test_repeated_observations_match_enumeration_and_stay_in_unit_interval():
     result = posterior_node_marginals(tree, repeated, 0.2, 0.1, 0.6)
     np.testing.assert_allclose(result.node_marginals, reference, atol=2e-12)
     assert np.all((result.node_marginals >= 0.0) & (result.node_marginals <= 1.0))
+
+
+def test_medium_random_tree_is_root_invariant():
+    tree = generate_tree(64, "random", seed=91)
+    observed = np.random.default_rng(92).integers(0, 2, size=(5, 64), dtype=np.int8)
+    reference = posterior_node_marginals(tree, observed, 0.2, 0.2, 0.4, root=0)
+    for root in [7, 31, 63]:
+        result = posterior_node_marginals(tree, observed, 0.2, 0.2, 0.4, root=root)
+        np.testing.assert_allclose(result.node_marginals, reference.node_marginals, atol=3e-12)

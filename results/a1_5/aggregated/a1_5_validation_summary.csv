@@ -1,0 +1,2 @@
+posterior_rows,marginal_entries,marginal_mismatches,max_marginal_error,max_normalization_error,map_mismatches,median_mismatches,connected_mbr_mismatches,max_action_risk_error,max_root_invariance_error
+1760,12320,0,2.55351295663786e-15,1.887379141862766e-15,0,0,0,1.407944941189676e-15,2.1094237467877974e-15
