@@ -5,3 +5,5 @@ __pycache__/
 *.egg-info/
 build/
 dist/
+data/n1_0/downloads/
+data/n1_0/external/

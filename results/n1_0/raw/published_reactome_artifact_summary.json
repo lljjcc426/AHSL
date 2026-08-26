@@ -1,0 +1,16 @@
+{
+  "artifact": "gkrieg/mmunin hypergraphs/allreactome-hyperedges.txt at commit 3bb5f17",
+  "row_count_with_pathway_context_duplicates": 53581,
+  "unique_reaction_ids": 11834,
+  "unique_tail_head_incidence": 11816,
+  "vertices_from_unique_incidence": 20477,
+  "row_level_self_loops": 433,
+  "unique_incidence_self_loops": 93,
+  "mean_tail_unique_incidence": 2.380924170616114,
+  "max_tail_unique_incidence": 26,
+  "mean_head_unique_incidence": 1.6029959377115774,
+  "max_head_unique_incidence": 28,
+  "paper_filtered_vertices": 20458,
+  "paper_filtered_hyperedges": 11802,
+  "note": "The repository file repeats reactions across pathway contexts. Paper counts follow its published filtering and are not replaced by the independent deduplication counts."
+}

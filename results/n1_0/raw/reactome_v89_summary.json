@@ -1,0 +1,16 @@
+{
+  "release": 89,
+  "vertices": 24610,
+  "hyperedges": 14538,
+  "pathways": 2711,
+  "leaf_pathways_with_reactions": 1551,
+  "candidate_tasks": 1530,
+  "top_level_families": 29,
+  "global_sources": 9666,
+  "self_loops": 95,
+  "multi_tail_hyperedges": 12709,
+  "mean_tail_size": 2.371234007428807,
+  "max_tail_size": 31,
+  "mean_head_size": 1.5826798734351355,
+  "max_head_size": 61
+}

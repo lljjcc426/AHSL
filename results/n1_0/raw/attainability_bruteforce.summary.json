@@ -1,0 +1,9 @@
+{
+  "graphs": 64,
+  "feasible_gold_sets": 1847,
+  "decision_mismatches": 0,
+  "solver_mismatches": 0,
+  "multitail_cases": 1584,
+  "cyclic_cases": 883,
+  "self_loop_cases": 837
+}

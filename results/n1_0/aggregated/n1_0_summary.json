@@ -1,0 +1,73 @@
+{
+  "candidate_tasks": 1620,
+  "unique_candidate_pathways": 1620,
+  "gold_feasible": 1164,
+  "gold_feasible_fraction": 0.7185185185185186,
+  "requires_internal_repair": 456,
+  "attainable_natural": 961,
+  "attainable_natural_fraction": 0.5932098765432099,
+  "attainable_among_feasible_fraction": 0.8256013745704467,
+  "nontrivial": 1341,
+  "qualified": 712,
+  "unique_qualified_pathways": 712,
+  "qualified_families": 29,
+  "gold_size_mean": 8.452469135802469,
+  "gold_size_median": 6.0,
+  "gold_size_p95": 25.0,
+  "gold_size_max": 66,
+  "gold_size_ge_3_fraction": 0.8277777777777777,
+  "gold_size_ge_5_fraction": 0.6123456790123457,
+  "gold_multitail_task_fraction": 0.9851851851851852,
+  "cyclic_gold_fraction": 0.35246913580246914,
+  "temporal_counts": {
+    "UNCHANGED": 1445,
+    "NEW": 104,
+    "MODIFIED": 71
+  },
+  "representability_gate": "FAIL",
+  "sample_scale_gate": "PASS",
+  "family_split": {
+    "train_tasks": 591,
+    "test_tasks": 121,
+    "test_families": [
+      "DNA Repair",
+      "Hemostasis",
+      "Immune System",
+      "Vesicle-mediated transport"
+    ],
+    "reaction_ids_train": 4671,
+    "reaction_ids_test": 1098,
+    "reaction_id_overlap": 25,
+    "reaction_id_test_overlap_fraction": 0.022768670309653915,
+    "entity_ids_train": 9169,
+    "entity_ids_test": 2202,
+    "entity_id_overlap": 288,
+    "entity_id_test_overlap_fraction": 0.1307901907356948,
+    "hierarchy_overlap": 0
+  },
+  "reaction_disjoint_stress": {
+    "components": 628,
+    "largest_component_tasks": 29,
+    "train_tasks": 570,
+    "test_tasks": 142,
+    "train_families": 27,
+    "test_families": 18,
+    "reaction_overlap": 0,
+    "both_sides_meet_300": false
+  },
+  "overlap": {
+    "pairs": 1311390,
+    "nonzero_overlap_pairs": 438,
+    "exact_duplicate_pairs": 1,
+    "strict_subset_pairs": 22,
+    "jaccard_bins": {
+      "0": 1310952,
+      "(0,.1]": 330,
+      "(.1,.25]": 85,
+      "(.75,1)": 2,
+      "1": 1,
+      "(.25,.5]": 17,
+      "(.5,.75]": 3
+    }
+  }
+}
