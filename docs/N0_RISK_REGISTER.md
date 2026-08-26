@@ -1,0 +1,20 @@
+# N0 risk register
+
+| ID | Risk | Evidence/why credible | Impact | N1 control or stop rule |
+|---|---|---|---|---|
+| R1 | unit/provenance weights already recover curated pathways as well as learned costs | Hhugin is optimal on >99% of tested instances under unit weights; exact study reports high pathway recovery | fatal empirical residual failure | first kill test compares paired group-held-out F1; stop if improvement is <2 F1 points and 95% paired bootstrap interval includes 0 |
+| R2 | curated pathway membership is not a unique ground truth | Reactome pathways overlap and are incomplete; alternative valid paths can be unannotated | metric bias | report precision and recall, alternate-path analysis, and manual audit of a small error sample; do not equate non-annotation with chemical invalidity |
+| R3 | supersource construction is biologically weak | standard benchmark connects all source-like vertices to one supersource | external validity | stratify/replace with pathway-specific source sets where annotations permit; stop broad biological claim if gains vanish |
+| R4 | reaction leakage across splits inflates ML performance | pathways share reactions and hierarchy | fatal validity issue | split by top-level pathway family and release time; never random-edge split for primary result |
+| R5 | certificate coverage is near zero | learned intervals may be wide or alternative paths nearly tied | theory useful but deployment claim weak | require >=20% coverage on held-out reachable tasks without lowering F1 below classical fallback; otherwise drop certificate/publication claim |
+| R6 | “exact” is mistaken for biological correctness | exact solver is optimal only under predicted costs/model | claim inflation | state conditional exactness everywhere; evaluate biology separately |
+| R7 | direct prior art appears after N0 | 2026 literature is moving quickly | novelty failure | repeat exact collision search and citation chaining before N1 implementation; stop if all five defining components already coexist |
+| R8 | Mmunin/Hhugin research-use terms hinder artifact redistribution | source cannot be redistributed without consent | reproducibility friction, not immediate blocker | provide downloader/adapter or independently implement the published ILP/cutting-plane; do not vendor restricted code |
+| R9 | exact labeling cost exceeds budget | worst case reported below 30 min but thousands of tasks accumulate | schedule risk | cap first test at 500 tasks/500 CPU-hours; use Hhugin pre-screen and exact only for declared subset |
+| R10 | model merely learns database/pathway identifiers | strong shared provenance may shortcut | false generalization | leave-family and temporal tests; ablate identifiers/provenance-only features |
+| R11 | graph baseline retains performance | incidence/BF graph can encode AND semantics if custom operators are retained | weak “why hypergraph” rhetoric | compare ordinary pairwise projection separately from an AND-OR incidence baseline; acknowledge that incidence encoding is equivalent only when it preserves hyperedge semantics |
+| R12 | decision-focused training requires too many exact solves | structured loss may call an NP-hard decoder repeatedly | compute infeasibility | first use two-stage cost learning plus exact evaluation; only proceed to end-to-end decision-focused training if bounded two-stage test passes |
+| R13 | uncertainty set is statistically miscalibrated under shift | conformal/quantile intervals can fail outside exchangeability | invalid coverage claim | report finite-sample claim only under stated split assumptions; treat release shift as empirical stress test, not guaranteed coverage |
+| R14 | learned costs become negative and break solver assumptions | shortest-hyperpath methods assume positive/nonnegative weights | algorithm mismatch | parameterize costs as positive or impose a fixed lower bound; this is a necessary model constraint, not defensive overengineering |
+
+No hash checks, repeated smoke tests, or hypothetical defensive branches are part of the proposal. Controls above correspond to evidenced scientific or licensing risks.
