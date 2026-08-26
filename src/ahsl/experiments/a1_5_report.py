@@ -329,7 +329,8 @@ The deployable decoder gains were {decision['generating_decoder_gain']:.5f}
 on the generating tree, {decision['binary_decoder_gain']:.5f} on BinaryMWST,
 and {decision['estimated_marginal_decoder_gain']:.5f} on
 EstimatedQMarginalTree. These distinguish decision-model value from tree-
-identity value.
+identity value. All seven frozen tree sources had paired DecoderGain confidence
+intervals strictly above zero: **{bool(decision['all_tree_sources_decoder_gain_positive_ci'])}**.
 
 ## 21. Alpha-acyclic warning signals
 
@@ -355,6 +356,8 @@ tree-learning claim, not a new decision algorithm.
 - Major-tree posterior risk reasonably calibrated at absolute mean gap <=0.02:
   **{bool(decision['reasonably_calibrated'])}**.
 - Full latent-tree continuation condition: **{bool(decision['continuation_condition_met'])}**.
+- Posterior-decision gain is positive with CI lower bound above zero for all
+  seven tree sources: **{bool(decision['all_tree_sources_decoder_gain_positive_ci'])}**.
 
 ## 24. Final decision
 

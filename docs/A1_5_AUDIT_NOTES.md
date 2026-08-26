@@ -54,4 +54,8 @@ No historical numerical result requires correction.
   not, and star favored BinaryMWST.
 - Unique/non-tied TreeGain was `0.0001511`, with CI crossing zero.
 - The latent-tree stop rule fired; the wider alpha warning did not.
-- Final selection: **Decision A**.
+- ConnectedBayesHamming improved MAP Hamming for all seven tree sources, with
+  every paired 95% DecoderGain CI strictly above zero. This is the meaningful
+  positive posterior/subtree signal specified by the second stop rule.
+- Final selection: **Decision B**. The `0.005` materiality threshold applies to
+  TreeGain; it is not imposed on DecoderGain by the preregistered prompt.

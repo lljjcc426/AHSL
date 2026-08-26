@@ -317,7 +317,14 @@ def gate_summary(
         and reasonably_calibrated
         and topology_count >= 3
     )
-    posterior_dominates = binary_decoder_gain > 0.005 and estimated_decoder_gain > 0.005
+    deployable_decoder_rows = decoder[
+        (decoder["scope"] == "overall")
+        & (decoder["q_mode"] == "estimated_q")
+    ]
+    posterior_dominates = bool(
+        (deployable_decoder_rows["mean_effect"] > 0.0).all()
+        and (deployable_decoder_rows["ci_lower"] > 0.0).all()
+    )
     if wider_alpha_warning:
         decision_code = "E"
     elif continuation:
@@ -350,6 +357,7 @@ def gate_summary(
                 "generating_decoder_gain": generating_decoder_gain,
                 "binary_decoder_gain": binary_decoder_gain,
                 "estimated_marginal_decoder_gain": estimated_decoder_gain,
+                "all_tree_sources_decoder_gain_positive_ci": posterior_dominates,
                 "max_abs_major_calibration_gap": max_abs_calibration_gap,
                 "reasonably_calibrated": reasonably_calibrated,
                 "alpha_warning_topologies": alpha_topologies,

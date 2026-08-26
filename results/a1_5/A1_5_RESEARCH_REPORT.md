@@ -200,7 +200,8 @@ The deployable decoder gains were 0.00459
 on the generating tree, 0.00408 on BinaryMWST,
 and 0.00639 on
 EstimatedQMarginalTree. These distinguish decision-model value from tree-
-identity value.
+identity value. All seven frozen tree sources had paired DecoderGain confidence
+intervals strictly above zero: **True**.
 
 ## 21. Alpha-acyclic warning signals
 
@@ -231,13 +232,15 @@ tree-learning claim, not a new decision algorithm.
 - Major-tree posterior risk reasonably calibrated at absolute mean gap <=0.02:
   **True**.
 - Full latent-tree continuation condition: **False**.
+- Posterior-decision gain is positive with CI lower bound above zero for all
+  seven tree sources: **True**.
 
 ## 24. Final decision
 
-**Decision A**
+**Decision B**
 
-> Stop latent-tree learning. Decision-aligned decoding does not rescue marginal-likelihood tree selection, and BinaryMWST is sufficient for the current k=1 research program.
+> Stop tree-identity learning as the primary direction. The meaningful positive signal is probabilistic subtree/posterior modeling rather than improved latent tree estimation.
 
 ## 25. Recommended next research direction
 
-Freeze BinaryMWST as the k=1 tree component. Retain exact posterior inference as infrastructure, but require a real application and loss model before expanding this line.
+Do not implement a neural subtree prior yet. First identify observable row covariates X_i in a real application and a shared parameterization of P_theta(S_i|X_i,T) that can transfer to unseen vertices instead of fitting per-instance free parameters. Exact posterior decoding remains available only if the conditioned prior preserves a tractable tree factorization. A proposal must name the real task and its loss before choosing features or a model class.
