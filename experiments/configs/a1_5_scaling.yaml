@@ -1,0 +1,8 @@
+experiment_type: a1_5_scaling
+n: 50
+m_values: [16, 64, 256, 1024]
+topology: random
+branch_probability: 0.4
+p_false_positive: 0.2
+p_false_negative: 0.2
+seed: 20260826

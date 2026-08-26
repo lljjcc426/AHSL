@@ -96,8 +96,8 @@ For any binary action `A`, posterior expected Hamming count is
 sum_{j in A}(1-pi_j) + sum_{j not in A}pi_j.
 ```
 
-A1.5 records both the count and the normalized risk divided by `m`, matching
-the empirical Hamming-error scale.
+A1.5 records the normalized risk divided by `m`, matching the empirical
+Hamming-error scale.
 
 ## 9. Connectivity cost
 
