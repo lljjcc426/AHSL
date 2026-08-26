@@ -1,0 +1,12 @@
+{
+  "decision": "S2.0-E",
+  "label": "NO-GO: PRIOR-ART SATURATION",
+  "surviving_datasets": ["tags-ask-ubuntu", "congress-bills"],
+  "hard_gates": {
+    "G1": "PASS", "G2": "PASS", "G3": "PASS", "G4": "PASS",
+    "G5": "PASS", "G6": "PASS", "G7": "PASS", "G8": "FAIL",
+    "G9": "FAIL", "G10": "FAIL"
+  },
+  "new_ml_model_trained": false,
+  "next_action": "Freeze S2.0 and return to project review."
+}

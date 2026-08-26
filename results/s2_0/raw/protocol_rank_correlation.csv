@@ -1,0 +1,7 @@
+dataset,protocol_left,protocol_right,spearman,kendall_tau,top_left,top_right
+congress-bills,random_same_cardinality,one_member_corruption,1.0,1.0,pair_hawkes,pair_hawkes
+congress-bills,random_same_cardinality,search_controlled,0.8181818181818182,0.7,pair_hawkes,pair_min
+congress-bills,one_member_corruption,search_controlled,0.8181818181818182,0.7,pair_hawkes,pair_min
+tags-ask-ubuntu,random_same_cardinality,one_member_corruption,0.9541685964428459,0.8720815992723808,pair_hawkes,pair_sum
+tags-ask-ubuntu,random_same_cardinality,search_controlled,0.8807710121010887,0.7694837640638655,pair_hawkes,pair_hawkes
+tags-ask-ubuntu,one_member_corruption,search_controlled,0.8181818181818182,0.6,pair_sum,pair_hawkes

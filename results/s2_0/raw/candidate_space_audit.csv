@@ -1,0 +1,3 @@
+dataset,seen_nodes,max_test_size,bounded_universe_size_2_to_5,observed_candidates,generated_novel_candidates,search_universe,generated_novel_event_recall,generated_repeat_event_recall
+tags-ask-ubuntu,2984,5,1968274898078042,125523,3743,129266,0.00972862263184844,0.9462155877278524
+congress-bills,1596,400,86025015195889,88917,16483,64259,0.003295212250436131,0.5821269487750557

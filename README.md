@@ -228,6 +228,36 @@ results/b0/B0_FEASIBILITY_REPORT.md
 references/b0_references.bib
 ```
 
+## Project S2.0: open-world temporal group-event gate
+
+S2.0 audits whether future complete-group forecasting remains a genuine
+structure-learning direction after chronological novel-set splits, exact-set
+retrieval, recurrence, pairwise reduction, negative-sampling sensitivity, and
+candidate-search controls. It adds parsers and fixed classical scores only; no
+new ML model is trained.
+
+The frozen decision is **S2.0-E — NO-GO: PRIOR-ART SATURATION**. Ubuntu tag sets
+and congressional bill cosponsor sets satisfy the real-data/high-order/novel-set
+gates, but sampled-negative Recall@10 of 75–95% collapses to zero for local
+novel-set search-controlled retrieval. HyperSearch already covers the central
+seen-node task with chronological novel-set evaluation and safe unconstrained
+complete-set search. The remaining gaps are search/open-node/generative
+specification rather than an isolated new structure-learning residual.
+
+Reproduce the checked-in audits after placing the HIF JSON files described in
+`data/s2_0/SOURCES.md` under `data/s2_0/downloads/`:
+
+```powershell
+python experiments/s2_0_dataset_audit.py
+python experiments/s2_0_run_baselines.py
+python experiments/s2_0_analyze_protocols.py
+python -m pytest -q tests/test_temporal_group_structure.py
+```
+
+The decision and evidence are in
+`results/s2_0/S2_0_GATE_REPORT.md`, with focused audits under `docs/S2_0_*.md`
+and references in `references/s2_0_references.bib`.
+
 ## Scope and limitations
 
 Phase A0 assumes the true join tree is known. It tests structural projection and
