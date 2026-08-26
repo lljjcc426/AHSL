@@ -1,4 +1,4 @@
-# AHSL Phases A0 and A0.5
+# AHSL Research Phases
 
 This repository is a reproducible prototype for testing whether a known
 alpha-acyclic structural constraint can denoise corrupted hypergraph incidence
@@ -193,6 +193,40 @@ python experiments/exp_a1_finalize.py
 Outputs are isolated under `results/a1/`. The literature gate and mathematical
 derivation are in `docs/A1_PREIMPLEMENTATION_REVIEW.md` and
 `docs/A1_THEORY.md`.
+
+## Phase A1.5: decision-aligned posterior-risk kill-test
+
+Phase A1.5 computes exact posterior node marginals and compares posterior MAP,
+the unconstrained posterior median, and the exact Bayes-Hamming action within
+the nonempty connected output class. Its frozen result is Decision B: retain
+probabilistic subtree/posterior inference as infrastructure and stop
+tree-identity learning as a primary direction.
+
+Outputs are isolated under `results/a1_5/`. The final report is
+`results/a1_5/A1_5_RESEARCH_REPORT.md`.
+
+## Phase B0: real-task and shared-prior feasibility gate
+
+Phase B0 contains no model implementation. It surveys real tasks, public data,
+prediction-time covariates, support validity, scaffold uncertainty, and the
+practical need for exact inference before any feature-conditioned subtree prior
+can be proposed.
+
+Eight task families were assessed. None passed all scientific and data gates;
+the project-level decision is NO-GO for Phase B1 implementation. Radial-grid
+outage localization remains only an external-data conditional hold because no
+qualifying public real topology-sensor-event-label dataset was identified.
+
+The decision and evidence are recorded in:
+
+```text
+docs/B0_SCOPE_AND_GATE.md
+docs/B0_APPLICATION_SURVEY.md
+docs/B0_DATA_AND_TRACTABILITY_AUDIT.md
+docs/B0_SEARCH_LOG.md
+results/b0/B0_FEASIBILITY_REPORT.md
+references/b0_references.bib
+```
 
 ## Scope and limitations
 
