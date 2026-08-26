@@ -1,0 +1,3 @@
+split,method,precision,recall,f1,average_precision,prevalence
+random_triple,query_pair_empirical_rate,0.09640924741760945,0.6105919003115264,0.16652506372132542,0.14716654050834516,0.03523213697728021
+query_pair_disjoint,query_pair_empirical_rate,0.0,0.0,0.0,0.053452361271835565,0.053452361271835565

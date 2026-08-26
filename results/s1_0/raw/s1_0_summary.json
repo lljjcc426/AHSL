@@ -1,0 +1,140 @@
+{
+  "frozen_thresholds": {
+    "microbiome_log_minimum": 0.1,
+    "bootstrap_confidence": 0.95,
+    "bootstraps": 500,
+    "estimand_jaccard": 0.6,
+    "sign_agreement": 0.8,
+    "classical_sufficiency_f1": 0.85,
+    "material_miss_rate": 0.15,
+    "yeast_p": 0.05,
+    "yeast_tau": -0.08
+  },
+  "microbiome": {
+    "measurements": 2377,
+    "systems": 127,
+    "replicate_range": [
+      5,
+      12
+    ],
+    "strong_order_ge3_log": 140,
+    "median_estimand_jaccard": 0.6333333333333333,
+    "median_sign_agreement": 1.0,
+    "pure_fraction": 0.05714285714285714,
+    "weak_heredity_fraction": 0.9428571428571428,
+    "best_budget_48_f1": 0.23467914773268325,
+    "best_budget_48_pure_recall": 0.425,
+    "response_scale_gate": true
+  },
+  "yeast": {
+    "public_table_rows": 501510,
+    "public_digenic_rows": 410399,
+    "public_trigenic_rows": 91111,
+    "unique_triples": 91050,
+    "unique_genes": 1400,
+    "query_pairs": 182,
+    "strong_negative_tau": 3196,
+    "raw_negative_support": 5125,
+    "tau_raw_support_jaccard": 0.5047016274864377,
+    "tau_raw_rank_correlation": 0.26731867502270135,
+    "median_fitness_sd": 0.0564,
+    "split_rows": [
+      {
+        "split": "random_triple",
+        "train": 72889,
+        "test": 18222,
+        "test_strong_prevalence": 0.03523213697728021,
+        "test_with_any_gene_overlap": 1.0,
+        "test_with_all_gene_overlap": 1.0,
+        "test_with_any_pair_overlap": 1.0,
+        "test_with_all_pair_overlap": 0.0058720228295467015,
+        "query_pair_overlap": 182
+      },
+      {
+        "split": "gene_disjoint_any_held_gene",
+        "train": 45532,
+        "test": 45579,
+        "test_strong_prevalence": 0.03032098115360144,
+        "test_with_any_gene_overlap": 0.9022795585686391,
+        "test_with_all_gene_overlap": 0.0,
+        "test_with_any_pair_overlap": 0.2708045371772088,
+        "test_with_all_pair_overlap": 0.0,
+        "query_pair_overlap": 114
+      },
+      {
+        "split": "query_pair_disjoint",
+        "train": 72964,
+        "test": 18147,
+        "test_strong_prevalence": 0.053452361271835565,
+        "test_with_any_gene_overlap": 1.0,
+        "test_with_all_gene_overlap": 0.2556345401443765,
+        "test_with_any_pair_overlap": 0.041384250840359287,
+        "test_with_all_pair_overlap": 0.0,
+        "query_pair_overlap": 0
+      },
+      {
+        "split": "query_gene_disjoint",
+        "train": 57715,
+        "test": 33396,
+        "test_strong_prevalence": 0.03763923823212361,
+        "test_with_any_gene_overlap": 1.0,
+        "test_with_all_gene_overlap": 0.29347826086956524,
+        "test_with_any_pair_overlap": 0.04482572763205174,
+        "test_with_all_pair_overlap": 0.0,
+        "query_pair_overlap": 0
+      }
+    ],
+    "query_baselines": [
+      {
+        "split": "random_triple",
+        "method": "query_pair_empirical_rate",
+        "precision": 0.09640924741760945,
+        "recall": 0.6105919003115264,
+        "f1": 0.16652506372132542,
+        "average_precision": 0.14716654050834516,
+        "prevalence": 0.03523213697728021
+      },
+      {
+        "split": "query_pair_disjoint",
+        "method": "query_pair_empirical_rate",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "average_precision": 0.053452361271835565,
+        "prevalence": 0.053452361271835565
+      }
+    ]
+  },
+  "drug": {
+    "measurements_order_3_to_5": 20790,
+    "independent_drug_sets": 182,
+    "unique_drugs": 8,
+    "order_counts": [
+      {
+        "order": 3,
+        "measurements": 1512,
+        "drug_sets": 56,
+        "net_support": 311,
+        "emergent_support": 676
+      },
+      {
+        "order": 4,
+        "measurements": 5670,
+        "drug_sets": 70,
+        "net_support": 2532,
+        "emergent_support": 2270
+      },
+      {
+        "order": 5,
+        "measurements": 13608,
+        "drug_sets": 56,
+        "net_support": 7844,
+        "emergent_support": 7911
+      }
+    ],
+    "median_net_modal_fraction": 0.6358024691358024,
+    "median_emergent_modal_fraction": 0.5473251028806585,
+    "net_sign_flip_set_fraction": 0.989010989010989,
+    "emergent_sign_flip_set_fraction": 0.989010989010989
+  }
+}
