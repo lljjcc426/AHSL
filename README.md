@@ -280,6 +280,41 @@ The decision and evidence are in
 the exact small-case projection aggregate under `results/s3_0/raw/`, and core
 references in `references/s3_0_references.bib`.
 
+## Project R0: learning-augmented exact-inference gate
+
+R0 changes the interface from learning unknown structure to selecting an
+execution strategy for a known high-order factor/CSP structure while a
+deterministic solver preserves exactness. It audits variable elimination,
+verified GHD/FHD search, local moves, exact-engine portfolios, plan-cost models
+and safe learned proposals. No new ML model is trained.
+
+The frozen decision is **R0-E — NO-GO: GENERIC SOLVER-LEARNING SATURATION**.
+Official UAI factor models confirm genuine high-order structure and catastrophic
+random-order costs, but four competent classical policies remain within 2.23x
+on the bounded exact subset and the native factor-aware policy does not beat
+primal min-fill. The remaining branch/plan/portfolio problem collides directly
+with mature CP/SAT, database and tensor-network solver learning.
+
+Reproduce the checked-in bounded audit after placing the UAI archive described
+in `data/r0/SOURCES.md` under `data/r0/downloads/`:
+
+```powershell
+python experiments/r0_strategy_variance.py `
+  --input-dir data/r0/downloads/uai2014_selected `
+  --output-dir results/r0/raw `
+  --output-prefix uai2014_selected `
+  --max-strategy-variables 200 `
+  --max-per-family 1 `
+  --random-orders 8 `
+  --peak-cap 1048576 `
+  --exact-total-cap 50000000 `
+  --exact-per-family 1 `
+  --exact-repeats 3
+```
+
+The decision is in `results/r0/R0_GATE_REPORT.md`, focused audits are under
+`docs/R0_*.md`, and references are in `references/r0_references.bib`.
+
 ## Scope and limitations
 
 Phase A0 assumes the true join tree is known. It tests structural projection and

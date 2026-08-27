@@ -1,0 +1,6 @@
+family,instances,median_peak_ratio,median_total_ratio,max_peak_ratio
+CSP,1,1.0,1.0005522180138156,1.0
+DBN,1,1.0,1.0,1.0
+Grids,1,1.0,1.4828763933306424,1.0
+ObjectDetection,1,1.0,1.0271427546836398,1.0
+grid,1,1.0,1.4828763933306424,1.0
