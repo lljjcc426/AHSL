@@ -315,6 +315,21 @@ python experiments/r0_strategy_variance.py `
 The decision is in `results/r0/R0_GATE_REPORT.md`, focused audits are under
 `docs/R0_*.md`, and references are in `references/r0_references.bib`.
 
+## P0 project-level reassessment
+
+P0 synthesizes A0--R0 rather than opening another model or topic sweep. Its
+frozen decision is **P0-B — pivot to hypergraph algorithms/theory; ML auxiliary
+or optional**. Across 13 mapped interfaces, none satisfies both ML necessity and
+native hypergraph-theory necessity. Two Q2 interfaces remain scientifically
+strong: hypergraph query algorithms and certified reusable/dynamic hypertree
+decompositions.
+
+The selected theory program is documented in
+`docs/P1_THEORY_PROGRAM_PROPOSAL.md`. It centers verified HD/GHD/FHD witnesses,
+rerootability, dynamic maintenance and downstream CQ/CSP structure. No ML model
+is part of the P0 work or the first P1 kill-test. The full decision is in
+`results/p0/P0_PROJECT_REASSESSMENT_REPORT.md`.
+
 ## Scope and limitations
 
 Phase A0 assumes the true join tree is known. It tests structural projection and
