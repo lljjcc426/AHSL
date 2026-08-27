@@ -258,6 +258,28 @@ The decision and evidence are in
 `results/s2_0/S2_0_GATE_REPORT.md`, with focused audits under `docs/S2_0_*.md`
 and references in `references/s2_0_references.bib`.
 
+## Project S3.0: naturally partial-observation structure gate
+
+S3.0 audits whether a real subfield naturally hides high-order structure while
+still providing independent structural gold, meaningful identifiability and a
+residual beyond graph, matrix, tensor and classical inverse methods. It screens
+projection reconstruction, dynamics, pooled assays, censored group events,
+protein complexes and low-order marginals. No new model is implemented or
+trained.
+
+The frozen decision is **S3.0-E — NO-GO: CLASSICAL / LATENT-MODEL SATURATION**.
+Natural partial-observation mechanisms exist, but no candidate combines two
+real validation routes with an identifiable structural target and a remaining
+learning problem. Protein complexes are the strongest real route, yet standard
+pair-scoring plus overlapping graph clustering and mature integrated atlases
+already cover the meaningful set-output task; projection and dynamics retain
+additional gold/identifiability failures.
+
+The decision and evidence are in
+`results/s3_0/S3_0_GATE_REPORT.md`, with focused audits under `docs/S3_0_*.md`,
+the exact small-case projection aggregate under `results/s3_0/raw/`, and core
+references in `references/s3_0_references.bib`.
+
 ## Scope and limitations
 
 Phase A0 assumes the true join tree is known. It tests structural projection and

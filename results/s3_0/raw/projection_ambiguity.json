@@ -1,0 +1,33 @@
+{
+  "observation_map": "unweighted clique projection",
+  "enumeration": [
+    {
+      "nodes": 3,
+      "allowed_orders": [2, 3],
+      "hypergraphs": 16,
+      "projection_classes": 8,
+      "unique_classes": 7,
+      "ambiguous_classes": 1,
+      "maximum_preimages": 9
+    },
+    {
+      "nodes": 4,
+      "allowed_orders": [2, 3, 4],
+      "hypergraphs": 2048,
+      "projection_classes": 64,
+      "unique_classes": 41,
+      "ambiguous_classes": 23,
+      "maximum_preimages": 1569
+    },
+    {
+      "nodes": 5,
+      "allowed_orders": [2, 3],
+      "hypergraphs": 1048576,
+      "projection_classes": 1024,
+      "unique_classes": 388,
+      "ambiguous_classes": 636,
+      "maximum_preimages": 608273
+    }
+  ],
+  "interpretation": "Exact hyperedge identities are not determined by the projection without extra assumptions."
+}
