@@ -1,0 +1,12 @@
+{
+  "all_correct": true,
+  "raw_rows": 276,
+  "measured_rows": 230,
+  "max_incremental_retained_growth_mb": 2.69921875,
+  "max_incremental_peak_over_recompute": 1.9685259856630823,
+  "max_incremental_tail_inflation": 3.0148114309996816,
+  "min_same_engine_speedup": 2.5600326760135266,
+  "max_same_engine_speedup": 8.952644643880085,
+  "primary_residual_class": "R7_NO_ACTIONABLE_RESIDUAL",
+  "decision": "AP1.0-C"
+}

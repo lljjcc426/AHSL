@@ -1,0 +1,85 @@
+{
+  "seed": 20260827,
+  "matrix": [
+    [
+      "reachability",
+      "small",
+      "realistic_mixed",
+      1,
+      3
+    ],
+    [
+      "sssp",
+      "small",
+      "realistic_mixed",
+      1,
+      1
+    ],
+    [
+      "connected_components",
+      "small",
+      "realistic_mixed",
+      1,
+      3
+    ],
+    [
+      "polonius_subset",
+      "real",
+      "realistic_mixed",
+      1,
+      3
+    ],
+    [
+      "ldbc_reachability",
+      "official_toy",
+      "native_temporal",
+      1,
+      3
+    ],
+    [
+      "reachability",
+      "medium",
+      "realistic_mixed",
+      1,
+      3
+    ],
+    [
+      "connected_components",
+      "medium",
+      "realistic_mixed",
+      1,
+      3
+    ],
+    [
+      "reachability",
+      "small",
+      "delete_heavy_stress",
+      1,
+      1
+    ],
+    [
+      "connected_components",
+      "small",
+      "delete_heavy_stress",
+      1,
+      1
+    ],
+    [
+      "reachability",
+      "small",
+      "realistic_mixed",
+      4,
+      1
+    ],
+    [
+      "connected_components",
+      "small",
+      "realistic_mixed",
+      4,
+      1
+    ]
+  ],
+  "elapsed_seconds": 12.938710700000229,
+  "raw_rows": 276,
+  "all_correct": true
+}

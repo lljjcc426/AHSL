@@ -1,0 +1,11 @@
+.decl Source(id: int64)
+.input Source(IO="file", filename="Source.csv", delimiter=",")
+
+.decl Arc(src: int64, dst: int64, weight: int64)
+.input Arc(IO="file", filename="Arc.csv", delimiter=",")
+
+.decl Distance(node: int64, distance: int64)
+Distance(x, min(0)) :- Source(x).
+Distance(y, min(d + w)) :- Distance(x, d), Arc(x, y, w).
+
+.output Distance

@@ -1,0 +1,13 @@
+// Recursive subset over the official LDBC SNB Person-knows-Person relation.
+.decl Knows(person1: int64, person2: int64)
+.input Knows(IO="file", filename="Knows.csv", delimiter=",")
+
+.decl Edge(src: int64, dst: int64)
+Edge(x, y) :- Knows(x, y).
+Edge(y, x) :- Knows(x, y).
+
+.decl Reach(src: int64, dst: int64)
+Reach(x, y) :- Edge(x, y).
+Reach(x, z) :- Reach(x, y), Edge(y, z).
+
+.output Reach

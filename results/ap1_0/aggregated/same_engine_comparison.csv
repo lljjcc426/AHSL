@@ -1,0 +1,12 @@
+workload,workload_class,scale,update_regime,workers,recompute_over_incremental_latency,incremental_over_recompute_post_rss,incremental_over_recompute_peak_rss,incremental_tail_inflation
+connected_components,recursive_aggregate,medium,realistic_mixed,1,4.253160522681398,6.384408602150538,1.9685259856630823,3.0148114309996816
+connected_components,recursive_aggregate,small,delete_heavy_stress,1,2.5600326760135266,1.797318782415411,1.521501933932678,1.470298643565485
+connected_components,recursive_aggregate,small,realistic_mixed,1,3.3076101769949915,2.170138888888889,1.4934713047068537,1.6656301594604213
+connected_components,recursive_aggregate,small,realistic_mixed,4,5.106570121274044,2.4859470613348513,1.4540758166141603,1.1181811558793477
+ldbc_reachability,reachability,official_toy,native_temporal,1,7.3026012005541014,1.3103856712716968,1.2654112029646523,2.6884290185213686
+polonius_subset,program_analysis,real,realistic_mixed,1,3.784588087323691,1.9231455346949131,1.3401835440240453,1.4029231425747912
+reachability,reachability,medium,realistic_mixed,1,8.952644643880085,1.8913563409234662,1.3481514084507042,2.921812106167653
+reachability,reachability,small,delete_heavy_stress,1,4.570829198437323,1.490516007287871,1.3019353188587017,1.3306191666561984
+reachability,reachability,small,realistic_mixed,1,6.145275452808353,1.8038337018319646,1.2949971655328798,1.961724035847889
+reachability,reachability,small,realistic_mixed,4,5.252130341812146,1.9775498381638958,1.2994398926914155,1.1764791114799091
+sssp,weighted_recursive_aggregate,small,realistic_mixed,1,4.786902967961738,1.5407007737297427,1.3164530192608017,1.2632693441656293

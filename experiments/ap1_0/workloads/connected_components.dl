@@ -1,0 +1,12 @@
+.decl Arc(src: int64, dst: int64)
+.input Arc(IO="file", filename="Arc.csv", delimiter=",")
+
+.decl Undirected(src: int64, dst: int64)
+Undirected(x, y) :- Arc(x, y).
+Undirected(y, x) :- Arc(x, y).
+
+.decl Component(node: int64, label: int64)
+Component(x, min(x)) :- Undirected(x, _).
+Component(y, min(label)) :- Component(x, label), Undirected(x, y).
+
+.output Component

@@ -1,0 +1,46 @@
+// Exact subset of the FlowLog Polonius rules, evaluated on rust-lang/polonius facts.
+.decl subset_base(origin1: string, origin2: string, point: string)
+.input subset_base(IO="file", filename="subset_base.csv", delimiter=",")
+.decl cfg_edge(point1: string, point2: string)
+.input cfg_edge(IO="file", filename="cfg_edge.csv", delimiter=",")
+.decl loan_issued_at(loan: string, origin: string, point: string)
+.input loan_issued_at(IO="file", filename="loan_issued_at.csv", delimiter=",")
+.decl loan_invalidated_at(loan: string, point: string)
+.input loan_invalidated_at(IO="file", filename="loan_invalidated_at.csv", delimiter=",")
+.decl universal_region(origin: string)
+.input universal_region(IO="file", filename="universal_region.csv", delimiter=",")
+
+.decl cfg_node(point: string)
+cfg_node(p) :- cfg_edge(p, _).
+cfg_node(p) :- cfg_edge(_, p).
+
+.decl origin_live_on_entry(origin: string, point: string)
+origin_live_on_entry(origin, point) :- universal_region(origin), cfg_node(point).
+
+.decl subset(origin1: string, origin2: string, point: string)
+subset(origin1, origin2, point) :- subset_base(origin1, origin2, point).
+subset(origin1, origin3, point) :-
+    subset(origin1, origin2, point),
+    subset_base(origin2, origin3, point),
+    origin1 != origin3.
+subset(origin1, origin2, point2) :-
+    subset(origin1, origin2, point1),
+    cfg_edge(point1, point2),
+    origin_live_on_entry(origin1, point2),
+    origin_live_on_entry(origin2, point2).
+
+.decl origin_contains_loan(origin: string, loan: string, point: string)
+origin_contains_loan(origin, loan, point) :- loan_issued_at(loan, origin, point).
+origin_contains_loan(origin2, loan, point) :-
+    origin_contains_loan(origin1, loan, point), subset(origin1, origin2, point).
+
+.decl loan_live_at(loan: string, point: string)
+loan_live_at(loan, point) :-
+    origin_contains_loan(origin, loan, point), origin_live_on_entry(origin, point).
+
+.decl errors(loan: string, point: string)
+errors(loan, point) :- loan_invalidated_at(loan, point), loan_live_at(loan, point).
+
+.output subset
+.output loan_live_at
+.output errors

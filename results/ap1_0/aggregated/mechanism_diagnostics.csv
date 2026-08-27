@@ -1,0 +1,12 @@
+workload,workload_class,scale,update_regime,workers,retained_growth_median_mb,retained_growth_max_mb,transient_update_median_mb,derived_change_amplification_median,derived_change_amplification_max
+connected_components,recursive_aggregate,medium,realistic_mixed,1,0.984375,2.69921875,0.984375,0.0,0.0
+connected_components,recursive_aggregate,small,delete_heavy_stress,1,0.18359375,0.79296875,0.18359375,0.0,0.0
+connected_components,recursive_aggregate,small,realistic_mixed,1,0.0546875,0.30078125,0.0546875,0.0,0.0
+connected_components,recursive_aggregate,small,realistic_mixed,4,0.609375,0.83203125,0.6796875,0.0,0.0
+ldbc_reachability,reachability,official_toy,native_temporal,1,0.66015625,0.7109375,0.66015625,6.5,9.0
+polonius_subset,program_analysis,real,realistic_mixed,1,0.54296875,0.72265625,0.54296875,0.0,0.0
+reachability,reachability,medium,realistic_mixed,1,0.38671875,0.41796875,0.40234375,0.0,0.125
+reachability,reachability,small,delete_heavy_stress,1,0.484375,0.6328125,0.484375,0.08571428571428572,0.2
+reachability,reachability,small,realistic_mixed,1,0.43359375,0.4921875,0.43359375,0.0,0.0625
+reachability,reachability,small,realistic_mixed,4,0.625,0.73046875,0.625,0.0,0.0625
+sssp,weighted_recursive_aggregate,small,realistic_mixed,1,0.81640625,0.94921875,0.81640625,1.375,3.0
