@@ -33,6 +33,10 @@
     development.
 11. Stop rules should target scientific claims, not only implementation errors.
 12. Do not rescue a failed line through greater model complexity.
+13. A literature-reported bottleneck is not a currently actionable research
+    residual. Every future application parent direction must reproduce a
+    material residual with a current public artifact, a reproducible workload
+    and the current strong practical baseline before method development.
 
 ## Main correction for future programs
 
@@ -40,3 +44,7 @@ The project often established a mathematically valid structural restriction
 before establishing a matching real task. Future parent directions should
 reverse that order: accepted target and benchmark first, measurable classical
 residual second, theory/ML interface third, implementation last.
+
+AP1.0 sharpens "measurable" to **current and executable**. Historical evidence
+can motivate screening, but cannot authorize a new model, algorithm or system
+component when a current release and fair configuration close the gap.

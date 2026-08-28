@@ -1,0 +1,13 @@
+candidate_id,benchmark,public_url,real_or_synthetic,primary_or_secondary,metric,current_strong_baseline,usable_here,reason
+A1,Hybrid-ANNS-Experiment,https://github.com/zhujx001/Hybrid-ANNS-Experiment,real,primary,recall-latency-throughput tradeoff,15 current algorithms,false,datasets are separately hosted and setup is multi-system
+A1,RVBench,https://web.iitd.ac.in/~kbeedkar/publication/27-edbt-rvbench/,real,secondary,relational-vector query latency/current system coverage,current engines,false,artifact route not executable in bounded pre-gate
+B1,AutomationBench,https://github.com/zapier/AutomationBench,realistic simulated,primary,programmatically verified workflow success,current agent/model,false,no frozen locally runnable current strong baseline
+B2,SWE-bench Live,https://www.microsoft.com/en-us/research/publication/swe-bench-goes-live/,real repositories,primary,resolved rate,current live agents,false,model/API and container route unavailable
+C1,TestGenEval,https://proceedings.iclr.cc/paper_files/paper/2025/hash/26ded5c8ee8ec1bc4caced4e1c9b1584-Abstract-Conference.html,real repositories,primary,test-generation correctness/coverage,current code models,false,current inference unavailable
+D1,TorchBench,https://github.com/pytorch/benchmark,real models,primary,compile success/latency/steady-state,current PyTorch recommended mode,false,current Windows compile pre-gate failed
+D1,vLLM benchmark route,https://docs.pytorch.org/devlogs/dynamic_shapes/2026-03-25-unbacked-perf-parity/,real models,secondary,dynamic-shape performance parity,current PyTorch release,false,official current evidence already reports parity
+E1,CP-Bench,https://github.com/kostis-init/CP-Bench,natural-language plus executable real/classical problems,primary,semantic solution correctness,current LLM plus solver,true,ground truths run but current model output absent
+E1,MiniZinc Challenge 2025,https://www.minizinc.org/challenge/2025/,real/classical optimization,secondary,correctness and solver performance,competition solvers,false,does not independently validate NL semantic synthesis
+E2,SAT Competition 2026,https://satcompetition.github.io/2026/,public competition,primary,solved instances/runtime,current competition solvers,false,no specific new application residual
+F1,AutoPatchBench,https://engineering.fb.com/2025/04/29/ai-research/autopatchbench-benchmark-ai-powered-security-fixes/,real C/C++ vulnerabilities,primary,build/crash/fuzz/differential verification,current repair agent/model,false,dual Linux container route unavailable
+F1,ARVO,https://arxiv.org/abs/2408.02153,real OSS-Fuzz vulnerabilities,secondary,rebuild/trigger/fix,current repair systems,false,large container artifact route unavailable

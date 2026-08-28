@@ -1,0 +1,13 @@
+candidate_id,family,artifact,version_or_commit,public_url,local_status,setup_requirement,hardware_requirement,expected_small_run,pre_gate_result
+A1,A,Hybrid-ANNS-Experiment,ea97ba1c95a6c605abe798a5f5a8fdb30c690d7e,https://github.com/zhujx001/Hybrid-ANNS-Experiment,README/scripts inspected,"separate Google Drive datasets; per-system environments; several servers",CPU and high-memory routes vary,>2 hours setup,FAIL_ACCESS
+A2,A,RVBench,current 2026 artifact link,https://web.iitd.ac.in/~kbeedkar/publication/27-edbt-rvbench/,paper/resource inspected,MediaWiki snapshot plus participating engines,engine dependent,unknown,FAIL_ACCESS
+B1,B,AutomationBench,current 2026 repository,https://github.com/zapier/AutomationBench,repository inspected,containerized SaaS simulations plus an agent/model,CPU plus model API/GPU,model dependent,FAIL_CURRENT_BASELINE
+B2,B,SWE-bench,current repository,https://github.com/swe-bench/SWE-bench,repository inspected,Docker images plus current agent/model,CPU containers plus model API/GPU,model dependent,FAIL_CURRENT_BASELINE
+C1,C,SAGA,current repository,https://github.com/open-compass/SAGA,repository inspected,code-generation model outputs and test pipeline,GPU/API dependent,model dependent,FAIL_CURRENT_BASELINE
+D1,D,PyTorch,2.13.0+cpu,https://pypi.org/project/torch/2.13.0/,installed and imported,MSVC C++ build tools for TorchInductor CPU on Windows,CPU,seconds after toolchain,FAIL_BUILD
+D1,D,TorchBench,bee93389f6bb8c5222429117a1c901b633f32801,https://github.com/pytorch/benchmark,archive downloaded and inspected,PyTorch compiler environment and per-model dependencies,CPU/GPU by model,<2 hours for selected model,BLOCKED_BY_D1
+E1,E,CP-Bench,92ba7dc197669e102dd8afa391da8abaa192f786,https://github.com/kostis-init/CP-Bench,archive installed and ground truths run,CPMpy/OR-Tools plus model API for a current baseline,CPU plus model API/GPU,seconds per ground truth,PASS_BENCHMARK_ONLY
+E1,E,CPMpy,0.9.25,https://github.com/CPMpy/cpmpy,installed in isolated target,OR-Tools,CPU,1-3 seconds per small instance,PASS
+E2,E,OR-Tools,9.14.6206,https://developers.google.com/optimization/cp,already installed,current solver workload,CPU,seconds to minutes,PASS_ARTIFACT_NO_OPEN_RESIDUAL
+F1,F,AutoPatchBench,CyberSecEval 4 current,https://github.com/meta-llama/PurpleLlama,official documentation inspected,dual Linux containers per vulnerability plus fuzzing/LLDB,CPU/container and model API/GPU,>2 hours setup,FAIL_ACCESS
+F1,F,ARVO,current public artifact,https://github.com/n132/ARVO,official paper/resource inspected,container rebuilds for OSS-Fuzz vulnerabilities,Linux Docker and substantial storage,instance dependent,FAIL_ACCESS
