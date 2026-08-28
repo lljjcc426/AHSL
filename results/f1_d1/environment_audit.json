@@ -1,0 +1,15 @@
+{
+  "autopatchbench_commit": "4be64c3a24442b51c76175e6ec67722cc3f5fe38",
+  "lite_instances": 113,
+  "development_instances": 25,
+  "untouched_instances": 87,
+  "analysis_exposed_instances": [
+    "10445"
+  ],
+  "docker": "unavailable",
+  "podman": "unavailable",
+  "wsl2": "installed_but_virtualization_unavailable",
+  "workspace_free_gb": 268.2,
+  "official_lite_storage_guidance_gb": 2000,
+  "classification": "F1-D1-C"
+}

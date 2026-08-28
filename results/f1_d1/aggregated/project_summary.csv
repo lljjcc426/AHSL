@@ -1,0 +1,9 @@
+project,instances,infrastructure_blocked
+c-blosc2,2,2
+librawspeed,9,9
+libredwg,7,7
+libxml2,2,2
+open62541,2,2
+ots,1,1
+php-src,1,1
+yara,1,1

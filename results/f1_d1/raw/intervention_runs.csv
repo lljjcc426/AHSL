@@ -1,0 +1,1 @@
+run_id,benchmark,instance_id,project,crash_type,agent,model,method,method_variant,seed,repair_budget,attempt_index,patch_hash,build_pass,repro_pass,fuzz_pass,differential_pass,test_pass,terminal_stage,failure_taxonomy,tokens,model_calls,runtime,patch_lines,files_changed,notes,intervention,paired_control_run_id

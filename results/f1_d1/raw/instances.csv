@@ -1,0 +1,114 @@
+benchmark,benchmark_commit,instance_id,project,crash_type,sanitizer,severity,total_files,total_hunks,max_hunk_length,has_stacktrace,pool_role,instance_state,included_in_scientific_denominator,exclusion_reason
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,10445,unicorn,UNKNOWN READ,asan,Medium,1,1,106,False,analysis_sanity,ANALYSIS-EXPOSED,False,metadata_schema_inspected
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,11429,librawspeed,Heap-buffer-overflow WRITE 2,asan,High,1,1,29,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,1236,wireshark,Heap-buffer-overflow READ 1,asan,Medium,1,1,76,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,1273,wireshark,Heap-buffer-overflow READ 1,asan,Medium,1,1,161,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,12745,wireshark,Heap-buffer-overflow READ 1,asan,Medium,1,1,61,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,12803,libprotobuf-mutator,Stack-use-after-return WRITE 8,asan,,1,1,28,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,13741,openthread,Stack-use-after-return READ 1,asan,,1,1,43,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,13956,yara,Heap-buffer-overflow READ 1,asan,Medium,1,1,48,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,1436,wireshark,Global-buffer-overflow READ 2,asan,,1,1,16,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,14620,open62541,Use-of-uninitialized-value,msan,Medium,1,1,58,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,14854,openthread,Stack-buffer-overflow WRITE 9,asan,High,1,1,111,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,16614,opensc,Heap-buffer-overflow READ 1,asan,Medium,1,1,48,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,17031,libhevc,Heap-buffer-overflow WRITE 1,asan,High,1,1,915,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,17032,unicorn,Use-of-uninitialized-value,msan,Medium,1,1,30,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,17036,libhevc,Heap-buffer-overflow WRITE 1,asan,High,1,1,915,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,17061,skia,Heap-buffer-overflow READ 8,asan,Medium,1,1,99,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,17072,libhevc,Use-of-uninitialized-value,msan,Medium,1,1,594,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,17084,libmpeg2,UNKNOWN WRITE,asan,High,1,1,125,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,17553,libhevc,Heap-use-after-free READ 4,asan,High,1,1,915,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,18569,opensc,Heap-buffer-overflow READ {*},asan,Medium,1,1,43,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,18605,opensc,Heap-buffer-overflow READ 4,asan,Medium,1,1,43,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,18798,opensc,Heap-buffer-overflow READ 1,asan,Medium,1,1,155,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,18868,opensc,Heap-buffer-overflow READ 1,asan,Medium,1,1,59,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,18890,opensc,Heap-double-free,asan,High,1,1,165,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,18960,libavc,Heap-buffer-overflow READ 8,asan,Medium,1,1,860,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,18990,opensc,Heap-buffer-overflow READ {*},asan,Medium,1,1,18,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,18991,libhevc,Use-of-uninitialized-value,msan,Medium,1,1,642,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,19027,libavc,Heap-buffer-overflow READ 4,asan,Medium,1,1,860,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,19191,opensc,Heap-buffer-overflow READ 1,asan,Medium,1,1,10,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,19208,opensc,Heap-double-free,asan,High,1,1,38,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,32807,opensc,Heap-buffer-overflow READ 1,asan,Medium,1,1,105,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,32972,libjpeg-turbo,Use-of-uninitialized-value,msan,Medium,1,1,186,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,33071,c-blosc2,Heap-buffer-overflow READ {*},asan,Medium,1,1,116,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,33264,c-blosc2,Heap-buffer-overflow READ {*},asan,Medium,1,1,152,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,33340,libjpeg-turbo,Heap-buffer-overflow READ 1,asan,High,1,1,48,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,3371,librawspeed,Use-of-uninitialized-value,msan,Medium,1,1,78,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,33852,serenity,Heap-use-after-free READ 8,asan,High,1,1,99,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,33947,php-src,Heap-use-after-free READ 4,asan,High,1,1,36,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,33991,readstat,Heap-buffer-overflow READ 1,asan,Medium,1,1,81,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,3408,wireshark,Stack-buffer-overflow READ 16,asan,Medium,1,1,49,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,34468,vlc,Heap-buffer-overflow WRITE 2,asan,High,1,1,86,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,34480,vlc,Heap-buffer-overflow WRITE 2,asan,High,1,1,126,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,35231,libjxl,Use-of-uninitialized-value,msan,Medium,1,1,126,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,35305,libjxl,Use-of-uninitialized-value,msan,Medium,1,1,21,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,35675,h2o,Heap-buffer-overflow READ 1,asan,Medium,1,1,91,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,35712,mruby,Heap-buffer-overflow READ 4,asan,High,1,1,1840,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,35727,mruby,Heap-buffer-overflow READ 1,asan,Medium,1,1,33,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,36209,libjxl,Use-of-uninitialized-value,msan,Medium,1,1,54,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49259,mruby,Heap-buffer-overflow WRITE 8,asan,High,1,1,179,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49269,mruby,Segv on unknown address,asan,,1,1,11,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49291,mruby,Heap-buffer-overflow READ 8,asan,Medium,1,1,24,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49382,lcms,Heap-buffer-overflow READ 2,asan,Medium,1,1,103,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49819,S2OPC,Use-of-uninitialized-value,msan,Medium,1,1,198,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49845,mruby,Heap-buffer-overflow WRITE 4,asan,High,1,1,93,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,51390,hunspell,Heap-buffer-overflow READ 7,asan,Medium,1,1,14,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,51837,opensc,Heap-double-free,asan,High,1,1,70,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,5576,open62541,Use-of-uninitialized-value,msan,Medium,1,1,50,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,55982,freeradius-server,Stack-buffer-overflow WRITE {*},asan,High,1,1,634,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,57333,libavc,Use-of-uninitialized-value,msan,Medium,1,1,676,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,57448,ndpi,UNKNOWN WRITE,asan,High,1,1,406,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,57494,wireshark,Stack-buffer-overflow WRITE 4,asan,High,1,1,138,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,57586,libredwg,Heap-buffer-overflow READ 1,asan,Medium,1,1,94,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,57587,libredwg,Heap-buffer-overflow WRITE 2,asan,High,1,1,94,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,57703,mruby,Heap-use-after-free READ 4,asan,High,1,1,24,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,58133,hunspell,Heap-double-free,asan,High,1,1,94,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,58190,libavc,Heap-buffer-overflow READ 4,asan,Medium,1,1,48,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,58553,hunspell,Heap-double-free,asan,High,1,1,94,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,58577,mruby,Heap-use-after-free READ 4,asan,High,1,1,24,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,5935,openthread,Stack-buffer-overflow READ 1,asan,Medium,1,1,27,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,60034,hunspell,Heap-buffer-overflow READ 1,asan,Medium,1,1,633,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,60605,ndpi,Negative-size-param,asan,Medium,1,1,149,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,60672,opensc,Heap-buffer-overflow READ 1,asan,Medium,1,1,63,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,60971,opensc,Heap-buffer-overflow READ {*},asan,Medium,1,1,65,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,61650,ndpi,UNKNOWN READ,msan,Medium,1,1,219,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,61750,opensc,Stack-buffer-overflow READ {*},asan,Medium,1,1,59,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,61825,libxaac,Heap-buffer-overflow READ 1,asan,Medium,1,1,553,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,62375,WasmEdge,Segv on unknown address,asan,,1,1,71,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,62388,libxaac,Use-of-uninitialized-value,msan,Medium,1,1,412,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,62561,libredwg,Heap-double-free,asan,High,1,1,90,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,62973,libredwg,Heap-buffer-overflow WRITE 1,asan,High,1,1,119,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,63463,libredwg,Heap-buffer-overflow READ 1,asan,Medium,1,1,613,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,63537,libredwg,Heap-double-free,asan,High,1,1,45,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,63754,ndpi,Use-of-uninitialized-value,msan,Medium,1,1,45,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,63954,lcms,UNKNOWN READ,asan,Medium,1,1,13,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,64124,PcapPlusPlus,Heap-buffer-overflow READ 2,asan,Medium,1,1,20,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,64166,lcms,Heap-buffer-overflow READ 4,asan,Medium,1,1,116,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,64898,opensc,Heap-use-after-free READ 8,asan,High,1,1,27,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,65684,opensc,Heap-use-after-free READ 4,asan,High,1,1,49,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,66208,mruby,Heap-buffer-overflow READ 8,asan,Medium,1,1,121,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,66679,libxml2,Heap-use-after-free READ 4,asan,High,1,1,109,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,66689,mruby,Heap-buffer-overflow READ 3,asan,Medium,1,1,79,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,6829,librawspeed,Use-after-poison WRITE 2,asan,High,1,1,26,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,6975,librawspeed,Use-of-uninitialized-value,msan,Medium,1,1,111,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,7166,wireshark,Heap-buffer-overflow READ {*},asan,Medium,1,1,281,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,7171,librawspeed,Use-of-uninitialized-value,msan,Medium,1,1,114,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,7206,librawspeed,Use-of-uninitialized-value,msan,Medium,1,1,68,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,7262,ots,UNKNOWN READ,asan,Medium,1,1,30,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,7538,librawspeed,Use-of-uninitialized-value,msan,Medium,1,1,115,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,7884,librawspeed,Use-of-uninitialized-value,msan,Medium,1,1,68,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,7975,wireshark,Heap-buffer-overflow READ 8,asan,Medium,1,1,48,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,9180,librawspeed,Use-of-uninitialized-value,msan,Medium,1,1,65,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,9230,wireshark,Heap-buffer-overflow WRITE 2,asan,High,1,1,185,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49422,assimp,Heap-buffer-overflow READ 1,asan,Medium,1,1,231,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49425,mruby,Heap-buffer-overflow READ 4,asan,Medium,1,1,62,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49453,mruby,Segv on unknown address,asan,,1,1,14,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,49455,lcms,Heap-buffer-overflow READ 2,asan,Medium,1,1,20,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,50956,lcms,Heap-buffer-overflow READ 8,asan,Medium,1,1,118,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,51124,hunspell,Heap-buffer-overflow READ 1,asan,Medium,1,1,92,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,51988,hunspell,Heap-buffer-overflow READ 1,asan,Medium,1,1,25,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,65820,htslib,Heap-buffer-overflow READ 1,asan,Medium,1,1,23,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,66446,libxml2,Heap-use-after-free READ 8,asan,High,1,1,101,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,66480,freeradius-server,Heap-buffer-overflow READ 1,asan,Medium,1,1,118,True,untouched,UNTOUCHED,False,not_accessed
+AutoPatchBench-Lite,4be64c3a24442b51c76175e6ec67722cc3f5fe38,66835,libredwg,Heap-use-after-free READ 8,asan,High,1,1,205,True,development,INFRA-BLOCKED,False,container_runtime_unavailable_and_host_storage_below_official_minimum
