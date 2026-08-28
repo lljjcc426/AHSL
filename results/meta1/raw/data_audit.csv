@@ -1,0 +1,9 @@
+panel_id,landscape_id,dimension,expected_cells,observed_cells,missing_cells,replicate_min,replicate_max,replicate_total,primary_scale,response_min,response_median,response_max,source_version
+ishizawa,ishizawa_DW039,6,64,64,0,5,12,341,log10,5.242578234438295,6.150492841037258,6.813131649937729,PNAS-2024-supplement
+ishizawa,ishizawa_DW067,6,64,64,0,5,12,341,log10,4.335792101990008,5.223827315665168,5.99003340502772,PNAS-2024-supplement
+ishizawa,ishizawa_DW100,6,64,64,0,5,12,341,log10,4.821939148071741,5.4663973892844595,5.880701530762325,PNAS-2024-supplement
+ishizawa,ishizawa_DW102,6,64,64,0,5,12,341,log10,5.850105293011472,6.320774053898342,6.7035176320912635,PNAS-2024-supplement
+ishizawa,ishizawa_DW145,6,64,64,0,5,12,341,log10,5.455279371804928,6.036661985904,6.538446522563568,PNAS-2024-supplement
+ishizawa,ishizawa_DW147,6,64,64,0,5,9,331,log10,4.325068236487991,5.577036777905782,6.274432227213616,PNAS-2024-supplement
+ishizawa,ishizawa_DW155,6,64,64,0,5,12,341,log10,4.537602002092358,5.413360367575891,6.2998886165686,PNAS-2024-supplement
+diaz_colunga,diaz_colunga_od600,8,256,256,0,3,3,768,raw,0.0,1.02385,1.5423,35c150c85df2fc5964523f906ceeb8229f0b1666

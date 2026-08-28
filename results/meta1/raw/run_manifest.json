@@ -1,0 +1,37 @@
+{
+  "source_versions": {
+    "ishizawa": "PNAS-2024-supplement",
+    "diaz_colunga": "35c150c85df2fc5964523f906ceeb8229f0b1666"
+  },
+  "landscapes": 8,
+  "development_mask_seeds": [
+    101,
+    202,
+    303,
+    404
+  ],
+  "confirmation_mask_seeds_reserved": [
+    505,
+    606
+  ],
+  "total_runs": 3200,
+  "tuning_trials_retained": 51168,
+  "total_method_runtime_seconds": 213.1887278001085,
+  "followup_methods": [
+    "stability_pi60",
+    "ard_support",
+    "combined_v1"
+  ],
+  "gpu_hours": 0.0,
+  "mechanism_features_refreshed": true,
+  "acquisition_followup": [
+    "row_cosine_v0 retained",
+    "d_optimal_rows"
+  ],
+  "hybrid_acquisition_fractions": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "peak_working_set_mb": 268.59375
+}
