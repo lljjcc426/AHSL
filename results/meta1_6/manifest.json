@@ -1,0 +1,21 @@
+{
+  "phase": "META1.6",
+  "decision": "D-C",
+  "development_seeds": [
+    101,
+    202,
+    303,
+    404
+  ],
+  "retired_reserve_policy": "505/606 forbidden and not generated",
+  "budgets": [
+    16,
+    24,
+    32
+  ],
+  "support_scenarios": 36,
+  "runtime_seconds": 56.592216000004555,
+  "real_delta": -0.03939281645147824,
+  "synthetic_delta": -0.020673967081345817,
+  "real_alignment_rho": 0.19504220653442536
+}
