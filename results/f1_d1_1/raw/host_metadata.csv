@@ -1,0 +1,2 @@
+audit_time,windows_edition,windows_version,windows_build,architecture,cpu,physical_cores,logical_processors,ram_bytes,firmware_virtualization,vm_monitor_mode,slat,hypervisor_present,administrator_shell,classification
+2026-08-28T23:26:57+08:00,Microsoft Windows 11 Home Chinese,10.0.26200,26200,64-bit,13th Gen Intel Core i9-13900H,14,20,33968340992,true,true,true,false,false,VIRT-B

@@ -1,0 +1,11 @@
+audit_time,component,value,status
+2026-08-28T23:26:57+08:00,wsl_package,2.5.9.0,installed
+2026-08-28T23:26:57+08:00,kernel_package,6.6.87.2-1,installed
+2026-08-28T23:26:57+08:00,default_version,2,configured
+2026-08-28T23:26:57+08:00,default_distribution,docker-desktop,stopped
+2026-08-28T23:26:57+08:00,Ubuntu-22.04,2,launch_failed_HCS_E_SERVICE_NOT_AVAILABLE
+2026-08-28T23:26:57+08:00,docker-desktop,2,stopped
+2026-08-28T23:26:57+08:00,WslService,running,available
+2026-08-28T23:26:57+08:00,vmcompute,absent,OpenService_FAILED_1060
+2026-08-28T23:26:57+08:00,docker_cli,not_found,unavailable
+2026-08-28T23:26:57+08:00,podman_cli,not_found,unavailable
