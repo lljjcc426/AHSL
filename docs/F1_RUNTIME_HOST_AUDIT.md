@@ -1,8 +1,6 @@
 # F1 runtime host audit
 
-Audit time: 2026-10-02 22:44 CST (UTC+08:00)
-
-The audit was non-destructive. It did not change Windows features, boot settings, BIOS/UEFI, partitions, WSL distributions, or container data.
+Audit time: 2026-10-03 00:17 CST (UTC+08:00)
 
 ## Windows host
 
@@ -14,43 +12,39 @@ The audit was non-destructive. It did not change Windows features, boot settings
 | CPU | 13th Gen Intel Core i9-13900H |
 | Logical CPUs | 20 |
 | Physical RAM | 31.6 GiB |
-| Administrator shell | No |
 
 ## Host storage
 
 | Drive | Filesystem | Capacity (GiB) | Free (GiB) |
 |---|---:|---:|---:|
-| C | NTFS | 486.6 | 55.6 |
+| C | NTFS | 486.6 | 53.2 |
 | D | NTFS | 495.9 | 90.7 |
 | E | NTFS | 440.6 | 71.1 |
 | F | NTFS | 458.0 | 91.7 |
 
-The existing Ubuntu VHDX is on `C:` and currently occupies 14.14 GiB. The host-side capacity governing further VHDX growth is therefore approximately 55.6 GiB, not the virtual capacity reported inside Linux. Storage classification is **STORAGE-C** (`<250 GB usable`).
+The Ubuntu VHDX is on `C:` and occupies 14.87 GiB. Its practical growth is
+therefore governed by 53.2 GiB of host free space, not the 943 GiB virtual free
+space reported by ext4. Storage classification remains **STORAGE-C** (`<250 GB
+usable`).
 
 ## WSL and virtualization
 
 | Signal | Observed value |
 |---|---|
 | WSL package | 2.5.9.0 |
-| WSL kernel package | 6.6.87.2-1 |
+| WSL kernel | 6.6.87.2-microsoft-standard-WSL2 |
 | Default WSL version | 2 |
-| Ubuntu-22.04 | Installed, stopped, WSL2 |
-| docker-desktop | Installed, stopped, WSL2 |
-| Firmware virtualization | True |
-| Second Level Address Translation | True |
-| Windows hypervisor present | False |
-| `vmcompute` service | Not installed (`OpenService FAILED 1060`) |
-| Ubuntu launch | Failed: `HCS_E_SERVICE_NOT_AVAILABLE` |
+| Ubuntu-22.04 | Running, WSL2, x86_64 |
+| Ubuntu release | Ubuntu 22.04.5 LTS |
+| Windows hypervisor present | True |
+| `vmcompute` service | Running |
 
-The hardware prerequisites are present, so this is a Windows component/configuration blocker (category A), not evidence that BIOS virtualization is disabled.
+The earlier `HCS_E_SERVICE_NOT_AVAILABLE` blocker was cleared after the user
+enabled the required Windows components and restarted Windows. No BIOS/UEFI or
+partition change was made by this task.
 
-## Required manual action
+## Linux runtime services
 
-Open PowerShell as Administrator and run:
-
-```powershell
-wsl --install --no-distribution
-```
-
-If Windows requests a restart, restart manually. No automatic reboot was attempted.
-
+Docker Engine and containerd run as native Ubuntu systemd services and are
+enabled for later WSL sessions. User `cc` belongs to the `docker` group, so the
+Docker CLI works without an elevated shell.

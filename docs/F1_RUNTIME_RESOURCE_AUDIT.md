@@ -1,19 +1,31 @@
 # F1 runtime resource audit
 
-Audit time: 2026-10-02 22:44 CST (UTC+08:00)
+Audit time: 2026-10-03 00:17 CST (UTC+08:00)
 
 ## Host resources
 
 - Logical CPUs: 20
 - RAM: 31.6 GiB
 - Ubuntu VHDX location: `C:\Users\cc\AppData\Local\wsl\{ea43aa54-76b9-435e-bd5d-dc990288f070}\ext4.vhdx`
-- Ubuntu VHDX current file size: 14.14 GiB
-- Governing host drive free space: 55.6 GiB
-- Storage class: STORAGE-C
+- Ubuntu VHDX current file size: 14.87 GiB
+- Governing host drive free space: 53.2 GiB
+- Storage class: **STORAGE-C**
 
 ## WSL resources
 
-The Ubuntu WSL2 VM could not start during this audit. Consequently, current `nproc`, `free -h`, `df -h`, and `df -T` measurements are unavailable and are not inferred from an earlier session.
+| Resource | Observed value |
+|---|---:|
+| Logical CPUs | 20 |
+| RAM | 15.4 GiB |
+| Swap | 4.0 GiB |
+| Root filesystem | ext4, 1007 GiB virtual capacity |
+| Root virtual free space | 943 GiB |
 
-No `.wslconfig` resource tuning is recommended at this checkpoint. Restoring the required Windows virtualization component is the first action; resource tuning would be premature.
+The ext4 capacity is sparse virtual capacity and must not be used as the
+storage classification input. The runtime readiness script therefore measures
+`/mnt/c` while running under WSL2 and reports 53.2 GiB free.
 
+No `.wslconfig` resource tuning was added. The current allocation is sufficient
+for generic compilation, debugger, Python, and container checks. STORAGE-C does
+not justify claiming capacity for a full scientific run or a large retained
+container/dataset cache.

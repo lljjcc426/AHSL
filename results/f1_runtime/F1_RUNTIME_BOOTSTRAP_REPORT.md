@@ -2,70 +2,108 @@
 
 ## 1. Executive result
 
-**BLOCKED.** The requested generic Linux runtime cannot currently boot. Hardware virtualization is available, but the Windows virtualization compute component is absent. No scientific benchmark, security target, fuzzer, repair agent, or reference fix was accessed or run in this task.
+**READY for the requested generic Linux runtime.** WSL2, Docker Engine,
+compilers, CMake, LLDB, Python venv creation, Codex CLI, and the native Linux
+AHSL checkout all passed their direct checks. Storage remains **STORAGE-C**.
 
-## 2. Windows host
+No scientific benchmark, security target, fuzzer, repair agent, exploit input,
+reference fix, or vulnerability case was inspected or run.
 
-Windows 11 Home Chinese, version 10.0.26200, build 26200, on a 64-bit Intel Core i9-13900H host.
+## 2. Windows and WSL
 
-## 3. WSL status
+The host is Windows 11 Home Chinese 10.0.26200 on an Intel Core i9-13900H with
+20 logical CPUs and 31.6 GiB RAM. WSL 2.5.9.0 now boots Ubuntu 22.04.5 LTS on
+kernel `6.6.87.2-microsoft-standard-WSL2` as `x86_64`. The Windows hypervisor
+and `vmcompute` service are active.
 
-WSL 2.5.9.0 is installed. `Ubuntu-22.04` and `docker-desktop` are registered as WSL2 distributions but stopped. Starting Ubuntu fails with `Wsl/Service/CreateInstance/CreateVm/HCS/HCS_E_SERVICE_NOT_AVAILABLE`. The `vmcompute` service is absent and Windows reports no active hypervisor.
+## 3. Effective resources
 
-## 4. Ubuntu
+WSL exposes 20 logical CPUs, 15.4 GiB RAM, and 4.0 GiB swap. The Ubuntu VHDX
+occupies 14.87 GiB on `C:`, whose current free space is 53.2 GiB. The ext4
+filesystem's 943 GiB virtual free space is not treated as physically usable
+capacity.
 
-Ubuntu-22.04 is installed but could not be booted. Its current architecture and release files could not be re-verified in this session.
+## 4. Docker
 
-## 5. CPU/RAM
+Ubuntu's native Docker Engine 29.1.3 and containerd are active and enabled.
+Docker uses `overlayfs` and cgroup v2. The ordinary-user checks passed:
 
-The host exposes 20 logical CPUs and 31.6 GiB RAM. Effective WSL CPU, RAM, and swap remain unmeasured because the VM cannot start.
+- `docker version` and `docker info`
+- `docker run --rm hello-world`
+- `docker run --rm ubuntu:24.04 uname -m` -> `x86_64`
 
-## 6. Storage
+The Ubuntu 24.04 image was fetched through `docker.m.daocloud.io` after a direct
+Docker Hub layer transfer stalled, then tagged locally as `ubuntu:24.04`. The
+Docker daemon configuration was not changed.
 
-The Ubuntu VHDX resides on `C:`, occupies 14.14 GiB, and can currently grow only into approximately 55.6 GiB of host free space. This is STORAGE-C. No VHDX move or resize was attempted.
+## 5. Native toolchain
 
-## 7. Docker
+- GCC/G++ 11.4.0 and Clang 14.0.0
+- CMake 3.22.1 and Ninja 1.10.1
+- LLDB 14.0.0
+- Git 2.34.1
 
-Docker Engine was not installed or tested because WSL2 cannot start. Docker hello-world and Ubuntu container status are BLOCKED. No container data was deleted.
+A trivial C program compiled and ran, LLDB launched that program in batch mode,
+and a separate minimal CMake C++ project configured, built, and ran.
 
-## 8. Compiler
+## 6. Python and Codex CLI
 
-Generic GCC/Clang and CMake sanity are BLOCKED pending Ubuntu startup.
+Python 3.10.12 successfully created and executed a temporary venv. Node
+22.23.3 and npm 10.9.9 were installed under `/home/cc/.nvm`; Linux-native
+`codex-cli 0.160.0` runs successfully.
 
-## 9. Debugger
+The AHSL package metadata declares Python `>=3.11`, while this Ubuntu release's
+system Python is 3.10. The project dependency environment was intentionally not
+installed and `pytest` was not run: most scientific dependencies are absent,
+and installing them would exceed the generic infrastructure-only scope. This
+does not affect the generic Python venv check, but it must be addressed before
+a later repository test or scientific execution phase.
 
-LLDB version and trivial-program launch are BLOCKED pending Ubuntu startup.
+## 7. AHSL checkout
 
-## 10. Python
+The native Linux checkout is `/home/cc/research/AHSL`. It is clean, on branch
+`project-f1-runtime-bootstrap`, tracking
+`origin/project-f1-runtime-bootstrap`, at checkpoint
+`8bca3215798288ff4584d5038b528ddb36778f61` before this report update.
 
-Python and temporary virtual-environment sanity are BLOCKED pending Ubuntu startup.
+## 8. Runtime readiness
 
-## 11. Codex CLI
+`scripts/check_f1_runtime_readiness.py` now checks architecture, WSL2, Docker,
+the Ubuntu 24.04 container, direct compilation, CMake, LLDB, Python venv,
+Codex CLI, the native AHSL checkout, and host-backed free space. Its final
+output is:
 
-Codex CLI inside WSL was not inspected because Ubuntu cannot start. No credentials were accessed or copied.
-
-## 12. AHSL clone
-
-The Windows checkout is on branch `project-f1-runtime-bootstrap`, created exactly from `b6adeb481335006550987fd4ecdc49a69f7743b8`. The required native Linux clone cannot be verified until WSL starts.
-
-## 13. Runtime readiness
-
-The generic readiness script is `scripts/check_f1_runtime_readiness.py`. Current status is **BLOCKED** because `wsl2_ok=false`; Docker, compiler, debugger, Python, and native-clone checks have not been represented as passes.
-
-## 14. Remaining blockers
-
-The required Windows virtualization component is not active. The current shell is not elevated, so this task cannot enable it. This is a Windows component/configuration blocker, not a BIOS or unsupported-hardware classification.
-
-## 15. Exact next action
-
-Open PowerShell as Administrator and run:
-
-```powershell
-wsl --install --no-distribution
+```text
+architecture_ok=true
+wsl2_ok=true
+docker_ok=true
+container_ok=true
+compiler_ok=true
+cmake_ok=true
+debugger_ok=true
+python_ok=true
+codex_cli_ok=true
+ahsl_ok=true
+disk_free_gb=53.2
+ram_gb=15.4
+cpu_count=20
+READY
 ```
 
-If prompted, restart Windows manually. Then resume this task; the first command will be:
+## 9. Environment changes
 
-```powershell
-wsl -d Ubuntu-22.04 -- uname -a
-```
+- Installed Ubuntu packages: `docker.io` and its runtime dependencies; existing
+  compiler, CMake, LLDB, Python, and Git packages were retained.
+- Added user `cc` to the `docker` group.
+- Changed `/etc/apt/sources.list` from the slow Ubuntu endpoints to the USTC
+  mirror for the same Jammy repositories.
+- Created `/home/cc/.nvm` and updated `/home/cc/.profile` through the nvm
+  installer.
+- Removed only the empty stale nvm lock directory created by the interrupted
+  first Node download. No project file or container data was deleted.
+
+## 10. Remaining constraint
+
+There is no blocker for the generic runtime bootstrap. STORAGE-C and the absent
+Python >=3.11 project environment remain explicit constraints for later work;
+no scientific execution should be inferred from this infrastructure result.

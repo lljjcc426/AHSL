@@ -39,6 +39,33 @@ def compile_trivial_program(work_dir: Path) -> tuple[bool, Path | None]:
     return executed.returncode == 0 and executed.stdout.strip() == "runtime-ok", executable
 
 
+def check_cmake(work_dir: Path) -> bool:
+    cmake = shutil.which("cmake")
+    if cmake is None:
+        return False
+    project_dir = work_dir / "cmake-project"
+    build_dir = work_dir / "cmake-build"
+    project_dir.mkdir()
+    (project_dir / "CMakeLists.txt").write_text(
+        "cmake_minimum_required(VERSION 3.16)\n"
+        "project(runtime_check LANGUAGES CXX)\n"
+        "add_executable(cmake_runtime main.cpp)\n",
+        encoding="ascii",
+    )
+    (project_dir / "main.cpp").write_text(
+        '#include <iostream>\nint main() { std::cout << "cmake-ok\\n"; }\n',
+        encoding="ascii",
+    )
+    configured = run([cmake, "-S", str(project_dir), "-B", str(build_dir)])
+    if configured.returncode != 0:
+        return False
+    built = run([cmake, "--build", str(build_dir)])
+    if built.returncode != 0:
+        return False
+    executed = run([str(build_dir / "cmake_runtime")])
+    return executed.returncode == 0 and executed.stdout.strip() == "cmake-ok"
+
+
 def check_debugger(executable: Path | None) -> bool:
     lldb = shutil.which("lldb")
     if lldb is None or executable is None:
@@ -60,6 +87,14 @@ def check_python(work_dir: Path) -> bool:
     return result.returncode == 0 and result.stdout.strip() == "python-ok"
 
 
+def check_codex_cli() -> bool:
+    codex = shutil.which("codex")
+    if codex is None:
+        return False
+    result = run([codex, "--version"])
+    return result.returncode == 0 and "codex-cli" in result.stdout
+
+
 def memory_gb() -> float:
     meminfo = Path("/proc/meminfo")
     if not meminfo.exists():
@@ -79,7 +114,8 @@ def main() -> None:
     kernel = platform.release().lower()
     architecture_ok = machine in {"x86_64", "amd64"}
     wsl2_ok = "microsoft-standard-wsl2" in kernel
-    disk_free_gb = round(shutil.disk_usage(Path.home()).free / 1024**3, 1)
+    disk_path = Path("/mnt/c") if wsl2_ok and Path("/mnt/c").exists() else Path.home()
+    disk_free_gb = round(shutil.disk_usage(disk_path).free / 1024**3, 1)
     ram_gb = memory_gb()
     cpu_count = os.cpu_count() or 0
 
@@ -99,9 +135,11 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="f1-runtime-") as temporary:
         work_dir = Path(temporary)
         compiler_ok, executable = compile_trivial_program(work_dir)
+        cmake_ok = check_cmake(work_dir)
         debugger_ok = check_debugger(executable)
         python_ok = check_python(work_dir)
 
+    codex_cli_ok = check_codex_cli()
     ahsl_ok = (args.ahsl_path / ".git").exists()
     disk_ok = disk_free_gb >= args.min_disk_gb
     required = [
@@ -110,8 +148,10 @@ def main() -> None:
         docker_ok,
         container_ok,
         compiler_ok,
+        cmake_ok,
         debugger_ok,
         python_ok,
+        codex_cli_ok,
         ahsl_ok,
         disk_ok,
     ]
@@ -128,8 +168,10 @@ def main() -> None:
         "docker_ok": docker_ok,
         "container_ok": container_ok,
         "compiler_ok": compiler_ok,
+        "cmake_ok": cmake_ok,
         "debugger_ok": debugger_ok,
         "python_ok": python_ok,
+        "codex_cli_ok": codex_cli_ok,
         "ahsl_ok": ahsl_ok,
         "disk_free_gb": disk_free_gb,
         "ram_gb": ram_gb,
