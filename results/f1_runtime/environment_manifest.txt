@@ -1,0 +1,13 @@
+audit_time=2026-10-02T22:44:39+08:00
+ubuntu=installed Ubuntu-22.04; runtime unavailable
+kernel=WSL package kernel 6.6.87.2-1; runtime not booted
+wsl=2.5.9.0
+docker=BLOCKED: WSL2 unavailable
+python=BLOCKED: WSL2 unavailable
+gcc=BLOCKED: WSL2 unavailable
+clang=BLOCKED: WSL2 unavailable
+cmake=BLOCKED: WSL2 unavailable
+lldb=BLOCKED: WSL2 unavailable
+git=BLOCKED: native Linux clone cannot be verified
+codex_cli=BLOCKED: WSL2 unavailable
+readiness=BLOCKED
