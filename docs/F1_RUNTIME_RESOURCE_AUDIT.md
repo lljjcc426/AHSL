@@ -57,3 +57,22 @@ The earlier 96 GiB minimum-start and 110 GiB recommended-start figures are
 planning estimates based on broad sample guidance. They are neither measured
 10445 peaks nor changes to the 50 GiB reserve. Their original measurements and
 records remain unchanged.
+
+## 2026-10-05 evaluator dependency-recovery budget
+
+The inaccessible evaluator packages require a source-build path that was not
+included in the earlier 27.17 GiB shortfall. The new phase budget separates
+artifact storage on `E:` from WSL/Podman physical backing on `C:` and preserves
+the 50 GiB reserve on both volumes.
+
+The latest plan snapshot measured 64.06 GiB free on `E:` and 46.28 GiB on
+`C:`. Its maximum start-free requirements are 76.60 GiB on `E:` during the
+second source build and 76.00 GiB on `C:` during the isolated 10445 evaluator
+stage. Current shortfalls are therefore 12.54 GiB and 29.72 GiB. The driver-only
+stage requires 54.75 GiB on `C:`, so it is independently blocked by 8.47 GiB.
+
+The active build allowance is 14 GiB per target, based on the fork's roughly
+10 GiB build-artifact guidance plus source extraction and install staging; a
+separate uncertainty margin is then applied. These values are planning bounds,
+not measured peaks. No VHDX/container-store migration, cleanup, image deletion,
+source download, or build was performed.

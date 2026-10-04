@@ -91,3 +91,25 @@ The UNTOUCHED pool was not accessed.
 
 Raw logs are retained unchanged under `logs/`. The machine summary is
 `machine/minimal_unblock_status.json`. No file was deleted.
+
+## 2026-10-05 dependency-recovery correction
+
+The 27.17 GiB shortfall above applied only to the earlier 10445 derivative and
+evaluator envelope. It is retained as historical planning evidence and is not
+a current release condition for the newly identified Python/LLVM/LLDB source
+rebuild.
+
+The dependency-recovery plan now treats `E:` artifact storage and `C:`
+WSL/Podman storage separately. Its latest snapshot measured 64.06 GiB free on
+`E:` and 46.28 GiB free on `C:`. With task-owned successful work removed,
+the source-rebuild/evaluator path requires 76.60 GiB start-free on `E:` and
+76.00 GiB on `C:`, preserving the 50 GiB reserve. The resulting current
+shortfalls are 12.54 GiB and 29.72 GiB respectively. These remain planning
+bounds, not measured build peaks; the detailed stage basis is in
+`results/f1_d1_evaluator_dependency_recovery/machine/resource_plan.json`.
+
+The authentication paragraph above is also retained as historical state. On
+2026-10-05, WSL user `cc` reported `Logged in using ChatGPT`, and the one
+authorized read-only `gpt-5.6-luna` probe returned `ACCESS_OK`. This resolves
+the earlier authentication/access block, but does not make the dependency or
+evaluator stages ready.

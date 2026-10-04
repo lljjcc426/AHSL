@@ -1,0 +1,11 @@
+{
+  "authoritative_run": "recovery_static_tests_budget_final",
+  "pytest_exit_code": 0,
+  "tests": 9,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "log": "logs/recovery_static_tests_budget_final_raw.log",
+  "junit": "machine/recovery_static_tests_budget_final.junit.xml",
+  "earlier_wrapper_note": "The first 9-pass run completed, but its shell wrapper failed after pytest while capturing PIPESTATUS. Its raw log and blank capture file are retained; it is not the authoritative run."
+}

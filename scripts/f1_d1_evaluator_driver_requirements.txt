@@ -1,0 +1,18 @@
+# Frozen AutoPatch import closure at meta-llama/PurpleLlama commit
+# 4be64c3a24442b51c76175e6ec67722cc3f5fe38.
+#
+# Nine direct constraints come from CybersecurityBenchmarks/requirements.txt.
+# botocore is intentionally resolved through the pinned boto3 distribution.
+# requests is a direct import omitted by that file; 2.33.0 is the version
+# already pinned elsewhere in the same frozen repository commit.
+
+async_lru==2.0.5
+boto3==1.37.31
+langchain-core==1.2.28
+openai==1.58.1
+pillow==12.2.0
+requests==2.33.0
+setuptools==78.1.1
+tree-sitter==0.24.0
+tree-sitter-cpp==0.23.4
+typing-extensions==4.11.0

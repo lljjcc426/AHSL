@@ -1,0 +1,225 @@
+{
+  "status": "BLOCKED",
+  "reserve_gib": 50.0,
+  "cleanup_successful_work": true,
+  "estimate_class": "phase-specific planning bounds, not measured build peaks",
+  "source_versions": {
+    "python": "3.7.17",
+    "llvm_lldb": "13.0.1",
+    "cmake_ubuntu_16_04": "3.20.0"
+  },
+  "stage_rows": [
+    {
+      "stage": "driver-dependencies",
+      "role_occupancy_gib": {
+        "cache": 1.0,
+        "logs": 0.25,
+        "container": 1.5
+      },
+      "artifact_required_start_free_gib": 53.5,
+      "container_required_start_free_gib": 57.5,
+      "combined_required_start_free_gib": 61.0,
+      "volume_status": {
+        "artifact": {
+          "free_gib": 64.06,
+          "required_start_free_gib": 53.5,
+          "status": "PASS"
+        },
+        "container": {
+          "free_gib": 40.97,
+          "required_start_free_gib": 57.5,
+          "status": "BLOCKED"
+        }
+      }
+    },
+    {
+      "stage": "prepare",
+      "role_occupancy_gib": {
+        "cache": 4.0,
+        "logs": 0.25,
+        "container": 1.0
+      },
+      "artifact_required_start_free_gib": 56.5,
+      "container_required_start_free_gib": 57.0,
+      "combined_required_start_free_gib": 63.5,
+      "volume_status": {
+        "artifact": {
+          "free_gib": 64.06,
+          "required_start_free_gib": 56.5,
+          "status": "PASS"
+        },
+        "container": {
+          "free_gib": 40.97,
+          "required_start_free_gib": 57.0,
+          "status": "BLOCKED"
+        }
+      }
+    },
+    {
+      "stage": "build-first",
+      "role_occupancy_gib": {
+        "work": 28.0,
+        "cache": 8.0,
+        "logs": 0.5,
+        "container": 4.0
+      },
+      "artifact_required_start_free_gib": 94.75,
+      "container_required_start_free_gib": 60.0,
+      "combined_required_start_free_gib": 104.75,
+      "volume_status": {
+        "artifact": {
+          "free_gib": 64.06,
+          "required_start_free_gib": 94.75,
+          "status": "BLOCKED"
+        },
+        "container": {
+          "free_gib": 40.97,
+          "required_start_free_gib": 60.0,
+          "status": "BLOCKED"
+        }
+      }
+    },
+    {
+      "stage": "build-second",
+      "role_occupancy_gib": {
+        "work": 28.0,
+        "cache": 12.0,
+        "logs": 0.75,
+        "container": 7.0
+      },
+      "artifact_required_start_free_gib": 99.0,
+      "container_required_start_free_gib": 63.0,
+      "combined_required_start_free_gib": 112.0,
+      "volume_status": {
+        "artifact": {
+          "free_gib": 64.06,
+          "required_start_free_gib": 99.0,
+          "status": "BLOCKED"
+        },
+        "container": {
+          "free_gib": 40.97,
+          "required_start_free_gib": 63.0,
+          "status": "BLOCKED"
+        }
+      }
+    },
+    {
+      "stage": "package",
+      "role_occupancy_gib": {
+        "work": 8.0,
+        "cache": 12.0,
+        "output": 2.0,
+        "logs": 0.75,
+        "container": 7.0
+      },
+      "artifact_required_start_free_gib": 82.0,
+      "container_required_start_free_gib": 63.0,
+      "combined_required_start_free_gib": 95.0,
+      "volume_status": {
+        "artifact": {
+          "free_gib": 64.06,
+          "required_start_free_gib": 82.0,
+          "status": "BLOCKED"
+        },
+        "container": {
+          "free_gib": 40.97,
+          "required_start_free_gib": 63.0,
+          "status": "BLOCKED"
+        }
+      }
+    },
+    {
+      "stage": "package-test",
+      "role_occupancy_gib": {
+        "cache": 12.0,
+        "output": 2.0,
+        "logs": 1.0,
+        "container": 10.0
+      },
+      "artifact_required_start_free_gib": 68.25,
+      "container_required_start_free_gib": 66.0,
+      "combined_required_start_free_gib": 84.25,
+      "volume_status": {
+        "artifact": {
+          "free_gib": 64.06,
+          "required_start_free_gib": 68.25,
+          "status": "BLOCKED"
+        },
+        "container": {
+          "free_gib": 40.97,
+          "required_start_free_gib": 66.0,
+          "status": "BLOCKED"
+        }
+      }
+    },
+    {
+      "stage": "official-derived-images",
+      "role_occupancy_gib": {
+        "cache": 12.0,
+        "output": 2.0,
+        "logs": 1.0,
+        "container": 16.0
+      },
+      "artifact_required_start_free_gib": 68.25,
+      "container_required_start_free_gib": 72.0,
+      "combined_required_start_free_gib": 90.25,
+      "volume_status": {
+        "artifact": {
+          "free_gib": 64.06,
+          "required_start_free_gib": 68.25,
+          "status": "BLOCKED"
+        },
+        "container": {
+          "free_gib": 40.97,
+          "required_start_free_gib": 72.0,
+          "status": "BLOCKED"
+        }
+      }
+    },
+    {
+      "stage": "evaluator-10445",
+      "role_occupancy_gib": {
+        "cache": 12.0,
+        "output": 2.0,
+        "logs": 1.0,
+        "container": 24.0
+      },
+      "artifact_required_start_free_gib": 68.25,
+      "container_required_start_free_gib": 80.0,
+      "combined_required_start_free_gib": 98.25,
+      "volume_status": {
+        "artifact": {
+          "free_gib": 64.06,
+          "required_start_free_gib": 68.25,
+          "status": "BLOCKED"
+        },
+        "container": {
+          "free_gib": 40.97,
+          "required_start_free_gib": 80.0,
+          "status": "BLOCKED"
+        }
+      }
+    }
+  ],
+  "volume_requirements": {
+    "artifact": {
+      "free_gib": 64.06,
+      "required_start_free_gib": 99.0,
+      "additional_free_space_needed_gib": 34.94
+    },
+    "container": {
+      "free_gib": 40.97,
+      "required_start_free_gib": 80.0,
+      "additional_free_space_needed_gib": 39.03
+    }
+  },
+  "paths": {
+    "work_dir": "/mnt/e/GHW/ahsl/results/f1_d1_evaluator_dependency_recovery/runtime/work",
+    "cache_dir": "/mnt/e/GHW/ahsl/results/f1_d1_evaluator_dependency_recovery/runtime/cache",
+    "output_dir": "/mnt/e/GHW/ahsl/results/f1_d1_evaluator_dependency_recovery/runtime/output",
+    "logs_dir": "/mnt/e/GHW/ahsl/results/f1_d1_evaluator_dependency_recovery/logs/recovery_script",
+    "artifact_host_storage_path": "/mnt/e",
+    "container_store": "/home/cc/.local/share/containers/storage",
+    "container_host_storage_path": "/mnt/c"
+  }
+}

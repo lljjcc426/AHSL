@@ -1,0 +1,26 @@
+{
+  "wsl_distribution": "Ubuntu-22.04",
+  "wsl_user": "cc",
+  "cli_version": "0.160.0",
+  "authentication": "Logged in using ChatGPT",
+  "target_model": "gpt-5.6-luna",
+  "reasoning_effort": "none",
+  "sandbox": "read-only",
+  "workspace": "empty isolated probe workspace",
+  "trajectory_count": 1,
+  "wall_time_limit_seconds": 60,
+  "actual_model_requests": 1,
+  "result": "PASS",
+  "response": "ACCESS_OK",
+  "parameters_supported": true,
+  "usage": {
+    "input_tokens": 11559,
+    "cached_input_tokens": 3840,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 6,
+    "reasoning_output_tokens": 0
+  },
+  "launcher_failures_before_request": 3,
+  "launcher_failure_reason": "shell quoting/PATH resolution; no model request was sent by these attempts",
+  "notes": "Model-list refresh timed out in stderr, but the explicitly selected model request completed with exit code 0. No credential or token was recorded."
+}
