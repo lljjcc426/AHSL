@@ -1,0 +1,40 @@
+{
+  "audit_time": "2026-10-04T22:05:18+08:00",
+  "status": "STORAGE_BLOCKED",
+  "wsl_vhdx_host_volume": "C:",
+  "wsl_vhdx_path": "C:\\Users\\cc\\AppData\\Local\\wsl\\{ea43aa54-76b9-435e-bd5d-dc990288f070}\\ext4.vhdx",
+  "wsl_vhdx_size_gib": 15.48,
+  "host_free_gib": {
+    "C": 46.87,
+    "D": 91.62,
+    "E": 64.44,
+    "F": 88.59
+  },
+  "docker_root": "/var/lib/docker",
+  "docker_logical_image_size_mb": 119.4,
+  "podman_root": "/home/cc/.local/share/containers/storage",
+  "podman_actual_disk_gib": 7.6,
+  "podman_logical_image_size_gb": 15.62,
+  "protection_floor_gib": 50.0,
+  "official_sample_guidance": "approximately 500 GB for 20 cases",
+  "official_average_per_case_gb": 25.0,
+  "existing_analysis_exposed_pair_logical_gb": 7.77,
+  "single_instance_planning_estimate_gib": {
+    "vulnerable_fixed_and_derived_images": 25.0,
+    "download_unpack_build_peak_overhead": 12.0,
+    "fuzz_and_differential_temporary_space": 8.0,
+    "logs_and_retained_outputs": 1.0,
+    "incremental_peak_total": 46.0
+  },
+  "minimum_start_free_gib": 96.0,
+  "host_c_free_initial_pre_environment_gib": 48.55,
+  "host_c_free_post_environment_gib": 47.39,
+  "host_c_free_resource_audit_snapshot_gib": 47.10,
+  "minimum_additional_capacity_gib": 49.1,
+  "recommended_start_free_gib": 110.0,
+  "recommended_additional_capacity_gib": 63.1,
+  "estimate_limit": "No Development image manifests were fetched, so the selected-instance peak cannot be proven. The planning estimate combines official sample guidance with existing local image-size evidence.",
+  "large_download_started": false,
+  "lite_pull_started": false,
+  "global_cleanup_run": false
+}

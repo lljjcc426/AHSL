@@ -155,3 +155,11 @@ Development split只使用 project/crash/sanitizer和补丁规模元数据，不
 ## 39. Exact next action
 
 在具备 x86-64 Linux、Podman/Docker、至少500GB可用空间的主机上，先运行2-3个 ANALYSIS-EXPOSED sanity case；通过后才对25例 Development 启动同骨干 baseline。
+
+## 40. 2026-10-04 runtime re-entry addendum
+
+WSL2、Docker 和 Podman 已可运行，Python 3.12 专用环境中的 F1 协议测试
+12/12 通过。但容器存储所在 `C:` 仅余 46.87 GiB，低于未修改的 50 GiB
+预下载保护线；WSL-native Codex CLI 也因未认证返回 401。基准容器、官方
+验证器和 baseline 均未运行，V0-V4 均为 NOT_RUN。原 Development/UNTOUCHED/
+ANALYSIS-EXPOSED 划分保持不变，旧 F9 记录未覆盖。

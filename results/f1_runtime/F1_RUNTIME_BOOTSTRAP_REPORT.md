@@ -107,3 +107,12 @@ READY
 There is no blocker for the generic runtime bootstrap. STORAGE-C and the absent
 Python >=3.11 project environment remain explicit constraints for later work;
 no scientific execution should be inferred from this infrastructure result.
+
+## 2026-10-04 post-bootstrap re-entry note
+
+The Linux boot/runtime result remains valid. A dedicated Python 3.12 F1
+environment now passes the 12 F1 protocol tests. Current generic readiness is
+`PARTIAL`, not because WSL or Docker regressed, but because the host-backed free
+space is now below the unchanged 50 GiB floor. F1 benchmark readiness is
+separately `BLOCKED` by storage and WSL-native Codex authentication. This note
+does not rewrite the measurements or conclusion at the original bootstrap time.

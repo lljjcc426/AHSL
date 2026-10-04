@@ -1,0 +1,10 @@
+RECOVERY_RERUN_AFTER_LOG_TRUNCATION
+Original install commands are recorded in python_environment.txt
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+Requirement already satisfied: uv in /home/cc/.local/lib/python3.10/site-packages (0.12.23)
+
+[notice] A new release of pip is available: 26.0.1 -> 26.2.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+Python 3.12 is already installed
+Using Python 3.12.15 environment at: /home/cc/.venvs/ahsl-f1-d1-runtime-reentry
+Checked 2 packages in 2ms

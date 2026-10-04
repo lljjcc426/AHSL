@@ -1,0 +1,36 @@
+F1-D1 dedicated Python environment
+audit_time=2026-10-04T21:40:29+08:00
+python_version=3.12.15
+sys_executable=/home/cc/.venvs/ahsl-f1-d1-runtime-reentry/bin/python
+environment_path=/home/cc/.venvs/ahsl-f1-d1-runtime-reentry
+environment_manager=uv 0.12.23
+system_python_replaced=false
+sudo_pip_used=false
+
+install_commands:
+PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple python3 -m pip install --user uv
+/home/cc/.local/bin/uv python install 3.12
+/home/cc/.local/bin/uv venv --python 3.12 /home/cc/.venvs/ahsl-f1-d1-runtime-reentry
+UV_DEFAULT_INDEX=https://pypi.tuna.tsinghua.edu.cn/simple /home/cc/.local/bin/uv pip install --python /home/cc/.venvs/ahsl-f1-d1-runtime-reentry/bin/python pytest pandas
+
+installed_packages:
+iniconfig==2.3.0
+numpy==2.5.3
+packaging==26.3
+pandas==3.0.6
+pluggy==1.6.0
+pygments==2.21.0
+pytest==9.1.1
+python-dateutil==2.9.0.post0
+six==1.17.0
+
+dependency_check=PASS (uv pip check: all installed packages compatible)
+f1_imports=PASS
+f1_protocol_tests=PASS (12 passed in 0.60s in the recovered full log)
+legacy_full_suite=NOT_RUN
+host_c_free_before_gib=48.55
+host_c_free_after_environment_gib=47.39
+vhdx_size_before_gib=14.95
+vhdx_size_after_environment_gib=15.33
+
+note=The first direct PyPI uv download was interrupted for lack of progress. The retry used the Tsinghua PyPI mirror. uv created the venv without pip; package inventory and compatibility were therefore recorded with uv pip freeze/check. The original install log was later truncated by a failed NUL-cleanup command; its replacement is explicitly marked as an idempotent recovery verification, while the exact install commands remain above.

@@ -1,4 +1,11 @@
-"""Generic WSL/Linux runtime readiness checks for the F1 environment."""
+"""Generic WSL/Linux runtime checks, not F1 benchmark readiness.
+
+``ahsl_ok`` only confirms that the requested checkout path contains ``.git``.
+``python_ok`` creates a temporary venv and runs one Python statement; it does
+not validate the AHSL Python version or dependencies. ``codex_cli_ok`` only
+checks that the executable is on PATH and answers ``--version``; it does not
+prove authentication, model access, or inference availability.
+"""
 
 from __future__ import annotations
 
@@ -103,6 +110,16 @@ def memory_gb() -> float:
     return round(int(first_line.split()[1]) / 1024**2, 1)
 
 
+def classify_readiness(*, architecture_ok: bool, wsl2_ok: bool, required: list[bool]) -> str:
+    if not architecture_ok or not wsl2_ok:
+        return "BLOCKED"
+    return "READY" if all(required) else "PARTIAL"
+
+
+def readiness_exit_code(status: str) -> int:
+    return {"READY": 0, "PARTIAL": 1, "BLOCKED": 2}[status]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ahsl-path", type=Path, default=Path.home() / "research" / "AHSL")
@@ -155,12 +172,11 @@ def main() -> None:
         ahsl_ok,
         disk_ok,
     ]
-    if not architecture_ok or not wsl2_ok:
-        status = "BLOCKED"
-    elif all(required):
-        status = "READY"
-    else:
-        status = "PARTIAL"
+    status = classify_readiness(
+        architecture_ok=architecture_ok,
+        wsl2_ok=wsl2_ok,
+        required=required,
+    )
 
     values = {
         "architecture_ok": architecture_ok,
@@ -180,6 +196,7 @@ def main() -> None:
     for key, value in values.items():
         print(f"{key}={str(value).lower() if isinstance(value, bool) else value}")
     print(status)
+    raise SystemExit(readiness_exit_code(status))
 
 
 if __name__ == "__main__":

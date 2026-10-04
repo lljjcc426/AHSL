@@ -1,0 +1,4 @@
+path,type,created_this_run,status,deleted,notes
+/tmp/f1-d1-runtime-reentry-agent-probe,directory,true,retained,false,empty non-benchmark read-only probe workspace
+/home/cc/.venvs/ahsl-f1-d1-runtime-reentry,python_environment,true,retained,false,dedicated F1 environment; excluded from Git
+/home/cc/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu,python_runtime,true,retained,false,uv-managed Python runtime

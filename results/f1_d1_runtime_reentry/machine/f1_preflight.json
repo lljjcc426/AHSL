@@ -1,0 +1,13 @@
+{
+  "python_version_ok": "PASS",
+  "f1_imports_ok": "PASS",
+  "f1_protocol_tests_ok": "PASS",
+  "agent_access_ok": "BLOCKED",
+  "benchmark_storage_feasible": "BLOCKED",
+  "benchmark_container_sanity": "NOT_RUN",
+  "verifier_sanity": "NOT_RUN",
+  "host_storage_path": "/mnt/c",
+  "disk_free_gb": 46.9,
+  "min_storage_gb": 50.0,
+  "status": "BLOCKED"
+}

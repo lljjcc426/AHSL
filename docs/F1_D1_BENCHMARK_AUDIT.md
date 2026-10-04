@@ -11,3 +11,11 @@ Official current storage guidance is roughly 500GB for the 20-case sample and 2T
 ## SEC-Bench route
 
 SEC-Bench supports vulnerability patching plus PoC generation with Dockerized instances and SWE-agent/OpenHands/Aider/smolagents. Its current setup requires Python 3.12+, Docker, and over 200GB. Its patch-verification semantics are not identical to AutoPatchBench's LLDB differential state comparison, so it is an independent security-repair family, not a drop-in replication comparator. It is audited but not executed in F1-D1.
+
+## 2026-10-04 runtime re-entry note
+
+The generic Linux/container blocker is cleared, but benchmark readiness is not.
+Both Docker and Podman stores are backed by the Ubuntu VHDX on `C:`, which had
+46.87 GiB free, below the unchanged 50 GiB pre-download floor. No Development
+images were fetched and no verifier stage was run. The original audit above is
+retained as the historical state at the time it was written.

@@ -1,0 +1,14 @@
+architecture_ok=true
+wsl2_ok=true
+docker_ok=true
+container_ok=true
+compiler_ok=true
+cmake_ok=true
+debugger_ok=true
+python_ok=true
+codex_cli_ok=true
+ahsl_ok=true
+disk_free_gb=46.9
+ram_gb=15.4
+cpu_count=20
+PARTIAL
