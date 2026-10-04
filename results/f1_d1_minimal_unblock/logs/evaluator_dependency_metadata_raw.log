@@ -1,0 +1,22 @@
+timestamp=2026-10-04T22:38:17.7554026+08:00
+purplellama_commit=4be64c3a24442b51c76175e6ec67722cc3f5fe38
+local_dependency=differential-debugging-deps-20.04.deb exists=False
+metadata_request=https://purplellama-cyberseceval.s3.amazonaws.com/cyberseceval3/autopatch_bench/differential-debugging-deps-20.04.deb
+HTTP/1.1 403 Forbidden
+x-amz-request-id: T0SJRDRW6101EFMC
+x-amz-id-2: NfnlBIWfZA9wt2fTpJnLfwINge1XioJ3QrAbhx04tDQUgxz9pvrrN1w1cqqYr3SYrP9tyrlNv8GnxtPZKsfx6cvTEuA6jIcv
+Content-Type: application/xml
+Transfer-Encoding: chunked
+Date: Sun, 04 Oct 2026 14:38:19 GMT
+Server: AmazonS3
+
+local_dependency=differential-debugging-deps-16.04.deb exists=False
+metadata_request=https://purplellama-cyberseceval.s3.amazonaws.com/cyberseceval3/autopatch_bench/differential-debugging-deps-16.04.deb
+HTTP/1.1 403 Forbidden
+x-amz-request-id: AFYYTX23HNQ32CZM
+x-amz-id-2: OmBAGUv0uwR2lfVT9zKSie6uX3Vsp9Fq4YudLyP0P8gA5Qxgchuj6+SVlzUzoD3nbtpGjJPYwDM=
+Content-Type: application/xml
+Transfer-Encoding: chunked
+Date: Sun, 04 Oct 2026 14:38:21 GMT
+Server: AmazonS3
+

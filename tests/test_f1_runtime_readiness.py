@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from scripts.check_f1_d1_preflight import protocol_result
+from scripts.check_f1_d1_preflight import protocol_result, storage_feasibility
 from scripts.check_f1_runtime_readiness import classify_readiness, readiness_exit_code
 
 
@@ -27,3 +27,11 @@ def test_protocol_result_reads_pytest_testsuites(tmp_path):
         encoding="ascii",
     )
     assert protocol_result(junit) == "PASS"
+
+
+def test_storage_budget_blocks_51_gib_when_incremental_peak_exceeds_headroom():
+    assert storage_feasibility(51.0, 2.0, 0.0, 50.0) == "BLOCKED"
+
+
+def test_storage_budget_is_unknown_without_incremental_peak():
+    assert storage_feasibility(80.0, None, 5.0, 50.0) == "UNKNOWN"

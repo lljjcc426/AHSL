@@ -50,6 +50,22 @@ def overall_status(checks: dict[str, str]) -> str:
     return "PARTIAL"
 
 
+def storage_feasibility(
+    free_gb: float | None,
+    estimated_incremental_peak_gb: float | None,
+    uncertainty_margin_gb: float | None,
+    reserve_gb: float,
+) -> str:
+    if (
+        free_gb is None
+        or estimated_incremental_peak_gb is None
+        or uncertainty_margin_gb is None
+    ):
+        return "UNKNOWN"
+    remaining_gb = free_gb - estimated_incremental_peak_gb - uncertainty_margin_gb
+    return "PASS" if remaining_gb >= reserve_gb else "BLOCKED"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--protocol-junit", type=Path)
@@ -57,7 +73,15 @@ def main() -> None:
     parser.add_argument("--container-sanity-result", choices=RESULT_CHOICES, default="NOT_RUN")
     parser.add_argument("--verifier-sanity-result", choices=RESULT_CHOICES, default="NOT_RUN")
     parser.add_argument("--host-storage-path", type=Path, default=Path("/mnt/c"))
-    parser.add_argument("--min-storage-gb", type=float, default=50.0)
+    parser.add_argument("--estimated-incremental-peak-gb", type=float)
+    parser.add_argument("--uncertainty-margin-gb", type=float)
+    parser.add_argument(
+        "--reserve-storage-gb",
+        "--min-storage-gb",
+        dest="reserve_storage_gb",
+        type=float,
+        default=50.0,
+    )
     parser.add_argument("--json-output", type=Path)
     args = parser.parse_args()
 
@@ -66,11 +90,27 @@ def main() -> None:
     f1_protocol_tests_ok = protocol_result(args.protocol_junit)
 
     if args.host_storage_path.exists():
-        disk_free_gb = round(shutil.disk_usage(args.host_storage_path).free / 1024**3, 1)
-        benchmark_storage_feasible = "PASS" if disk_free_gb >= args.min_storage_gb else "BLOCKED"
+        disk_free_gb = shutil.disk_usage(args.host_storage_path).free / 1024**3
     else:
         disk_free_gb = None
-        benchmark_storage_feasible = "UNKNOWN"
+    benchmark_storage_feasible = storage_feasibility(
+        disk_free_gb,
+        args.estimated_incremental_peak_gb,
+        args.uncertainty_margin_gb,
+        args.reserve_storage_gb,
+    )
+    storage_remaining_after_budget_gb = (
+        None
+        if disk_free_gb is None
+        or args.estimated_incremental_peak_gb is None
+        or args.uncertainty_margin_gb is None
+        else round(
+            disk_free_gb
+            - args.estimated_incremental_peak_gb
+            - args.uncertainty_margin_gb,
+            2,
+        )
+    )
 
     checks = {
         "python_version_ok": python_version_ok,
@@ -85,8 +125,13 @@ def main() -> None:
     payload = {
         **checks,
         "host_storage_path": str(args.host_storage_path),
-        "disk_free_gb": disk_free_gb,
-        "min_storage_gb": args.min_storage_gb,
+        "host_storage_free_gb": (
+            None if disk_free_gb is None else round(disk_free_gb, 2)
+        ),
+        "estimated_incremental_peak_gb": args.estimated_incremental_peak_gb,
+        "uncertainty_margin_gb": args.uncertainty_margin_gb,
+        "reserve_storage_gb": args.reserve_storage_gb,
+        "storage_remaining_after_budget_gb": storage_remaining_after_budget_gb,
         "status": status,
     }
     for key, value in payload.items():

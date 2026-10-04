@@ -1,0 +1,29 @@
+task=F1-D1 Minimal Unblock & Evaluator Sanity
+audit_date=2026-10-04 Asia/Shanghai
+baseline_commit=cd1b6212f924a2b74aeeadb2fa3a3b60af7e16a7
+branch=project-f1-d1-minimal-unblock
+python=/home/cc/.venvs/ahsl-f1-d1-runtime-reentry/bin/python
+python_environment_rebuilt=false
+protocol_evidence_source=results/f1_d1_runtime_reentry/machine/f1_protocol_pytest.xml
+protocol_evidence_result=12 passed (existing evidence; not rerun)
+legacy_full_suite=NOT_RUN
+readiness_unit_tests=7 passed
+storage_formula=free-estimated_incremental_peak-margin>=reserve
+storage_inputs_gib=46.83-18-6>=50
+storage_result=BLOCKED
+minimum_additional_free_space_gib=27.17
+agent_login_status=NOT_LOGGED_IN
+model_access_probe=NOT_RUN
+model_requests_sent=0
+evaluator_calibration=NOT_RUN
+development_baseline=NOT_RUN
+V0=NOT_RUN
+V1=NOT_RUN
+V2=NOT_RUN
+V3=NOT_RUN
+V4=NOT_RUN
+untouched_pool_accessed=false
+image_download_started=false
+container_started=false
+cleanup_or_prune_run=false
+files_deleted=false

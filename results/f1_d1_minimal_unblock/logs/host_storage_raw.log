@@ -1,0 +1,7 @@
+timestamp=2026-10-04T22:37:21.4267964+08:00
+volume=C: free_bytes=50295861248 free_gib=46.84 used_gib=439.8
+volume=D: free_bytes=98380738560 free_gib=91.62 used_gib=404.26
+volume=E: free_bytes=69186064384 free_gib=64.43 used_gib=376.19
+volume=F: free_bytes=95126544384 free_gib=88.59 used_gib=369.37
+volume=Temp: free_bytes=50295861248 free_gib=46.84 used_gib=439.8
+distribution=Ubuntu-22.04 base_path=C:\Users\cc\AppData\Local\wsl\{ea43aa54-76b9-435e-bd5d-dc990288f070} vhdx=C:\Users\cc\AppData\Local\wsl\{ea43aa54-76b9-435e-bd5d-dc990288f070}\ext4.vhdx vhdx_bytes=16616783872 vhdx_gib=15.48

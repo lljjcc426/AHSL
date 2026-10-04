@@ -1,0 +1,14 @@
+python_version_ok=PASS
+f1_imports_ok=PASS
+f1_protocol_tests_ok=PASS
+agent_access_ok=BLOCKED
+benchmark_storage_feasible=BLOCKED
+benchmark_container_sanity=NOT_RUN
+verifier_sanity=NOT_RUN
+host_storage_path=/mnt/c
+host_storage_free_gb=46.8
+estimated_incremental_peak_gb=18.0
+uncertainty_margin_gb=6.0
+reserve_storage_gb=50.0
+storage_remaining_after_budget_gb=22.8
+status=BLOCKED

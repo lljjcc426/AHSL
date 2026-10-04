@@ -38,3 +38,22 @@ Docker uses `/var/lib/docker`; rootless Podman uses
 and therefore consume `C:`. The frozen 50 GiB protection floor was not lowered.
 Single-instance benchmark preparation is `STORAGE_BLOCKED`; no benchmark image
 download or cleanup was started.
+
+## 2026-10-04 minimal-unblock storage correction
+
+Benchmark feasibility is now evaluated as
+`free - estimated_incremental_peak - uncertainty_margin >= reserve` on each
+host volume that actually backs the operation. An unknown instance budget is
+`UNKNOWN`, not `PASS`. The approved reserve remains 50 GiB.
+
+For the existing 10445 Podman route, `C:` is the only relevant host volume.
+The final snapshot had 46.83 GiB free. The instance-specific planning budget
+is 18 GiB incremental peak (9 GiB derived build/intermediate layers, 8 GiB
+fuzzing and differential temporary state, 1 GiB logs) plus a separately stated
+6 GiB uncertainty margin. The resulting planning requirement is 74 GiB free,
+a 27.17 GiB shortfall. This estimate is not a measured build peak.
+
+The earlier 96 GiB minimum-start and 110 GiB recommended-start figures are
+planning estimates based on broad sample guidance. They are neither measured
+10445 peaks nor changes to the 50 GiB reserve. Their original measurements and
+records remain unchanged.

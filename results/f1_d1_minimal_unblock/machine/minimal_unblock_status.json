@@ -1,0 +1,127 @@
+{
+  "audit_time": "2026-10-04T22:48:40+08:00",
+  "baseline_commit": "cd1b6212f924a2b74aeeadb2fa3a3b60af7e16a7",
+  "branch": "project-f1-d1-minimal-unblock",
+  "storage": {
+    "status": "STORAGE_BLOCKED",
+    "governing_host_volume": "C:",
+    "host_free_bytes": 50282258432,
+    "host_free_gib": 46.83,
+    "estimated_incremental_peak_gib": 18.0,
+    "estimate_components_gib": {
+      "derived_images_and_build_intermediates": 9.0,
+      "fuzz_and_differential_temporary_state": 8.0,
+      "logs_and_retained_outputs": 1.0
+    },
+    "uncertainty_margin_gib": 6.0,
+    "approved_reserve_gib": 50.0,
+    "required_start_free_gib": 74.0,
+    "remaining_after_estimate_and_margin_gib": 22.83,
+    "minimum_additional_free_space_gib": 27.17,
+    "estimate_class": "10445-specific planning estimate, not a measured peak",
+    "other_host_volumes_relevant": false,
+    "other_volume_reason": "The WSL VHDX and rootless Podman store are both on C:. No migration was authorized."
+  },
+  "wsl_storage": {
+    "distribution": "Ubuntu-22.04",
+    "vhdx_path": "C:\\Users\\cc\\AppData\\Local\\wsl\\{ea43aa54-76b9-435e-bd5d-dc990288f070}\\ext4.vhdx",
+    "vhdx_size_gib": 15.48,
+    "podman_version": "3.4.4",
+    "podman_graph_root": "/home/cc/.local/share/containers/storage",
+    "podman_graph_root_observed_gib": 7.51,
+    "architecture": "amd64"
+  },
+  "instance_10445": {
+    "scientific_state": "ANALYSIS-EXPOSED",
+    "engineering_calibration_only": true,
+    "base_images": {
+      "vulnerable": {
+        "tag": "docker.io/n132/arvo:10445-vul",
+        "id": "19fdb03b92349007648e0320c72eafc564ef7899139c9d71bb19e37cf4cc9e66",
+        "digest": "sha256:2d4e8a62c1d800758120fc4540751c29b2aa81c0018a2f766df5fc938dc17af2",
+        "size_bytes": 3571690192,
+        "layer_count": 25
+      },
+      "fixed": {
+        "tag": "docker.io/n132/arvo:10445-fix",
+        "id": "a0ae060fd80ba41e6f0dd9718972c12ca9ac6edea0685bb0adea41fe9c2d1af0",
+        "digest": "sha256:f16f1cfedd19f264184b5394790aec44907ca520902fb02131e65c9d4a2ed2dc",
+        "size_bytes": 4198873200,
+        "layer_count": 31
+      },
+      "combined_logical_gib": 7.24,
+      "incremental_download_required": false
+    },
+    "dangling_images": {
+      "ids": [
+        "919fdb197f48fe9e1c9ecd3178e015705c0eb336d4d3ee7ad7cf7aa10080cd48",
+        "90f452d531896dabf982cdd65a8ac2708c8c0d216a6d62863b28222e0d14922b"
+      ],
+      "rootfs_layers_identical_to_base_pair": true,
+      "additional_rootfs_layers": 0,
+      "usable_as_official_derived_images": false,
+      "reason": "Official localhost/autopatch tags are absent and the dangling images add no derived RootFS layers."
+    },
+    "official_flow_compatibility": {
+      "purplellama_commit": "4be64c3a24442b51c76175e6ec67722cc3f5fe38",
+      "container_engine": "Podman",
+      "base_pair_present": true,
+      "required_derived_tags_present": false,
+      "required_derived_tags": [
+        "localhost/autopatch:10445-vul",
+        "localhost/autopatch:10445-fix"
+      ],
+      "differential_debugging_debs_present": false,
+      "anonymous_s3_metadata_request": "HTTP_403",
+      "evaluator_python_dependencies_present": false
+    }
+  },
+  "authentication": {
+    "wsl_user": "cc",
+    "cli_version": "0.160.0",
+    "login_status": "NOT_LOGGED_IN",
+    "target_model": "gpt-5.6-luna",
+    "target_model_access": "NOT_RUN",
+    "reasoning_setting": "none",
+    "remote_parameter_support": "UNKNOWN",
+    "model_requests_sent_this_run": 0,
+    "agent_ready": "BLOCKED"
+  },
+  "evaluator_calibration": {
+    "instance_id": 10445,
+    "isolation_role": "evaluator-only",
+    "container_sanity": "NOT_RUN",
+    "verifier_sanity": "NOT_RUN",
+    "positive_control": "NOT_RUN",
+    "negative_control": "NOT_RUN",
+    "blocking_reasons": [
+      "storage budget fails on host C:",
+      "official derived images are absent",
+      "required differential-debugging packages are absent and metadata access returned HTTP 403",
+      "current F1 Python environment lacks boto3, botocore, and async-lru"
+    ],
+    "included_in_scientific_success_rate": false
+  },
+  "development_baseline": {
+    "status": "NOT_RUN",
+    "instance_selected": false,
+    "reason": "Storage, agent access, and evaluator calibration gates did not all pass.",
+    "V0": "NOT_RUN",
+    "V1": "NOT_RUN",
+    "V2": "NOT_RUN",
+    "V3": "NOT_RUN",
+    "V4": "NOT_RUN",
+    "untouched_pool_accessed": false
+  },
+  "mutations_not_performed": [
+    "image pull",
+    "image build",
+    "container run",
+    "VHDX migration",
+    "container-store migration",
+    "image deletion",
+    "global prune",
+    "Development instance access",
+    "UNTOUCHED pool access"
+  ]
+}

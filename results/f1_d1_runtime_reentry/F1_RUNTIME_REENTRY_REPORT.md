@@ -108,3 +108,11 @@ Baseline trajectory: **NOT_RUN**. V0, V1, V2, V3, and V4 are each `NOT_RUN`.
 
 The task stops at these explicit pre-execution blockers as required. It does
 not expand to the Development pool and does not introduce a repair mechanism.
+
+## 7. Later storage-semantics clarification
+
+The 96 GiB and 110 GiB figures above are planning estimates derived from broad
+sample guidance, not measured single-instance peaks or protection thresholds.
+The underlying 46.87 GiB host measurement and the original resource record are
+preserved. A later 10445-specific audit uses an explicit incremental estimate,
+uncertainty margin, and the unchanged 50 GiB reserve.
