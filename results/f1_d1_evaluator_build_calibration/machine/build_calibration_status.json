@@ -1,5 +1,5 @@
 {
-  "measured_at": "2026-10-05T15:44:20+08:00",
+  "measured_at": "2026-10-05T23:35:14+08:00",
   "baseline_commit": "8cde34f08956a8c3c6d66f15ed8c8721c4c43bf1",
   "branch": "project-f1-d1-evaluator-dependency-recovery",
   "windows_checkout": "E:\\GHW\\ahsl",
@@ -7,15 +7,15 @@
   "host_storage": {
     "C": {
       "size_bytes": 522526724096,
-      "free_bytes": 99803717632,
-      "free_gib": 92.9495,
+      "free_bytes": 94405967872,
+      "free_gib": 87.9224,
       "workflow_start_reference_required_gib": 76.0,
       "reference_capacity_result": "PASS"
     },
     "E": {
       "size_bytes": 473114341376,
-      "free_bytes": 87109492736,
-      "free_gib": 81.127,
+      "free_bytes": 86889738240,
+      "free_gib": 80.9224,
       "workflow_start_reference_required_gib": 76.6,
       "reference_capacity_result": "PASS"
     },
@@ -33,6 +33,8 @@
   },
   "wsl_runtime": {
     "distribution": "Ubuntu-22.04",
+    "windows_last_boot": "2026-10-05T23:22:12.5+08:00",
+    "post_reboot_retry": "FAILED",
     "start_exit_code": 1,
     "start_error": "Wsl/Service/CreateInstance/CreateVm/HCS/HCS_E_SERVICE_NOT_AVAILABLE",
     "wsl_status": "Current machine configuration does not support WSL2; enable Virtual Machine Platform and BIOS virtualization",
@@ -83,7 +85,7 @@
   },
   "blocker": {
     "class": "WINDOWS_WSL2_RUNTIME",
-    "required_action": "Restart Windows to activate the already requested WSL feature change; if the same error remains, use elevated PowerShell to inspect VirtualMachinePlatform and hypervisorlaunchtype before resuming",
+    "required_action": "Use elevated PowerShell to enable VirtualMachinePlatform explicitly, set hypervisorlaunchtype auto, and restart Windows before resuming",
     "large_download_or_build_started": false
   }
 }

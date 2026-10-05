@@ -44,12 +44,13 @@ existing F1 Python 3.12 environment is `NOT_RUN`, not inferred from this result.
 
 ## Current resource evidence
 
-At 2026-10-05 15:44:20 +08:00, the physical host free-space measurements were:
+After the Windows restart, at 2026-10-05 23:35:14 +08:00, the physical host
+free-space measurements were:
 
 | Host volume | Free bytes | Free GiB | Prior workflow-start reference |
 |---|---:|---:|---:|
-| `C:` | 99,803,717,632 | 92.9495 | 76.00 GiB |
-| `E:` | 87,109,492,736 | 81.1270 | 76.60 GiB |
+| `C:` | 94,405,967,872 | 87.9224 | 76.00 GiB |
+| `E:` | 86,889,738,240 | 80.9224 | 76.60 GiB |
 
 Both physical volumes exceed the prior cumulative planning references after
 the user's cleanup. Those numbers alone are not a current execution PASS.
@@ -74,13 +75,20 @@ Observed Windows state:
 - `wsl --status`: reports that the current configuration does not support
   WSL2 and directs enabling Virtual Machine Platform.
 
-Because `wsl --install --no-distribution` was already run, the next minimal
-action is a Windows restart to activate the requested feature change. If the
-same error remains after restart, elevated PowerShell is required to inspect
-the `VirtualMachinePlatform` feature and BCD `hypervisorlaunchtype`; ordinary
-permissions cannot read those states here. The actual pipeline should resume
-only after Ubuntu-22.04 starts; it should then measure mounts, graphroot,
-memory, and the corrected resource plan before any large download.
+Windows did restart at 2026-10-05 23:22:12 +08:00, but the first post-restart
+Ubuntu launch returned the same error. The required repair is now explicit:
+
+```powershell
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+bcdedit.exe /set hypervisorlaunchtype auto
+Restart-Computer
+```
+
+These commands require an elevated PowerShell; the current non-elevated
+session cannot inspect or modify the relevant feature and BCD state. The
+actual pipeline should resume only after Ubuntu-22.04 starts; it should then
+measure mounts, graphroot, memory, and the corrected resource plan before any
+large download.
 
 ## Stage status
 
