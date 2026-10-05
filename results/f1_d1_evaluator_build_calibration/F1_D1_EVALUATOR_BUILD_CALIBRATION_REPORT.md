@@ -74,11 +74,13 @@ Observed Windows state:
 - `wsl --status`: reports that the current configuration does not support
   WSL2 and directs enabling Virtual Machine Platform.
 
-The next required action is an elevated Windows repair/enable step using
-`wsl --install --no-distribution`, followed by a Windows restart. The actual
-pipeline should resume only after Ubuntu-22.04 starts; it should then measure
-mounts, graphroot, memory, and the corrected resource plan before any large
-download.
+Because `wsl --install --no-distribution` was already run, the next minimal
+action is a Windows restart to activate the requested feature change. If the
+same error remains after restart, elevated PowerShell is required to inspect
+the `VirtualMachinePlatform` feature and BCD `hypervisorlaunchtype`; ordinary
+permissions cannot read those states here. The actual pipeline should resume
+only after Ubuntu-22.04 starts; it should then measure mounts, graphroot,
+memory, and the corrected resource plan before any large download.
 
 ## Stage status
 

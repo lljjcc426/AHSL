@@ -83,7 +83,7 @@
   },
   "blocker": {
     "class": "WINDOWS_WSL2_RUNTIME",
-    "required_action": "From elevated PowerShell, enable or repair Virtual Machine Platform with wsl --install --no-distribution, then restart Windows before resuming",
+    "required_action": "Restart Windows to activate the already requested WSL feature change; if the same error remains, use elevated PowerShell to inspect VirtualMachinePlatform and hypervisorlaunchtype before resuming",
     "large_download_or_build_started": false
   }
 }
