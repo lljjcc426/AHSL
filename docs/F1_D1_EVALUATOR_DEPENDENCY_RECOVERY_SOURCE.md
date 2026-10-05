@@ -58,6 +58,14 @@ operational wrapper as follows:
 - cached targets require Python, LLDB, Python bindings, the SWIG extension, and
   a completion marker;
 - LLDB installation failure is fatal instead of being masked by `|| true`;
+- the staged Python 3.7 interpreter and its shared-library-backed standard
+  extensions must run before LLVM configuration starts;
+- the former broad LLVM `install` target is limited to LLDB, `liblldb`, the
+  Python scripts, `lldb-argdumper`, `lldb-server`, and Clang resource headers;
+- generated shell environment variables append safely under `set -u` without
+  adding an empty search-path element;
+- resource output separates workflow-start cumulative occupancy from the
+  remaining incremental peak at a confirmed checkpoint;
 - generated packages declare their runtime library dependencies and identify
   themselves as `1.0.0+source1`;
 - package tests cover package metadata, amd64 ELF architecture, dynamic

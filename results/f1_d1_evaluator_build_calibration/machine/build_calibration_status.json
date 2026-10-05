@@ -1,0 +1,89 @@
+{
+  "measured_at": "2026-10-05T15:44:20+08:00",
+  "baseline_commit": "8cde34f08956a8c3c6d66f15ed8c8721c4c43bf1",
+  "branch": "project-f1-d1-evaluator-dependency-recovery",
+  "windows_checkout": "E:\\GHW\\ahsl",
+  "windows_worktree_at_start": "clean",
+  "host_storage": {
+    "C": {
+      "size_bytes": 522526724096,
+      "free_bytes": 99803717632,
+      "free_gib": 92.9495,
+      "workflow_start_reference_required_gib": 76.0,
+      "reference_capacity_result": "PASS"
+    },
+    "E": {
+      "size_bytes": 473114341376,
+      "free_bytes": 87109492736,
+      "free_gib": 81.127,
+      "workflow_start_reference_required_gib": 76.6,
+      "reference_capacity_result": "PASS"
+    },
+    "decision": "UNKNOWN",
+    "decision_reason": "WSL could not start, so current mount backing, graphroot, retained checkpoints, and WSL memory could not be measured"
+  },
+  "configured_linux_paths_from_prior_record": {
+    "native_checkout": "/home/cc/research/AHSL",
+    "driver_python": "/home/cc/.venvs/ahsl-f1-d1-runtime-reentry/bin/python",
+    "work": "/mnt/e/GHW/ahsl/results/f1_d1_evaluator_dependency_recovery/runtime/work",
+    "cache": "/mnt/e/GHW/ahsl/results/f1_d1_evaluator_dependency_recovery/runtime/cache",
+    "output": "/mnt/e/GHW/ahsl/results/f1_d1_evaluator_dependency_recovery/runtime/output",
+    "container_store": "/home/cc/.local/share/containers/storage",
+    "current_verification": "NOT_RUN"
+  },
+  "wsl_runtime": {
+    "distribution": "Ubuntu-22.04",
+    "start_exit_code": 1,
+    "start_error": "Wsl/Service/CreateInstance/CreateVm/HCS/HCS_E_SERVICE_NOT_AVAILABLE",
+    "wsl_status": "Current machine configuration does not support WSL2; enable Virtual Machine Platform and BIOS virtualization",
+    "firmware_virtualization_enabled": true,
+    "vm_monitor_mode_extensions": true,
+    "second_level_address_translation": true,
+    "hypervisor_present": false,
+    "WslService": "RUNNING",
+    "HvHost": "STOPPED; start requires elevation",
+    "vmcompute": "NOT_FOUND",
+    "wsl_available_memory": "NOT_RUN",
+    "podman_graphroot": "NOT_RUN"
+  },
+  "implementation": {
+    "set_u_environment_fix": "PASS",
+    "workflow_start_and_remaining_budget_split": "PASS",
+    "build_first_second_resume_mapping": "PASS",
+    "targeted_lldb_install_scope": "PASS_STATIC",
+    "python37_preconfigure_check": "PASS_STATIC",
+    "targeted_tests": {
+      "status": "PASS",
+      "count": 15,
+      "python": "3.11.5 Windows fallback",
+      "f1_python_3_12": "NOT_RUN because WSL cannot start",
+      "exit_code": 0
+    }
+  },
+  "execution": {
+    "mount_function_check": "NOT_RUN",
+    "driver_sync": "NOT_RUN",
+    "driver_check": "NOT_RUN",
+    "prepare": "NOT_RUN",
+    "build_20_04": "NOT_RUN",
+    "build_16_04": "NOT_RUN",
+    "package": "NOT_RUN",
+    "package_test": "NOT_RUN",
+    "official_derived_images": "NOT_RUN",
+    "evaluator_10445": "NOT_RUN",
+    "development_baseline": "OUT_OF_SCOPE",
+    "untouched_pool_accessed": false,
+    "model_requests_sent": 0
+  },
+  "cleanup": {
+    "performed": false,
+    "deleted_files": [],
+    "deleted_directories": [],
+    "deleted_containers": []
+  },
+  "blocker": {
+    "class": "WINDOWS_WSL2_RUNTIME",
+    "required_action": "From elevated PowerShell, enable or repair Virtual Machine Platform with wsl --install --no-distribution, then restart Windows before resuming",
+    "large_download_or_build_started": false
+  }
+}

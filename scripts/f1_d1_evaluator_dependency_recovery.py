@@ -116,6 +116,8 @@ ROLE_MARGIN_GIB = {
     "container": 4.0,
 }
 
+STAGE_ORDER = tuple(CLEANUP_STAGE_ROLES_GIB)
+
 
 class RecoveryError(RuntimeError):
     pass
@@ -189,6 +191,43 @@ def free_gib(path: Path) -> float:
     return shutil.disk_usage(nearest_existing(path)).free / GIB
 
 
+def directory_size_bytes(path: Path) -> int:
+    if not path.exists():
+        return 0
+    total = 0
+    seen: set[tuple[int, int]] = set()
+    for root, directories, files in os.walk(path, followlinks=False):
+        directories[:] = [name for name in directories if not (Path(root) / name).is_symlink()]
+        for name in files:
+            item = Path(root) / name
+            try:
+                stat = item.lstat()
+            except FileNotFoundError:
+                continue
+            identity = (stat.st_dev, stat.st_ino)
+            if identity in seen:
+                continue
+            seen.add(identity)
+            blocks = getattr(stat, "st_blocks", None)
+            total += blocks * 512 if blocks is not None else stat.st_size
+    return total
+
+
+def resource_snapshot(paths: RecoveryPaths) -> dict[str, object]:
+    return {
+        "artifact_free_gib": free_gib(paths.artifact_host_storage),
+        "container_free_gib": free_gib(paths.container_host_storage),
+        "role_bytes": {
+            "work": directory_size_bytes(paths.work),
+            "cache": directory_size_bytes(paths.cache),
+            "output": directory_size_bytes(paths.output),
+            "logs": directory_size_bytes(paths.logs),
+        },
+        "container_store_bytes": directory_size_bytes(paths.container_store),
+        "driver_environment_bytes": directory_size_bytes(Path(sys.prefix)),
+    }
+
+
 def validate_paths(paths: RecoveryPaths) -> None:
     for artifact_path in (paths.work, paths.cache, paths.output, paths.logs):
         if not same_filesystem(artifact_path, paths.artifact_host_storage):
@@ -198,14 +237,14 @@ def validate_paths(paths: RecoveryPaths) -> None:
             )
 
 
-def compute_budget(
+def summarize_stage_budget(
+    stages: dict[str, dict[str, float]],
     artifact_free_gib: float,
     container_free_gib: float,
     reserve_gib: float,
-    cleanup_successful_work: bool,
     same_host_volume: bool,
+    role_field: str,
 ) -> dict[str, object]:
-    stages = CLEANUP_STAGE_ROLES_GIB if cleanup_successful_work else RETAIN_STAGE_ROLES_GIB
     rows: list[dict[str, object]] = []
     maxima: dict[str, float] = {"artifact": 0.0, "container": 0.0, "combined": 0.0}
 
@@ -249,7 +288,7 @@ def compute_budget(
         rows.append(
             {
                 "stage": stage,
-                "role_occupancy_gib": roles,
+                role_field: roles,
                 "artifact_required_start_free_gib": round(artifact_required, 2),
                 "container_required_start_free_gib": round(container_required, 2),
                 "combined_required_start_free_gib": round(combined_required, 2),
@@ -290,58 +329,231 @@ def compute_budget(
     return {
         "status": status,
         "reserve_gib": reserve_gib,
-        "cleanup_successful_work": cleanup_successful_work,
         "estimate_class": "phase-specific planning bounds, not measured build peaks",
-        "source_versions": {
-            "python": PYTHON_VERSION,
-            "llvm_lldb": LLVM_VERSION,
-            "cmake_ubuntu_16_04": CMAKE_VERSION,
-        },
         "stage_rows": rows,
         "volume_requirements": volumes,
     }
 
 
-def budget_for_paths(paths: RecoveryPaths, reserve_gib: float, cleanup: bool) -> dict[str, object]:
+def compute_budget(
+    artifact_free_gib: float,
+    container_free_gib: float,
+    reserve_gib: float,
+    cleanup_successful_work: bool,
+    same_host_volume: bool,
+) -> dict[str, object]:
+    stages = CLEANUP_STAGE_ROLES_GIB if cleanup_successful_work else RETAIN_STAGE_ROLES_GIB
+    plan = summarize_stage_budget(
+        stages,
+        artifact_free_gib,
+        container_free_gib,
+        reserve_gib,
+        same_host_volume,
+        "role_occupancy_gib",
+    )
+    plan.update(
+        {
+            "plan_kind": "workflow_start_cumulative",
+            "cleanup_successful_work": cleanup_successful_work,
+            "source_versions": {
+                "python": PYTHON_VERSION,
+                "llvm_lldb": LLVM_VERSION,
+                "cmake_ubuntu_16_04": CMAKE_VERSION,
+            },
+        }
+    )
+    return plan
+
+
+def compute_remaining_budget(
+    artifact_free_gib: float,
+    container_free_gib: float,
+    reserve_gib: float,
+    cleanup_successful_work: bool,
+    same_host_volume: bool,
+    current_stage: str,
+    confirmed_retained_gib: dict[str, float],
+) -> dict[str, object]:
+    stages = CLEANUP_STAGE_ROLES_GIB if cleanup_successful_work else RETAIN_STAGE_ROLES_GIB
+    if current_stage not in stages:
+        raise RecoveryError(f"Unknown current stage: {current_stage}")
+    start_index = STAGE_ORDER.index(current_stage)
+    remaining: dict[str, dict[str, float]] = {}
+    for stage in STAGE_ORDER[start_index:]:
+        remaining[stage] = {
+            role: round(max(0.0, planned - confirmed_retained_gib.get(role, 0.0)), 4)
+            for role, planned in stages[stage].items()
+        }
+    plan = summarize_stage_budget(
+        remaining,
+        artifact_free_gib,
+        container_free_gib,
+        reserve_gib,
+        same_host_volume,
+        "incremental_role_gib",
+    )
+    plan.update(
+        {
+            "plan_kind": "remaining_incremental_from_confirmed_checkpoint",
+            "current_stage": current_stage,
+            "cleanup_successful_work": cleanup_successful_work,
+            "confirmed_retained_gib": {
+                key: round(value, 4) for key, value in confirmed_retained_gib.items()
+            },
+        }
+    )
+    return plan
+
+
+def resource_state_paths(paths: RecoveryPaths) -> dict[str, str]:
+    return {
+        "work": str(paths.work),
+        "cache": str(paths.cache),
+        "output": str(paths.output),
+        "logs": str(paths.logs),
+        "artifact_host_storage": str(paths.artifact_host_storage),
+        "container_store": str(paths.container_store),
+        "container_host_storage": str(paths.container_host_storage),
+        "driver_environment": str(Path(sys.prefix)),
+    }
+
+
+def load_or_create_resource_state(
+    paths: RecoveryPaths,
+    state_path: Path,
+    reserve_gib: float,
+    cleanup: bool,
+) -> dict[str, object]:
+    expected_paths = resource_state_paths(paths)
+    if state_path.exists():
+        try:
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise RecoveryError(f"Cannot read resource state {state_path}: {exc}") from exc
+        if state.get("paths") != expected_paths:
+            raise RecoveryError("Resource-state paths do not match the current command paths")
+        if state.get("reserve_gib") != reserve_gib or state.get("cleanup_successful_work") != cleanup:
+            raise RecoveryError("Resource-state reserve or cleanup mode does not match the current command")
+        return state
+
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    baseline = resource_snapshot(paths)
+    state = {
+        "version": 1,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "reserve_gib": reserve_gib,
+        "cleanup_successful_work": cleanup,
+        "paths": expected_paths,
+        "baseline": baseline,
+        "checkpoints": [],
+    }
+    state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+    return state
+
+
+def confirmed_retained_from_state(state: dict[str, object]) -> dict[str, float]:
+    checkpoints = state.get("checkpoints", [])
+    if not isinstance(checkpoints, list) or not checkpoints:
+        return {role: 0.0 for role in ROLE_MARGIN_GIB}
+    baseline = state["baseline"]
+    assert isinstance(baseline, dict)
+    latest = checkpoints[-1]
+    assert isinstance(latest, dict)
+    snapshot = latest["snapshot"]
+    assert isinstance(snapshot, dict)
+    baseline_roles = baseline["role_bytes"]
+    snapshot_roles = snapshot["role_bytes"]
+    assert isinstance(baseline_roles, dict) and isinstance(snapshot_roles, dict)
+    retained = {
+        role: max(0, int(snapshot_roles[role]) - int(baseline_roles[role])) / GIB
+        for role in ("work", "cache", "output", "logs")
+    }
+    graphroot_delta = max(
+        0,
+        int(snapshot["container_store_bytes"]) - int(baseline["container_store_bytes"]),
+    )
+    driver_delta = max(
+        0,
+        int(snapshot["driver_environment_bytes"]) - int(baseline["driver_environment_bytes"]),
+    )
+    retained["container"] = (graphroot_delta + driver_delta) / GIB
+    return retained
+
+
+def record_resource_checkpoint(
+    paths: RecoveryPaths,
+    state_path: Path,
+    stage: str,
+) -> None:
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    checkpoints = state.setdefault("checkpoints", [])
+    assert isinstance(checkpoints, list)
+    checkpoints.append(
+        {
+            "stage": stage,
+            "completed_at": datetime.now(timezone.utc).isoformat(),
+            "snapshot": resource_snapshot(paths),
+        }
+    )
+    state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+
+
+def budget_for_paths(
+    paths: RecoveryPaths,
+    reserve_gib: float,
+    cleanup: bool,
+    state_path: Path,
+    current_stage: str,
+) -> dict[str, object]:
     validate_paths(paths)
     same_host_volume = same_filesystem(
         paths.artifact_host_storage, paths.container_host_storage
     )
-    plan = compute_budget(
-        free_gib(paths.artifact_host_storage),
-        free_gib(paths.container_host_storage),
+    state = load_or_create_resource_state(paths, state_path, reserve_gib, cleanup)
+    baseline = state["baseline"]
+    assert isinstance(baseline, dict)
+    workflow_start = compute_budget(
+        float(baseline["artifact_free_gib"]),
+        float(baseline["container_free_gib"]),
         reserve_gib,
         cleanup,
         same_host_volume,
     )
-    plan["paths"] = {
-        "work_dir": str(paths.work),
-        "cache_dir": str(paths.cache),
-        "output_dir": str(paths.output),
-        "logs_dir": str(paths.logs),
-        "artifact_host_storage_path": str(paths.artifact_host_storage),
-        "container_store": str(paths.container_store),
-        "container_host_storage_path": str(paths.container_host_storage),
+    current = resource_snapshot(paths)
+    remaining = compute_remaining_budget(
+        float(current["artifact_free_gib"]),
+        float(current["container_free_gib"]),
+        reserve_gib,
+        cleanup,
+        same_host_volume,
+        current_stage,
+        confirmed_retained_from_state(state),
+    )
+    return {
+        "status": remaining["status"],
+        "workflow_start_plan": workflow_start,
+        "remaining_execution_plan": remaining,
+        "resource_state": str(state_path),
+        "resource_state_checkpoint_count": len(state.get("checkpoints", [])),
+        "paths": {
+            "work_dir": str(paths.work),
+            "cache_dir": str(paths.cache),
+            "output_dir": str(paths.output),
+            "logs_dir": str(paths.logs),
+            "artifact_host_storage_path": str(paths.artifact_host_storage),
+            "container_store": str(paths.container_store),
+            "container_host_storage_path": str(paths.container_host_storage),
+        },
     }
-    return plan
 
 
-def require_capacity(plan: dict[str, object], command: str) -> None:
-    stage_name = {
-        "driver-sync": "driver-dependencies",
-        "prepare": "prepare",
-        "build": "build-second",
-        "package": "package",
-        "test": "package-test",
-    }[command]
-    stage_rows = plan["stage_rows"]
-    assert isinstance(stage_rows, list)
-    row = next(item for item in stage_rows if item["stage"] == stage_name)
-    volume_status = row["volume_status"]
-    assert isinstance(volume_status, dict)
-    if any(item["status"] != "PASS" for item in volume_status.values()):
+def require_capacity(plan: dict[str, object], stage_name: str) -> None:
+    remaining = plan["remaining_execution_plan"]
+    assert isinstance(remaining, dict)
+    if remaining["status"] != "PASS":
         raise RecoveryError(
-            f"Resource plan is BLOCKED before {command} at budget stage {stage_name}; "
+            f"Resource plan is BLOCKED before {stage_name}; "
+            "the current and subsequent incremental plan must pass; "
             "inspect the plan output and do not start large I/O"
         )
 
@@ -472,6 +684,9 @@ cd /work/src/Python-{PYTHON_VERSION}
 make -j"$JOBS"
 make install DESTDIR=/stage
 ln -s /stage/usr/local/python37 /usr/local/python37
+export LD_LIBRARY_PATH="/usr/local/python37/lib${{LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}}"
+/usr/local/python37/bin/python3.7 --version
+/usr/local/python37/bin/python3.7 -c 'import ctypes, sqlite3, ssl; print(ssl.OPENSSL_VERSION)'
 {cmake_setup}
 tar -xzf /cache/sources/llvmorg-{LLVM_VERSION}.tar.gz -C /work/src
 "$CMAKE" -G Ninja \\
@@ -490,12 +705,21 @@ tar -xzf /cache/sources/llvmorg-{LLVM_VERSION}.tar.gz -C /work/src
     -DPYTHON_INCLUDE_DIR=/usr/local/python37/include/python3.7m \\
     -DLLVM_TARGETS_TO_BUILD=X86 \\
     -DLLVM_ENABLE_ASSERTIONS=OFF
-ninja -C /work/llvm-build -j"$JOBS" lldb
-DESTDIR=/stage ninja -C /work/llvm-build -j"$JOBS" install
+ninja -C /work/llvm-build -j"$JOBS" lldb lldb-server
+DESTDIR=/stage ninja -C /work/llvm-build -j"$JOBS" \
+    install-lldb \
+    install-liblldb \
+    install-lldb-argdumper \
+    install-lldb-server \
+    install-lldb-python-scripts \
+    install-clang-resource-headers
 test -x /stage/usr/local/python37/bin/python3.7
 test -x /stage/usr/local/lldb13/bin/lldb
+test -x /stage/usr/local/lldb13/bin/lldb-argdumper
+test -x /stage/usr/local/lldb13/bin/lldb-server
 find /stage/usr/local/lldb13 -path '*/site-packages/lldb/__init__.py' -print -quit | grep -q .
 find /stage/usr/local/lldb13 -path '*/site-packages/lldb/_lldb*.so' -print -quit | grep -q .
+find /stage/usr/local/lldb13/lib/clang -type f -name stddef.h -print -quit | grep -q .
 """
 
 
@@ -504,6 +728,8 @@ def cache_errors(cache_root: Path, require_marker: bool = True) -> list[str]:
         cache_root / "usr/local/python37/bin/python3.7",
         cache_root / "usr/local/python37/lib/libpython3.7m.so",
         cache_root / "usr/local/lldb13/bin/lldb",
+        cache_root / "usr/local/lldb13/bin/lldb-argdumper",
+        cache_root / "usr/local/lldb13/bin/lldb-server",
     )
     errors = [f"missing:{path}" for path in expected if not path.is_file() or path.stat().st_size == 0]
     lldb_package = list(cache_root.glob("usr/local/lldb13/**/site-packages/lldb/__init__.py"))
@@ -520,6 +746,32 @@ def cache_errors(cache_root: Path, require_marker: bool = True) -> list[str]:
 
 def target_cache(paths: RecoveryPaths, target: Target) -> Path:
     return paths.cache / "builds" / target.cache_name
+
+
+def completed_build_targets(paths: RecoveryPaths) -> set[str]:
+    completed: set[str] = set()
+    for release, target in TARGETS.items():
+        cache = target_cache(paths, target)
+        if cache.is_dir() and not cache_errors(cache / "rootfs"):
+            completed.add(release)
+    return completed
+
+
+def select_build_stage(target_release: str, completed_targets: set[str]) -> str | None:
+    if target_release in completed_targets:
+        return None
+    return "build-second" if completed_targets else "build-first"
+
+
+def remove_task_owned_successful_directory(path: Path, root: Path, log: StageLog) -> None:
+    if path.is_symlink():
+        raise RecoveryError(f"Refusing to clean symlinked task directory: {path}")
+    resolved_path = path.resolve(strict=True)
+    resolved_root = root.resolve(strict=True)
+    if not resolved_path.is_relative_to(resolved_root) or resolved_path == resolved_root:
+        raise RecoveryError(f"Cleanup target is outside its task root: {path}")
+    shutil.rmtree(resolved_path)
+    log.write(f"deleted_task_owned_successful_work={resolved_path}")
 
 
 def build_target(
@@ -598,8 +850,15 @@ def build_target(
     staging.rename(final_cache)
     log.write(f"build_cache=PASS target={target.release} path={final_cache}")
     if cleanup_successful_work:
-        shutil.rmtree(run_dir)
-        log.write(f"deleted_task_owned_successful_work={run_dir}")
+        remove_task_owned_successful_directory(run_dir, runs_root, log)
+
+
+def lldb_profile_script(site_packages: str) -> str:
+    return (
+        f'export PYTHONPATH="{site_packages}${{PYTHONPATH:+:$PYTHONPATH}}"\n'
+        'export LD_LIBRARY_PATH="/usr/local/lldb13/lib:/usr/local/python37/lib'
+        '${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"\n'
+    )
 
 
 def write_package_metadata(rootfs: Path, target: Target) -> None:
@@ -626,6 +885,7 @@ def write_package_metadata(rootfs: Path, target: Target) -> None:
         "/" + bindings[0].relative_to(rootfs).as_posix(),
         python_site / "lldb",
     )
+    binding_site_packages = "/" + bindings[0].parent.relative_to(rootfs).as_posix()
 
     ldconfig_dir = rootfs / "etc/ld.so.conf.d"
     ldconfig_dir.mkdir(parents=True, exist_ok=True)
@@ -635,8 +895,7 @@ def write_package_metadata(rootfs: Path, target: Target) -> None:
     profile_dir = rootfs / "etc/profile.d"
     profile_dir.mkdir(parents=True, exist_ok=True)
     (profile_dir / "lldb-python.sh").write_text(
-        'export PYTHONPATH="/usr/local/lldb13/lib/python3.7/site-packages:$PYTHONPATH"\n'
-        'export LD_LIBRARY_PATH="/usr/local/lldb13/lib:/usr/local/python37/lib:$LD_LIBRARY_PATH"\n',
+        lldb_profile_script(binding_site_packages),
         encoding="ascii",
     )
 
@@ -687,7 +946,14 @@ def deb_errors(path: Path, runner=subprocess.run) -> list[str]:
         stderr=subprocess.PIPE,
         text=True,
     )
-    required = ("usr/local/python37/bin/python3.7", "usr/local/lldb13/bin/lldb", "site-packages/lldb/")
+    required = (
+        "usr/local/python37/bin/python3.7",
+        "usr/local/lldb13/bin/lldb",
+        "usr/local/lldb13/bin/lldb-argdumper",
+        "usr/local/lldb13/bin/lldb-server",
+        "site-packages/lldb/",
+        "usr/local/lldb13/lib/clang/",
+    )
     if listing.returncode != 0:
         errors.append("cannot_list_package")
     else:
@@ -725,8 +991,7 @@ def package_both(paths: RecoveryPaths, cleanup_successful_work: bool, log: Stage
         candidate.rename(paths.output / target.package_name)
         log.write(f"package=PASS target={target.release} path={paths.output / target.package_name}")
     if cleanup_successful_work:
-        shutil.rmtree(run_dir)
-        log.write(f"deleted_task_owned_successful_work={run_dir}")
+        remove_task_owned_successful_directory(run_dir, paths.work / "runs", log)
 
 
 PACKAGE_TEST_SCRIPT = r"""#!/bin/bash
@@ -738,9 +1003,11 @@ apt-get update -qq
 apt-get install -y -qq file /tmp/deps.deb
 test "$(dpkg-query -W -f='${Architecture}' differential-debugging-deps)" = amd64
 file /usr/local/lldb13/bin/lldb | grep -Eq 'ELF 64-bit.*x86-64'
+file /usr/local/lldb13/bin/lldb-server | grep -Eq 'ELF 64-bit.*x86-64'
 /usr/local/python37/bin/python3.7 --version | grep -q '3.7.17'
 /usr/local/lldb13/bin/lldb --version | grep -Eq '13\.0\.1|version 13'
 ! ldd /usr/local/lldb13/bin/lldb | grep -q 'not found'
+! ldd /usr/local/lldb13/bin/lldb-server | grep -q 'not found'
 source /etc/profile.d/lldb-python.sh
 python3.7 -c 'import lldb; assert "13" in lldb.SBDebugger.GetVersionString(); d=lldb.SBDebugger.Create(); assert d.IsValid(); t=d.CreateTarget("/bin/true"); assert t.IsValid(); lldb.SBDebugger.Terminate()'
 lldb --batch -o 'target create /bin/true' -o run -o 'process status' | grep -q 'exited with status = 0'
@@ -785,8 +1052,7 @@ def test_packages(
         )
         log.write(f"package_test=PASS target={target.release}")
     if cleanup_successful_work:
-        shutil.rmtree(run_dir)
-        log.write(f"deleted_task_owned_successful_work={run_dir}")
+        remove_task_owned_successful_directory(run_dir, paths.work / "runs", log)
 
 
 IMPORT_DISTRIBUTION_OVERRIDES = {
@@ -1056,6 +1322,7 @@ def add_common_paths(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--artifact-host-storage-path", type=Path, required=True)
     parser.add_argument("--container-store", type=Path, required=True)
     parser.add_argument("--container-host-storage-path", type=Path, required=True)
+    parser.add_argument("--resource-state", type=Path, required=True)
     parser.add_argument("--reserve-gib", type=float, default=MINIMUM_RESERVE_GIB)
     parser.add_argument("--cleanup-successful-work", action="store_true")
 
@@ -1067,6 +1334,7 @@ def make_parser() -> argparse.ArgumentParser:
     plan_parser = subparsers.add_parser("plan")
     add_common_paths(plan_parser)
     plan_parser.add_argument("--json-output", type=Path)
+    plan_parser.add_argument("--from-stage", choices=STAGE_ORDER, default=STAGE_ORDER[0])
 
     prepare_parser = subparsers.add_parser("prepare")
     add_common_paths(prepare_parser)
@@ -1102,6 +1370,27 @@ def make_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def execution_stage(args: argparse.Namespace, paths: RecoveryPaths) -> tuple[str, str | None]:
+    if args.command == "plan":
+        return args.from_stage, None
+    if args.command == "driver-sync":
+        return "driver-dependencies", "driver-dependencies"
+    if args.command == "prepare":
+        return "prepare", "prepare"
+    if args.command == "package":
+        return "package", "package"
+    if args.command == "test":
+        return "package-test", "package-test"
+    if args.command == "build":
+        completed = completed_build_targets(paths)
+        selected = select_build_stage(args.target, completed)
+        if selected is not None:
+            return selected, selected
+        remaining_targets = set(TARGETS) - completed
+        return ("build-second" if remaining_targets else "package"), None
+    raise RecoveryError(f"No resource stage mapping for command {args.command}")
+
+
 def main() -> None:
     args = make_parser().parse_args()
     log = StageLog(args.logs_dir.resolve(), args.command)
@@ -1121,7 +1410,15 @@ def main() -> None:
                 f"reserve_gib={args.reserve_gib} is below the approved {MINIMUM_RESERVE_GIB} GiB floor"
             )
         paths = parse_paths(args)
-        plan = budget_for_paths(paths, args.reserve_gib, args.cleanup_successful_work)
+        plan_stage, capacity_stage = execution_stage(args, paths)
+        state_path = args.resource_state.resolve()
+        plan = budget_for_paths(
+            paths,
+            args.reserve_gib,
+            args.cleanup_successful_work,
+            state_path,
+            plan_stage,
+        )
         log.write(json.dumps(plan, indent=2))
         if args.command == "plan":
             if args.json_output:
@@ -1134,7 +1431,8 @@ def main() -> None:
             raise RecoveryError("driver-sync requires explicit --allow-network")
         if args.command != "driver-sync" and not args.allow_large_io:
             raise RecoveryError(f"{args.command} requires explicit --allow-large-io")
-        require_capacity(plan, args.command)
+        if capacity_stage is not None:
+            require_capacity(plan, capacity_stage)
         for directory in (paths.work, paths.cache, paths.output):
             directory.mkdir(parents=True, exist_ok=True)
 
@@ -1165,6 +1463,9 @@ def main() -> None:
             if args.memory_gib <= 0:
                 raise RecoveryError("memory-gib must be positive")
             test_packages(paths, args.memory_gib, args.cleanup_successful_work, log)
+        checkpoint_stage = capacity_stage or "build-cache-reused"
+        record_resource_checkpoint(paths, state_path, checkpoint_stage)
+        log.write(f"resource_checkpoint=PASS stage={checkpoint_stage} path={state_path}")
         exit_code = 0
     except RecoveryError as exc:
         log.write(f"ERROR: {exc}")
