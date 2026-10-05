@@ -15,6 +15,7 @@ from scripts.f1_d1_evaluator_dependency_recovery import (
     make_parser,
     map_imports_to_requirements,
     lldb_profile_script,
+    PACKAGE_BUILD_SCRIPT,
     PACKAGE_TEST_SCRIPT,
     RecoveryError,
     require_capacity,
@@ -182,6 +183,14 @@ def test_cli_exposes_all_recovery_stages():
 
 def test_package_test_installs_its_inspection_tool():
     assert "apt-get install -y -qq file /tmp/deps.deb" in PACKAGE_TEST_SCRIPT
+
+
+def test_package_build_normalizes_drvfs_modes_without_disabling_checks():
+    assert 'find "$root" -type d -exec chmod 0755' in PACKAGE_BUILD_SCRIPT
+    assert 'find "$root" -type f -exec chmod 0644' in PACKAGE_BUILD_SCRIPT
+    assert 'chmod 0755 "$root/DEBIAN/postinst"' in PACKAGE_BUILD_SCRIPT
+    assert "dpkg-deb --root-owner-group --build" in PACKAGE_BUILD_SCRIPT
+    assert "--nocheck" not in PACKAGE_BUILD_SCRIPT
 
 
 def test_lldb_profile_script_runs_under_set_u_for_unset_empty_and_existing_values():

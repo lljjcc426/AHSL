@@ -1,0 +1,8 @@
+dpkg-deb: building package 'f1-mount-check' in '/mnt/e/GHW/ahsl/results/f1_d1_evaluator_build_calibration/runtime/work/mount-check-20261005T163706Z-725/f1-mount-check.deb'.
+drwxr-xr-x root/root         0 2026-10-06 00:37 ./
+drwxr-xr-x root/root         0 2026-10-06 00:37 ./usr/
+drwxr-xr-x root/root         0 2026-10-06 00:37 ./usr/local/
+drwxr-xr-x root/root         0 2026-10-06 00:37 ./usr/local/bin/
+-rwxr-xr-x root/root        31 2026-10-06 00:37 ./usr/local/bin/f1-mount-check
+mount_function_check_fakeroot=PASS
+deleted_task_owned_check=/mnt/e/GHW/ahsl/results/f1_d1_evaluator_build_calibration/runtime/work/mount-check-20261005T163706Z-725

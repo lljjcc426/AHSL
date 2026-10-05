@@ -1,0 +1,1 @@
+dpkg-deb: error: control directory has bad permissions 777 (must be >=0755 and <=0775)

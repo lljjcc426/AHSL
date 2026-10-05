@@ -961,6 +961,35 @@ def deb_errors(path: Path, runner=subprocess.run) -> list[str]:
     return errors
 
 
+PACKAGE_BUILD_SCRIPT = r"""
+root=$1
+output=$2
+find "$root" -type d -exec chmod 0755 {} +
+find "$root" -type f -exec chmod 0644 {} +
+chmod 0755 "$root/DEBIAN/postinst"
+find "$root/usr/local/python37/bin" "$root/usr/local/lldb13/bin" \
+    -type f -exec chmod 0755 {} +
+dpkg-deb --root-owner-group --build "$root" "$output"
+"""
+
+
+def build_deb_package(rootfs: Path, candidate: Path, log: StageLog) -> None:
+    log.run(
+        [
+            "fakeroot",
+            "--",
+            "bash",
+            "-euo",
+            "pipefail",
+            "-c",
+            PACKAGE_BUILD_SCRIPT,
+            "bash",
+            str(rootfs),
+            str(candidate),
+        ]
+    )
+
+
 def package_both(paths: RecoveryPaths, cleanup_successful_work: bool, log: StageLog) -> None:
     runtime_lib = paths.cache / "runtime/libstdc++.so.6"
     if not runtime_lib.is_file() or runtime_lib.stat().st_size == 0:
@@ -984,7 +1013,7 @@ def package_both(paths: RecoveryPaths, cleanup_successful_work: bool, log: Stage
         shutil.copy2(runtime_lib, package_root / "libstdc++.so.6")
         write_package_metadata(rootfs, target)
         candidate = package_root / target.package_name
-        log.run(["dpkg-deb", "--root-owner-group", "--build", str(rootfs), str(candidate)])
+        build_deb_package(rootfs, candidate, log)
         errors = deb_errors(candidate)
         if errors:
             raise RecoveryError(f"Invalid generated package {candidate}: {errors}")
