@@ -44,13 +44,13 @@ existing F1 Python 3.12 environment is `NOT_RUN`, not inferred from this result.
 
 ## Current resource evidence
 
-After the Windows restart, at 2026-10-05 23:35:14 +08:00, the physical host
+After the latest Windows restart, at 2026-10-05 23:51:14 +08:00, the physical host
 free-space measurements were:
 
 | Host volume | Free bytes | Free GiB | Prior workflow-start reference |
 |---|---:|---:|---:|
-| `C:` | 94,405,967,872 | 87.9224 | 76.00 GiB |
-| `E:` | 86,889,738,240 | 80.9224 | 76.60 GiB |
+| `C:` | 94,410,817,536 | 87.9269 | 76.00 GiB |
+| `E:` | 86,889,463,808 | 80.9221 | 76.60 GiB |
 
 Both physical volumes exceed the prior cumulative planning references after
 the user's cleanup. Those numbers alone are not a current execution PASS.
@@ -75,20 +75,30 @@ Observed Windows state:
 - `wsl --status`: reports that the current configuration does not support
   WSL2 and directs enabling Virtual Machine Platform.
 
-Windows did restart at 2026-10-05 23:22:12 +08:00, but the first post-restart
-Ubuntu launch returned the same error. The required repair is now explicit:
+Windows restarted again at 2026-10-05 23:39:41 +08:00. The BCD change took
+effect: `HypervisorPresent=True` and `HvHost` is running. However, the DISM log
+shows that the preceding Virtual Machine Platform enable command failed at
+23:39:15 with `0x800706be`; its cleanup also reported `0x800706ba` and
+`0x800401fd`. The reboot therefore occurred without deploying HCS.
+
+The component store contains versioned `vmcompute.exe` payloads, but
+`C:\Windows\System32\vmcompute.exe`, `hcsdiag.exe`, and the `vmcompute` service
+registration are absent. The next minimal action is to rerun only the failed
+feature command in an elevated PowerShell after Windows is fully started:
 
 ```powershell
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-bcdedit.exe /set hypervisorlaunchtype auto
 Restart-Computer
 ```
 
-These commands require an elevated PowerShell; the current non-elevated
-session cannot inspect or modify the relevant feature and BCD state. The
-actual pipeline should resume only after Ubuntu-22.04 starts; it should then
-measure mounts, graphroot, memory, and the corrected resource plan before any
-large download.
+Do not restart unless DISM exits successfully and reports that the operation
+completed. `bcdedit` does not need to be repeated. If DISM again returns an
+RPC/component-servicing error, Microsoft documents `DISM /Online
+/Cleanup-Image /RestoreHealth` followed by `sfc /scannow` as the bounded repair
+for missing or corrupted system files; rerun the feature command only after
+those repairs complete. The actual pipeline should resume only after
+Ubuntu-22.04 starts; it should then measure mounts, graphroot, memory, and the
+corrected resource plan before any large download.
 
 ## Stage status
 

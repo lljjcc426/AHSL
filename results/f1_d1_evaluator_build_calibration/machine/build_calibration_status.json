@@ -1,5 +1,5 @@
 {
-  "measured_at": "2026-10-05T23:35:14+08:00",
+  "measured_at": "2026-10-05T23:51:14+08:00",
   "baseline_commit": "8cde34f08956a8c3c6d66f15ed8c8721c4c43bf1",
   "branch": "project-f1-d1-evaluator-dependency-recovery",
   "windows_checkout": "E:\\GHW\\ahsl",
@@ -7,15 +7,15 @@
   "host_storage": {
     "C": {
       "size_bytes": 522526724096,
-      "free_bytes": 94405967872,
-      "free_gib": 87.9224,
+      "free_bytes": 94410817536,
+      "free_gib": 87.9269,
       "workflow_start_reference_required_gib": 76.0,
       "reference_capacity_result": "PASS"
     },
     "E": {
       "size_bytes": 473114341376,
-      "free_bytes": 86889738240,
-      "free_gib": 80.9224,
+      "free_bytes": 86889463808,
+      "free_gib": 80.9221,
       "workflow_start_reference_required_gib": 76.6,
       "reference_capacity_result": "PASS"
     },
@@ -33,7 +33,7 @@
   },
   "wsl_runtime": {
     "distribution": "Ubuntu-22.04",
-    "windows_last_boot": "2026-10-05T23:22:12.5+08:00",
+    "windows_last_boot": "2026-10-05T23:39:41.5+08:00",
     "post_reboot_retry": "FAILED",
     "start_exit_code": 1,
     "start_error": "Wsl/Service/CreateInstance/CreateVm/HCS/HCS_E_SERVICE_NOT_AVAILABLE",
@@ -41,10 +41,19 @@
     "firmware_virtualization_enabled": true,
     "vm_monitor_mode_extensions": true,
     "second_level_address_translation": true,
-    "hypervisor_present": false,
+    "hypervisor_present": true,
     "WslService": "RUNNING",
-    "HvHost": "STOPPED; start requires elevation",
-    "vmcompute": "NOT_FOUND",
+    "HvHost": "RUNNING",
+    "vmcompute": "NOT_DEPLOYED: System32 binary and service are absent; component payload exists in WinSxS",
+    "virtual_machine_platform_enable_attempt": {
+      "attempted_at": "2026-10-05T23:39:15+08:00",
+      "status": "FAILED",
+      "primary_error": "0x800706be",
+      "dism_close_errors": [
+        "0x800706ba",
+        "0x800401fd"
+      ]
+    },
     "wsl_available_memory": "NOT_RUN",
     "podman_graphroot": "NOT_RUN"
   },
@@ -85,7 +94,7 @@
   },
   "blocker": {
     "class": "WINDOWS_WSL2_RUNTIME",
-    "required_action": "Use elevated PowerShell to enable VirtualMachinePlatform explicitly, set hypervisorlaunchtype auto, and restart Windows before resuming",
+    "required_action": "Retry only the elevated VirtualMachinePlatform DISM command after Windows is stable, require a successful exit, then restart; hypervisorlaunchtype is already effective",
     "large_download_or_build_started": false
   }
 }
